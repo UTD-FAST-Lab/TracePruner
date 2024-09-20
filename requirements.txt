@@ -1,11 +1,12 @@
+numpy
 pandas
-torch==2.0.1
+torch
 torchvision
 torchaudio
-pytorch-lightning==2.0.5
-transformers==4.30.2
+pytorch-lightning
+transformers
 dgl
 seaborn
-scikit-learn==1.2.2
+scikit-learn
 networkit
 psutil

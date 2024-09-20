@@ -1,3 +1,4 @@
+
 from src import utils
 from src import eval
 from src.constants import struct_feat_names, PREFIXES_TO_REMOVE
@@ -515,8 +516,8 @@ def recover_source_code_njr1(output_folder, dataset_name: str, concat_df: pd.Dat
 
 if __name__ == "__main__":
     
-    dataset_name ='ycorpus'
-    FEATURE_SET = None
+    dataset_name ='xcorpus'
+    FEATURE_SET = FeatureTypes.STRUCT_FEAT
     if dataset_name == 'ycorpus':
         DATASET_FOLDER = join(PROJECT_DATA_PATH, "/ycorpus/gh_projects_processed_w_deps_v7-5/")
         OUTPUT_FOLDER = join(PROJECT_DATA_PATH, "/ycorpus")
@@ -551,9 +552,9 @@ if __name__ == "__main__":
         static_dyn_common, _ = find_common_projects(project_static_cg, project_dynamic_cg)
         static_dyn_common_pruned_df = create_dataset(OUTPUT_FOLDER, DATASET_VERSION, project_static_cg, project_dynamic_cg)
         concat_dataset = concat_datasets(OUTPUT_FOLDER, f"{xcorpus_dataset_name}_{DATASET_VERSION}", static_dyn_common_pruned_df)
-        if FEATURE_SET is not FeatureTypes.SIG_FEAT:
-            concat_dataset = recover_dataset_source(OUTPUT_FOLDER, SRC_FOLDER, f"{xcorpus_dataset_name}_{DATASET_VERSION}",
-                                                    SECOND_SRC_FOLDER)
+        # if FEATURE_SET is not FeatureTypes.SIG_FEAT:
+        #     concat_dataset = recover_dataset_source(OUTPUT_FOLDER, SRC_FOLDER, f"{xcorpus_dataset_name}_{DATASET_VERSION}",
+                                                    # SECOND_SRC_FOLDER)
         if FEATURE_SET == FeatureTypes.STRUCT_FEAT:
             gen_struct_features(static_dyn_common, OUTPUT_FOLDER, DATASET_VERSION)
             concat_dataset = add_struct_features(static_dyn_common, concat_dataset, OUTPUT_FOLDER, DATASET_VERSION)
