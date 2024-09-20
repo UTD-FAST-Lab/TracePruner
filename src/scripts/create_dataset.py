@@ -1,3 +1,8 @@
+import sys
+import os
+
+# Add the src directory to sys.path
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..')))
 
 from src import utils
 from src import eval
@@ -9,7 +14,7 @@ compute_node_and_edge_counts, get_orphan_nodes, compute_edge_depths, compute_edg
 compute_src_node_in_deg, compute_dest_node_in_deg, compute_edge_fanouts, compute_repeated_edges, \
 compute_node_disjoint_paths, compute_edge_disjoint_paths, compute_graph_level_info, remove_repeated_edges_from_union, \
 compute_output_imp, add_old_entries_to_row_imp, compute_edge_disjoint_paths_parallel
-from src import PROJECT_DATA_PATH
+# from src import PROJECT_DATA_PATH
 
 import pandas as pd
 import os
@@ -30,6 +35,7 @@ from tqdm import tqdm
 faulthandler.enable()
 
 SOURCE_RECOVER_JAR = "/mnt/data/amir_projects/ml4cg/ml4cg_SA/target/method_extractor-1.0-SNAPSHOT-shaded.jar"
+PROJECT_DATA_PATH = '/20TB/mohammad/cg_dataset/ml4cgp_study_data'
 NO_WORKERS = math.floor(0.9 * psutil.cpu_count(logical=False))
 
 ## Read dataset
@@ -516,7 +522,7 @@ def recover_source_code_njr1(output_folder, dataset_name: str, concat_df: pd.Dat
 
 if __name__ == "__main__":
     
-    dataset_name ='xcorpus'
+    dataset_name ='njr1'
     FEATURE_SET = FeatureTypes.STRUCT_FEAT
     if dataset_name == 'ycorpus':
         DATASET_FOLDER = join(PROJECT_DATA_PATH, "/ycorpus/gh_projects_processed_w_deps_v7-5/")
@@ -575,7 +581,7 @@ if __name__ == "__main__":
         static_dyn_common, _ = find_common_projects(project_static_cg, project_dynamic_cg)
         static_dyn_common_pruned_df = create_dataset(OUTPUT_FOLDER, DATASET_VERSION, project_static_cg, project_dynamic_cg)
         concat_dataset = concat_datasets(OUTPUT_FOLDER, f"{njr1_dataset_name}_{DATASET_VERSION}", static_dyn_common_pruned_df)
-        recover_source_code_njr1(OUTPUT_FOLDER, f"{njr1_dataset_name}_{DATASET_VERSION}", concat_dataset)
-        save_dataset_w_src(concat_dataset, OUTPUT_FOLDER, f"{njr1_dataset_name}_{DATASET_VERSION}", dataset_split={'train': train_njr1_programs,
-                                                                                                                   'valid': valid_njr1_programs,
-                                                                                                                    'test': test_njr1_programs})
+        # recover_source_code_njr1(OUTPUT_FOLDER, f"{njr1_dataset_name}_{DATASET_VERSION}", concat_dataset)
+        # save_dataset_w_src(concat_dataset, OUTPUT_FOLDER, f"{njr1_dataset_name}_{DATASET_VERSION}", dataset_split={'train': train_njr1_programs,
+        #                                                                                                            'valid': valid_njr1_programs,
+        #                                                                                                             'test': test_njr1_programs})
