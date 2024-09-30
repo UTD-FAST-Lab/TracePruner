@@ -1,0 +1,16 @@
+NPE_INV,org.stephen.hashmap.caches.lru.LeastRecentlyUsedCache$LinkedHashMapCache.setEvictionStrategy(Lorg/stephen/hashmap/caches/lru/eviction/EvictionStrategy;)V,org.stephen.hashmap.caches.lru.eviction.EvictionStrategy.setLinkedHashMap(Ljava/util/LinkedHashMap;)V
+NPE_INV,org.stephen.hashmap.caches.lru.LeastRecentlyUsedCache$LinkedHashMapCache.removeEldestEntry(Ljava/util/Map$Entry;)Z,org.stephen.hashmap.caches.lru.eviction.EvictionStrategy.evictEntry(Ljava/util/Map$Entry;)Z
+NPE_INV,com.google.common.cache.CacheBuilder.expireAfterAccess(JLjava/util/concurrent/TimeUnit;)Lcom/google/common/cache/CacheBuilder;,java.util.concurrent.TimeUnit.toNanos(J)J
+NPE_INV,org.stephen.hashmap.caches.lru.eviction.EvictBySize.evictEntry(Ljava/util/Map$Entry;)Z,java.util.LinkedHashMap.size()I
+NPE_INV,org.stephen.hashmap.caches.property.PropertyHolder.getHashCode()I,java.lang.String.hashCode()I
+NPE_INV,org.stephen.hashmap.caches.property.PropertyHolder.getHashCode()I,java.lang.String.hashCode()I
+NPE_INV,org.stephen.hashmap.caches.property.PropertyHolder.getHashCode()I,java.lang.Object.hashCode()I
+NPE_INV,org.stephen.hashmap.caches.property.PropertyHolder.getHashCode()I,java.lang.reflect.Method.hashCode()I
+NPE_INV,org.stephen.hashmap.caches.property.PropertyHolder.getHashCode()I,java.lang.reflect.Method.hashCode()I
+NPE_INV,org.stephen.hashmap.caches.property.PropertyHolder.getValue(Ljava/lang/Object;)Ljava/lang/Object;,java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+NPE_INV,org.stephen.hashmap.caches.property.PropertyHolder.equals(Ljava/lang/Object;)Z,java.lang.String.equals(Ljava/lang/Object;)Z
+NPE_INV,org.stephen.hashmap.caches.property.PropertyHolder.equals(Ljava/lang/Object;)Z,java.lang.Object.equals(Ljava/lang/Object;)Z
+NPE_INV,org.stephen.hashmap.caches.property.PropertyHolder.equals(Ljava/lang/Object;)Z,java.lang.String.equals(Ljava/lang/Object;)Z
+NPE_INV,org.stephen.hashmap.caches.property.PropertyHolder.equals(Ljava/lang/Object;)Z,java.lang.reflect.Method.equals(Ljava/lang/Object;)Z
+NPE_INV,org.stephen.hashmap.caches.property.PropertyHolder.equals(Ljava/lang/Object;)Z,java.lang.reflect.Method.equals(Ljava/lang/Object;)Z
+Done

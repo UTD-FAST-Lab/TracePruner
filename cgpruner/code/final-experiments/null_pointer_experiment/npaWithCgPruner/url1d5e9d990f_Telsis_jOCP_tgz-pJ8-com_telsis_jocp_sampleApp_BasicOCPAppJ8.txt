@@ -1,0 +1,17 @@
+NPE_INV,org.apache.log4j.WriterAppender.writeFooter()V,org.apache.log4j.helpers.QuietWriter.write(Ljava/lang/String;)V
+NPE_INV,org.apache.log4j.WriterAppender.writeFooter()V,org.apache.log4j.helpers.QuietWriter.flush()V
+NPE_INV,org.apache.log4j.WriterAppender.writeHeader()V,org.apache.log4j.helpers.QuietWriter.write(Ljava/lang/String;)V
+NPE_INV,org.apache.log4j.WriterAppender.closeWriter()V,java.io.FilterWriter.close()V
+NPE_INV,org.apache.log4j.helpers.AppenderAttachableImpl.addAppender(Lorg/apache/log4j/Appender;)V,java.util.Vector.contains(Ljava/lang/Object;)Z
+NPE_INV,org.apache.log4j.helpers.AppenderAttachableImpl.addAppender(Lorg/apache/log4j/Appender;)V,java.util.Vector.addElement(Ljava/lang/Object;)V
+NPE_INV,org.apache.log4j.helpers.AppenderAttachableImpl.removeAllAppenders()V,java.util.Vector.size()I
+NPE_INV,org.apache.log4j.helpers.AppenderAttachableImpl.removeAllAppenders()V,java.util.Vector.elementAt(I)Ljava/lang/Object;
+NPE_INV,org.apache.log4j.helpers.AppenderAttachableImpl.removeAllAppenders()V,java.util.Vector.removeAllElements()V
+NPE_INV,org.apache.log4j.helpers.AppenderAttachableImpl.appendLoopOnAppenders(Lorg/apache/log4j/spi/LoggingEvent;)I,java.util.Vector.size()I
+NPE_INV,org.apache.log4j.helpers.AppenderAttachableImpl.appendLoopOnAppenders(Lorg/apache/log4j/spi/LoggingEvent;)I,java.util.Vector.elementAt(I)Ljava/lang/Object;
+NPE_INV,org.apache.log4j.WriterAppender.subAppend(Lorg/apache/log4j/spi/LoggingEvent;)V,org.apache.log4j.helpers.QuietWriter.write(Ljava/lang/String;)V
+NPE_INV,org.apache.log4j.WriterAppender.subAppend(Lorg/apache/log4j/spi/LoggingEvent;)V,org.apache.log4j.helpers.QuietWriter.write(Ljava/lang/String;)V
+NPE_INV,org.apache.log4j.WriterAppender.subAppend(Lorg/apache/log4j/spi/LoggingEvent;)V,org.apache.log4j.helpers.QuietWriter.write(Ljava/lang/String;)V
+NPE_INV,org.apache.log4j.WriterAppender.subAppend(Lorg/apache/log4j/spi/LoggingEvent;)V,org.apache.log4j.helpers.QuietWriter.flush()V
+NPE_INV,org.apache.log4j.spi.ThrowableInformation.getThrowableStrRep()[Ljava/lang/String;,java.lang.Object.clone()Ljava/lang/Object;
+Done

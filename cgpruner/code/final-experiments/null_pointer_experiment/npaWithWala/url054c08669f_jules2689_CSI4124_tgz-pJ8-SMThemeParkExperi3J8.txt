@@ -1,0 +1,27 @@
+NPE_INV,absmodJ.AOSimulationModel.runSimulation()V,java.util.PriorityQueue.poll()Ljava/lang/Object;
+NPE_INV,absmodJ.AOSimulationModel.runSimulation()V,java.util.LinkedList.remove(Ljava/lang/Object;)Z
+NPE_INV,absmodJ.AOSimulationModel.runSimulation()V,java.util.LinkedList.remove(Ljava/lang/Object;)Z
+NPE_GET,simModel.SMThemePark.testPreconditions(LabsmodJ/Behaviour;)V,LabsmodJ/SBNotice.behaviourInstance LabsmodJ/Behaviour
+NPE_GET,simModel.SMThemePark.testPreconditions(LabsmodJ/Behaviour;)V,LabsmodJ/SBNotice.behaviourInstance LabsmodJ/Behaviour
+NPE_INV,simModel.SMThemePark.eventOccured()V,java.lang.Integer.intValue()I
+NPE_INV,absmodJ.AOSimulationModel.addSBNotice(LabsmodJ/Behaviour;D)LabsmodJ/SBNotice;,java.util.PriorityQueue.add(Ljava/lang/Object;)Z
+NPE_INV,simModel.UnBoardingAndBoarding.startingEvent()V,java.lang.Integer.intValue()I
+NPE_INV,absmodJ.AOSimulationModel.scheduleActivity(LabsmodJ/Activity;)V,java.util.LinkedList.add(Ljava/lang/Object;)Z
+NPE_INV,absmodJ.AOSimulationModel.scheduleActivity(LabsmodJ/Activity;)V,java.util.LinkedList.add(Ljava/lang/Object;)Z
+NPE_INV,absmodJ.AOSimulationModel.unscheduleBehaviour(LabsmodJ/SBNotice;)V,java.util.PriorityQueue.remove(Ljava/lang/Object;)Z
+NPE_INV,absmodJ.AOSimulationModel.unscheduleBehaviour(LabsmodJ/SBNotice;)V,java.util.LinkedList.remove(Ljava/lang/Object;)Z
+NPE_INV,absmodJ.AOSimulationModel.showSBL()V,java.util.PriorityQueue.toArray()[Ljava/lang/Object;
+NPE_INV,simModel.UDPs.stationReadyForUnboarding()I,java.lang.Integer.intValue()I
+NPE_GET,absmodJ.SBNotice.compareTo(LabsmodJ/SBNotice;)I,LabsmodJ/SBNotice.timeStamp D
+NPE_GET,absmodJ.SBNotice.compareTo(LabsmodJ/SBNotice;)I,LabsmodJ/SBNotice.timeStamp D
+NPE_GET,absmodJ.SBNotice.compareTo(LabsmodJ/SBNotice;)I,LabsmodJ/SBNotice.seqNum J
+NPE_GET,absmodJ.SBNotice.compareTo(LabsmodJ/SBNotice;)I,LabsmodJ/SBNotice.seqNum J
+NPE_GET,absmodJ.SBNotice.equals(Ljava/lang/Object;)Z,LabsmodJ/SBNotice.timeStamp D
+NPE_GET,absmodJ.SBNotice.equals(Ljava/lang/Object;)Z,LabsmodJ/SBNotice.seqNum J
+NPE_INV,simModel.ExtraBoardingTime.interruptionPreCond()I,java.lang.Integer.intValue()I
+NPE_INV,simModel.UDPs.boardAtStation(I)V,java.lang.Integer.intValue()I
+NPE_INV,simModel.UDPs.checkTrainArrived(I)Z,java.lang.Integer.intValue()I
+NPE_INV,simModel.UDPs.getMaxNumberOfCustomers(Ljava/lang/Integer;)I,java.lang.Integer.intValue()I
+NPE_INV,simModel.UDPs.getAvailableCapacity(Ljava/lang/Integer;)I,java.lang.Integer.intValue()I
+NPE_INV,simModel.TravellingBetweenStations.startingEvent()V,java.lang.Integer.intValue()I
+Done

@@ -1,0 +1,6 @@
+NPE_INV,de.measite.minidns.record.Data.hashCode()I,java.lang.Object.hashCode()I
+NPE_INV,de.measite.minidns.record.Data.hashCode()I,java.lang.Integer.intValue()I
+NPE_INV,de.measite.minidns.record.Data.toByteArray()[B,B.clone()Ljava/lang/Object;
+NPE_INV,de.measite.minidns.EDNS.asTerminalOutput()Ljava/lang/String;,java.util.List.isEmpty()Z
+NPE_INV,de.measite.minidns.EDNS.asTerminalOutput()Ljava/lang/String;,java.util.List.iterator()Ljava/util/Iterator;
+Done

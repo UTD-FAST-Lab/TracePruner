@@ -1,0 +1,107 @@
+NPE_GET,martin.math.MathExpression.add(Lmartin/math/MathsItem;)Z,Lmartin/math/MathExpression.items Ljava/util/HashSet
+NPE_INV,martin.math.MathExpression.add(Lmartin/math/MathsItem;)Z,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.add(Lmartin/math/MathsItem;)Z,martin.math.MathsItem.clone()Lmartin/math/MathsItem;
+NPE_INV,martin.math.MathExpression.add(Lmartin/math/MathsItem;)Z,martin.math.MathsItem.clone()Lmartin/math/MathsItem;
+NPE_GET,martin.math.MathExpression.multiply(Lmartin/math/MathsItem;)Z,Lmartin/math/MathExpression.items Ljava/util/HashSet
+NPE_INV,martin.math.MathExpression.multiply(Lmartin/math/MathsItem;)Z,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.multiply(Lmartin/math/MathsItem;)Z,martin.math.MathsItem.clone()Lmartin/math/MathsItem;
+NPE_INV,martin.math.MathExpression.multiply(Lmartin/math/MathsItem;)Z,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.multiply(Lmartin/math/MathsItem;)Z,martin.math.MathsItem.clone()Lmartin/math/MathsItem;
+NPE_INV,martin.math.MathExpression.multiply(Lmartin/math/MathsItem;)Z,martin.math.MathsItem.clone()Lmartin/math/MathsItem;
+NPE_INV,martin.math.MathExpression.multiply(Lmartin/math/MathsItem;)Z,java.util.HashSet.add(Ljava/lang/Object;)Z
+NPE_INV,martin.math.MathExpression.simplify()V,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.simplify()V,martin.math.MathsItem.simplify()V
+NPE_INV,martin.math.MathExpression.cloneItems(Ljava/util/HashSet;)V,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.cloneItems(Ljava/util/HashSet;)V,martin.math.MathsItem.clone()Lmartin/math/MathsItem;
+NPE_INV,martin.math.MathExpression.removeAllZeros()Z,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.removeAllZeros()Z,martin.math.MathsItem.isZero()Z
+NPE_INV,martin.math.MathExpression.removeAllZeros()Z,java.util.HashSet.clear()V
+NPE_INV,martin.math.MathExpression.removeAllZeros()Z,java.util.HashSet.add(Ljava/lang/Object;)Z
+NPE_INV,martin.math.MathExpression.removeAllOnes()Z,java.util.HashSet.size()I
+NPE_INV,martin.math.MathExpression.removeAllOnes()Z,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.removeAllOnes()Z,martin.math.MathsItem.isOne()Z
+NPE_INV,martin.math.MathExpression.removeAllOnes()Z,java.util.HashSet.size()I
+NPE_INV,martin.math.MathExpression.removeAllOnes()Z,java.util.HashSet.remove(Ljava/lang/Object;)Z
+NPE_INV,martin.math.MathExpression.removeAllOnes()Z,java.util.HashSet.remove(Ljava/lang/Object;)Z
+NPE_INV,martin.math.MathExpression.simplifyMultiplicators()Z,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.simplifyMultiplicators()Z,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.simplifyMultiplicators()Z,martin.math.MathsItem.multiply(Lmartin/math/MathsItem;)Z
+NPE_INV,martin.math.MathExpression.simplifyMultiplicators()Z,java.util.HashSet.remove(Ljava/lang/Object;)Z
+NPE_INV,martin.math.MathExpression.removeNestedExps()Z,java.util.HashSet.size()I
+NPE_INV,martin.math.MathExpression.removeNestedExps()Z,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_GET,martin.math.MathExpression.removeNestedExps()Z,Lmartin/math/MathExpression.items Ljava/util/HashSet
+NPE_INV,martin.math.MathExpression.removeNestedExps()Z,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.removeNestedExps()Z,martin.math.MathsItem.clone()Lmartin/math/MathsItem;
+NPE_INV,martin.math.MathExpression.performAdditionOnSimpleExpressions()Z,java.util.HashSet.size()I
+NPE_INV,martin.math.MathExpression.performAdditionOnSimpleExpressions()Z,java.util.HashSet.size()I
+NPE_INV,martin.math.MathExpression.performAdditionOnSimpleExpressions()Z,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.performAdditionOnSimpleExpressions()Z,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.performAdditionOnSimpleExpressions()Z,martin.math.MathsItem.add(Lmartin/math/MathsItem;)Z
+NPE_INV,martin.math.MathExpression.commonFactors()Z,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.commonFactors()Z,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.commonFactors()Z,java.lang.Object.equals(Ljava/lang/Object;)Z
+NPE_INV,martin.math.MathExpression.commonFactors()Z,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.commonFactors()Z,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.commonFactors()Z,martin.math.MathsItem.add(Lmartin/math/MathsItem;)Z
+NPE_INV,martin.math.MathExpression.commonFactors()Z,java.util.HashSet.add(Ljava/lang/Object;)Z
+NPE_GET,martin.math.MathNumber.add(Lmartin/math/MathsItem;)Z,Lmartin/math/MathNumber.number D
+NPE_INV,martin.math.MathExpression.getValue(Ljava/util/HashMap;)Lmartin/math/Complex;,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.getValue(Ljava/util/HashMap;)Lmartin/math/Complex;,martin.math.MathsItem.getValue(Ljava/util/HashMap;)Lmartin/math/Complex;
+NPE_INV,martin.math.MathExpression.toString()Ljava/lang/String;,java.util.HashSet.isEmpty()Z
+NPE_INV,martin.math.MathExpression.toString()Ljava/lang/String;,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.toString()Ljava/lang/String;,martin.math.MathsItem.hasNegativeSign()Z
+NPE_INV,martin.math.MathExpression.toString()Ljava/lang/String;,java.util.HashSet.size()I
+NPE_INV,martin.math.MathExpression.toString()Ljava/lang/String;,java.util.HashSet.size()I
+NPE_GET,martin.math.MathNumber.equals(Ljava/lang/Object;)Z,Lmartin/math/MathNumber.number D
+NPE_GET,martin.math.MathSymbol.equals(Ljava/lang/Object;)Z,Lmartin/math/MathSymbol.negative Z
+NPE_GET,martin.math.MathSymbol.equals(Ljava/lang/Object;)Z,Lmartin/math/MathSymbol.symbol Ljava/lang/String
+NPE_INV,martin.math.MathExpression.equals(Ljava/lang/Object;)Z,martin.math.MathsItem.getValue(Ljava/util/HashMap;)Lmartin/math/Complex;
+NPE_INV,martin.math.MathExpression.negate()V,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.negate()V,martin.math.MathsItem.negate()V
+NPE_INV,martin.math.Complex.equals(Ljava/lang/Object;)Z,martin.math.Complex.isNaN()Z
+NPE_GET,martin.math.Complex.equals(Ljava/lang/Object;)Z,Lmartin/math/Complex.R D
+NPE_GET,martin.math.Complex.equals(Ljava/lang/Object;)Z,Lmartin/math/Complex.I D
+NPE_GET,martin.math.MathSymbol.add(Lmartin/math/MathsItem;)Z,Lmartin/math/MathSymbol.negative Z
+NPE_GET,martin.math.MathNumber.multiply(Lmartin/math/MathsItem;)Z,Lmartin/math/MathNumber.number D
+NPE_GET,martin.math.MathFract.equals(Ljava/lang/Object;)Z,Lmartin/math/MathFract.num Lmartin/math/MathExpression
+NPE_GET,martin.math.MathFract.equals(Ljava/lang/Object;)Z,Lmartin/math/MathFract.den Lmartin/math/MathExpression
+NPE_INV,martin.math.MathFract.equals(Ljava/lang/Object;)Z,martin.math.MathsItem.getValue(Ljava/util/HashMap;)Lmartin/math/Complex;
+NPE_GET,martin.math.MathFunction.equals(Ljava/lang/Object;)Z,Lmartin/math/MathFunction.name Ljava/lang/String
+NPE_GET,martin.math.MathFunction.equals(Ljava/lang/Object;)Z,Lmartin/math/MathFunction.negative Z
+NPE_GET,martin.math.MathFunction.equals(Ljava/lang/Object;)Z,Lmartin/math/MathFunction.expr Lmartin/math/MathExpression
+NPE_GET,martin.math.MathFract.add(Lmartin/math/MathsItem;)Z,Lmartin/math/MathFract.den Lmartin/math/MathExpression
+NPE_GET,martin.math.MathFract.add(Lmartin/math/MathsItem;)Z,Lmartin/math/MathFract.num Lmartin/math/MathExpression
+NPE_GET,martin.math.MathFract.add(Lmartin/math/MathsItem;)Z,Lmartin/math/MathFract.den Lmartin/math/MathExpression
+NPE_GET,martin.math.MathFract.add(Lmartin/math/MathsItem;)Z,Lmartin/math/MathFract.den Lmartin/math/MathExpression
+NPE_GET,martin.math.MathFract.add(Lmartin/math/MathsItem;)Z,Lmartin/math/MathFract.num Lmartin/math/MathExpression
+NPE_GET,martin.math.MathFract.multiply(Lmartin/math/MathsItem;)Z,Lmartin/math/MathFract.num Lmartin/math/MathExpression
+NPE_GET,martin.math.MathFract.multiply(Lmartin/math/MathsItem;)Z,Lmartin/math/MathFract.den Lmartin/math/MathExpression
+NPE_GET,martin.math.MathExp.multiply(Lmartin/math/MathsItem;)Z,Lmartin/math/MathExp.negative Z
+NPE_GET,martin.math.MathExp.multiply(Lmartin/math/MathsItem;)Z,Lmartin/math/MathExp.expr Lmartin/math/MathExpression
+NPE_GET,martin.math.MathIm.add(Lmartin/math/MathsItem;)Z,Lmartin/math/MathIm.negative Z
+NPE_INV,martin.math.MathIm.add(Lmartin/math/MathsItem;)Z,martin.math.MathIm.negate()V
+NPE_GET,martin.math.MathIm.add(Lmartin/math/MathsItem;)Z,Lmartin/math/MathIm.expr Lmartin/math/MathExpression
+NPE_GET,martin.math.MathIm.add(Lmartin/math/MathsItem;)Z,Lmartin/math/MathIm.real Z
+NPE_GET,martin.math.MathIm.add(Lmartin/math/MathsItem;)Z,Lmartin/math/MathIm.expr Lmartin/math/MathExpression
+NPE_INV,martin.math.MathSqrt.multiply(Lmartin/math/MathsItem;)Z,martin.math.MathSqrt.getValue(Ljava/util/HashMap;)Lmartin/math/Complex;
+NPE_GET,martin.math.MathSqrt.multiply(Lmartin/math/MathsItem;)Z,Lmartin/math/MathSqrt.negative Z
+NPE_GET,martin.math.MathSqrt.multiply(Lmartin/math/MathsItem;)Z,Lmartin/math/MathSqrt.expr Lmartin/math/MathExpression
+NPE_GET,martin.math.MathIm.multiply(Lmartin/math/MathsItem;)Z,Lmartin/math/MathIm.negative Z
+NPE_INV,martin.math.MathIm.multiply(Lmartin/math/MathsItem;)Z,martin.math.MathIm.negate()V
+NPE_GET,martin.math.MathIm.multiply(Lmartin/math/MathsItem;)Z,Lmartin/math/MathIm.expr Lmartin/math/MathExpression
+NPE_GET,martin.math.MathIm.multiply(Lmartin/math/MathsItem;)Z,Lmartin/math/MathIm.expr Lmartin/math/MathExpression
+NPE_GET,martin.math.MathIm.multiply(Lmartin/math/MathsItem;)Z,Lmartin/math/MathIm.real Z
+NPE_GET,martin.math.MathIm.multiply(Lmartin/math/MathsItem;)Z,Lmartin/math/MathIm.real Z
+NPE_INV,martin.math.MathFract.putIntsInHere(Lmartin/math/MathExpression;Ljava/util/Collection;)Z,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathFract.putIntsInHere(Lmartin/math/MathExpression;Ljava/util/Collection;)Z,martin.math.MathNumber.isInteger()Z
+NPE_GET,martin.math.MathFract.putIntsInHere(Lmartin/math/MathExpression;Ljava/util/Collection;)Z,Lmartin/math/MathNumber.number D
+NPE_INV,martin.math.MathFract.gcd(Ljava/lang/Iterable;)I,java.lang.Integer.intValue()I
+NPE_INV,martin.math.MathFract.gcd(Ljava/lang/Iterable;)I,java.lang.Integer.intValue()I
+NPE_INV,martin.math.MathExpression.divide(Lmartin/math/MathsItem;)Z,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_INV,martin.math.MathExpression.divide(Lmartin/math/MathsItem;)Z,martin.math.MathsItem.multiply(Lmartin/math/MathsItem;)Z
+NPE_INV,martin.math.MathExpression.divide(Lmartin/math/MathsItem;)Z,martin.math.MathsItem.getValue(Ljava/util/HashMap;)Lmartin/math/Complex;
+NPE_INV,martin.math.MathExpression.divide(Lmartin/math/MathsItem;)Z,martin.math.MathsItem.divide(Lmartin/math/MathsItem;)Z
+NPE_INV,martin.math.MathExpression.divide(Lmartin/math/MathsItem;)Z,martin.math.MathsItem.multiply(Lmartin/math/MathsItem;)Z
+NPE_INV,martin.math.MathFract.min(Ljava/lang/Iterable;)Ljava/lang/Integer;,java.lang.Integer.intValue()I
+NPE_INV,martin.math.MathFract.min(Ljava/lang/Iterable;)Ljava/lang/Integer;,java.lang.Integer.intValue()I
+Done

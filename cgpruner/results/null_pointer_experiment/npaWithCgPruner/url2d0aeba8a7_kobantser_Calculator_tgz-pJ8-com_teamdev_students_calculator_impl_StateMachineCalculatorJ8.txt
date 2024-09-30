@@ -1,0 +1,2 @@
+NPE_INV,org.apache.log4j.config.PropertySetter.getPropertyDescriptor(Ljava/lang/String;)Ljava/beans/PropertyDescriptor;,java.beans.FeatureDescriptor.getName()Ljava/lang/String;
+Done

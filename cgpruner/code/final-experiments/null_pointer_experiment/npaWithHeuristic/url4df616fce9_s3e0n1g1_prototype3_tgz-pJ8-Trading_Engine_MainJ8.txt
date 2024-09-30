@@ -1,0 +1,3 @@
+NPE_INV,org.junit.runner.notification.RunNotifier$SafeNotifier.run()V,org.junit.runner.notification.RunNotifier.fireTestFailure(Lorg/junit/runner/notification/Failure;)V
+NPE_INV,org.jfree.base.config.HierarchicalConfiguration.getConfigProperty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;,org.jfree.util.Configuration.getConfigProperty(Ljava/lang/String;Ljava/lang/String;)Ljava/lang/String;
+Done

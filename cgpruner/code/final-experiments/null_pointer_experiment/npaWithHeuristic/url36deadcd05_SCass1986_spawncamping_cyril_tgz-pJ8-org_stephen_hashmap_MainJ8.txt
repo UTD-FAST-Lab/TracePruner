@@ -1,0 +1,20 @@
+NPE_INV,org.stephen.hashmap.Main.testCache(Lorg/stephen/hashmap/caches/ClassPropertyCache;I)V,org.stephen.hashmap.caches.property.PropertyHolder.getValue(Ljava/lang/Object;)Ljava/lang/Object;
+NPE_INV,org.stephen.hashmap.caches.lru.LeastRecentlyUsedCache$LinkedHashMapCache.setEvictionStrategy(Lorg/stephen/hashmap/caches/lru/eviction/EvictionStrategy;)V,org.stephen.hashmap.caches.lru.eviction.EvictionStrategy.setLinkedHashMap(Ljava/util/LinkedHashMap;)V
+NPE_INV,org.apache.commons.lang.text.StrBuilder.append(Ljava/lang/String;)Lorg/apache/commons/lang/text/StrBuilder;,java.lang.String.length()I
+NPE_INV,org.apache.commons.lang.text.StrBuilder.append(Ljava/lang/String;)Lorg/apache/commons/lang/text/StrBuilder;,java.lang.String.getChars(II[CI)V
+NPE_INV,org.stephen.hashmap.caches.lru.LeastRecentlyUsedCache$LinkedHashMapCache.getPropertyHolder(Lorg/stephen/hashmap/caches/property/PropertyKeyFactory$PropertyKey;)Lorg/stephen/hashmap/caches/property/PropertyHolder;,java.beans.PropertyDescriptor.getName()Ljava/lang/String;
+NPE_INV,org.apache.commons.lang.StringUtils.replace(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)Ljava/lang/String;,java.lang.String.length()I
+NPE_INV,org.stephen.hashmap.caches.lru.LeastRecentlyUsedCache$LinkedHashMapCache.removeEldestEntry(Ljava/util/Map$Entry;)Z,org.stephen.hashmap.caches.lru.eviction.EvictionStrategy.evictEntry(Ljava/util/Map$Entry;)Z
+NPE_INV,com.google.common.cache.CacheBuilder.expireAfterAccess(JLjava/util/concurrent/TimeUnit;)Lcom/google/common/cache/CacheBuilder;,java.util.concurrent.TimeUnit.toNanos(J)J
+NPE_INV,org.stephen.hashmap.caches.property.PropertyHolderFactory.create(Ljava/beans/PropertyDescriptor;)Lorg/stephen/hashmap/caches/property/PropertyHolder;,java.beans.PropertyDescriptor.getName()Ljava/lang/String;
+NPE_INV,org.stephen.hashmap.caches.property.PropertyHolderFactory.create(Ljava/beans/PropertyDescriptor;)Lorg/stephen/hashmap/caches/property/PropertyHolder;,java.lang.Object.getClass()Ljava/lang/Class;
+NPE_INV,org.stephen.hashmap.caches.property.PropertyHolderFactory.create(Ljava/beans/PropertyDescriptor;)Lorg/stephen/hashmap/caches/property/PropertyHolder;,java.beans.PropertyDescriptor.getReadMethod()Ljava/lang/reflect/Method;
+NPE_INV,org.stephen.hashmap.caches.property.PropertyHolderFactory.create(Ljava/beans/PropertyDescriptor;)Lorg/stephen/hashmap/caches/property/PropertyHolder;,java.beans.PropertyDescriptor.getWriteMethod()Ljava/lang/reflect/Method;
+NPE_INV,org.stephen.hashmap.caches.lru.eviction.EvictBySize.evictEntry(Ljava/util/Map$Entry;)Z,java.util.LinkedHashMap.size()I
+NPE_INV,org.stephen.hashmap.caches.guava.PropertyCacheLoader.getPropertyFromPropertyDescriptorList(Ljava/lang/String;Ljava/lang/Class;)Ljava/beans/PropertyDescriptor;,java.beans.PropertyDescriptor.getName()Ljava/lang/String;
+NPE_GET,com.google.common.util.concurrent.ExecutionList.execute()V,Lcom/google/common/util/concurrent/ExecutionList$RunnableExecutorPair.next Lcom/google/common/util/concurrent/ExecutionList$RunnableExecutorPair
+NPE_PUT,com.google.common.util.concurrent.ExecutionList.execute()V,Lcom/google/common/util/concurrent/ExecutionList$RunnableExecutorPair.next Lcom/google/common/util/concurrent/ExecutionList$RunnableExecutorPair
+NPE_GET,com.google.common.util.concurrent.ExecutionList.execute()V,Lcom/google/common/util/concurrent/ExecutionList$RunnableExecutorPair.runnable Ljava/lang/Runnable
+NPE_GET,com.google.common.util.concurrent.ExecutionList.execute()V,Lcom/google/common/util/concurrent/ExecutionList$RunnableExecutorPair.executor Ljava/util/concurrent/Executor
+NPE_GET,com.google.common.util.concurrent.ExecutionList.execute()V,Lcom/google/common/util/concurrent/ExecutionList$RunnableExecutorPair.next Lcom/google/common/util/concurrent/ExecutionList$RunnableExecutorPair
+Done

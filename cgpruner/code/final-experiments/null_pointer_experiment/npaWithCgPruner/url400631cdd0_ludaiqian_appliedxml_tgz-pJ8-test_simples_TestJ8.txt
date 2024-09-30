@@ -1,0 +1,5 @@
+NPE_INV,org.xmlpull.v1.XmlPullParserFactory.newPullParser()Lorg/xmlpull/v1/XmlPullParser;,java.util.Vector.size()I
+NPE_INV,org.xmlpull.v1.XmlPullParserFactory.newPullParser()Lorg/xmlpull/v1/XmlPullParser;,java.util.Vector.size()I
+NPE_INV,org.xmlpull.v1.XmlPullParserFactory.newPullParser()Lorg/xmlpull/v1/XmlPullParser;,java.util.Vector.elementAt(I)Ljava/lang/Object;
+NPE_INV,org.jczh.appliedxml.MapTypeAdapterFactory.create(Lorg/jczh/appliedxml/Serializer;Lcom/google/gsoncode/internal/TypeToken;)Lorg/jczh/appliedxml/TypeAdapter;,com.google.gsoncode.internal.ConstructorConstructor.get(Lcom/google/gsoncode/internal/TypeToken;)Lcom/google/gsoncode/internal/ObjectConstructor;
+Done

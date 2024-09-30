@@ -1,0 +1,10 @@
+NPE_INV,absmodJ.AOSimulationModel.runSimulation()V,java.util.PriorityQueue.poll()Ljava/lang/Object;
+NPE_INV,absmodJ.AOSimulationModel.runSimulation()V,java.util.LinkedList.remove(Ljava/lang/Object;)Z
+NPE_INV,absmodJ.AOSimulationModel.runSimulation()V,java.util.LinkedList.remove(Ljava/lang/Object;)Z
+NPE_INV,absmodJ.AOSimulationModel.addSBNotice(LabsmodJ/Behaviour;D)LabsmodJ/SBNotice;,java.util.PriorityQueue.add(Ljava/lang/Object;)Z
+NPE_INV,absmodJ.AOSimulationModel.scheduleActivity(LabsmodJ/Activity;)V,java.util.LinkedList.add(Ljava/lang/Object;)Z
+NPE_INV,absmodJ.AOSimulationModel.scheduleActivity(LabsmodJ/Activity;)V,java.util.LinkedList.add(Ljava/lang/Object;)Z
+NPE_INV,absmodJ.AOSimulationModel.unscheduleBehaviour(LabsmodJ/SBNotice;)V,java.util.PriorityQueue.remove(Ljava/lang/Object;)Z
+NPE_INV,absmodJ.AOSimulationModel.unscheduleBehaviour(LabsmodJ/SBNotice;)V,java.util.LinkedList.remove(Ljava/lang/Object;)Z
+NPE_INV,absmodJ.AOSimulationModel.showSBL()V,java.util.PriorityQueue.toArray()[Ljava/lang/Object;
+Done

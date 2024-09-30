@@ -1,0 +1,57 @@
+NPE_GET,xx.Parser.parseExpression(Ljava/lang/String;Lxx/Compiler;)Ljava/lang/Object;,Lxx/Token.beginColumn I
+NPE_INV,xx.TokenMgrError.addEscapes(Ljava/lang/String;)Ljava/lang/String;,java.lang.String.length()I
+NPE_INV,xx.TokenMgrError.addEscapes(Ljava/lang/String;)Ljava/lang/String;,java.lang.String.charAt(I)C
+NPE_INV,xx.TokenMgrError.addEscapes(Ljava/lang/String;)Ljava/lang/String;,java.lang.String.charAt(I)C
+NPE_GET,xx.XPathParser.jj_consume_token(I)Lxx/Token;,Lxx/Token.next Lxx/Token
+NPE_GET,xx.XPathParser.jj_consume_token(I)Lxx/Token;,Lxx/Token.next Lxx/Token
+NPE_PUT,xx.XPathParser.jj_consume_token(I)Lxx/Token;,Lxx/Token.next Lxx/Token
+NPE_GET,xx.XPathParser.jj_consume_token(I)Lxx/Token;,Lxx/Token.kind I
+NPE_GET,xx.XPathParser.jj_consume_token(I)Lxx/Token;,Lxx/XPathParser$JJCalls.gen I
+NPE_PUT,xx.XPathParser.jj_consume_token(I)Lxx/Token;,Lxx/XPathParser$JJCalls.first Lxx/Token
+NPE_GET,xx.XPathParser.jj_consume_token(I)Lxx/Token;,Lxx/XPathParser$JJCalls.next Lxx/XPathParser$JJCalls
+NPE_GET,xx.XPathParser.jj_ntk()I,Lxx/Token.next Lxx/Token
+NPE_PUT,xx.XPathParser.jj_ntk()I,Lxx/Token.next Lxx/Token
+NPE_GET,xx.XPathParser.jj_ntk()I,Lxx/Token.kind I
+NPE_GET,xx.XPathParser.jj_rescan_token()V,Lxx/XPathParser$JJCalls.gen I
+NPE_GET,xx.XPathParser.jj_rescan_token()V,Lxx/XPathParser$JJCalls.arg I
+NPE_GET,xx.XPathParser.jj_rescan_token()V,Lxx/XPathParser$JJCalls.first Lxx/Token
+NPE_GET,xx.XPathParser.jj_rescan_token()V,Lxx/XPathParser$JJCalls.next Lxx/XPathParser$JJCalls
+NPE_GET,xx.ParseException.initialise(Lxx/Token;[[I[Ljava/lang/String;)Ljava/lang/String;,Lxx/Token.next Lxx/Token
+NPE_GET,xx.ParseException.initialise(Lxx/Token;[[I[Ljava/lang/String;)Ljava/lang/String;,Lxx/Token.kind I
+NPE_GET,xx.ParseException.initialise(Lxx/Token;[[I[Ljava/lang/String;)Ljava/lang/String;,Lxx/Token.kind I
+NPE_GET,xx.ParseException.initialise(Lxx/Token;[[I[Ljava/lang/String;)Ljava/lang/String;,Lxx/Token.image Ljava/lang/String
+NPE_GET,xx.ParseException.initialise(Lxx/Token;[[I[Ljava/lang/String;)Ljava/lang/String;,Lxx/Token.next Lxx/Token
+NPE_GET,xx.ParseException.initialise(Lxx/Token;[[I[Ljava/lang/String;)Ljava/lang/String;,Lxx/Token.next Lxx/Token
+NPE_GET,xx.ParseException.initialise(Lxx/Token;[[I[Ljava/lang/String;)Ljava/lang/String;,Lxx/Token.beginLine I
+NPE_GET,xx.ParseException.initialise(Lxx/Token;[[I[Ljava/lang/String;)Ljava/lang/String;,Lxx/Token.next Lxx/Token
+NPE_GET,xx.ParseException.initialise(Lxx/Token;[[I[Ljava/lang/String;)Ljava/lang/String;,Lxx/Token.beginColumn I
+NPE_GET,xx.XPathParser.jj_scan_token(I)Z,Lxx/Token.next Lxx/Token
+NPE_PUT,xx.XPathParser.jj_scan_token(I)Z,Lxx/Token.next Lxx/Token
+NPE_GET,xx.XPathParser.jj_scan_token(I)Z,Lxx/Token.next Lxx/Token
+NPE_GET,xx.XPathParser.jj_scan_token(I)Z,Lxx/Token.next Lxx/Token
+NPE_GET,xx.XPathParser.jj_scan_token(I)Z,Lxx/Token.next Lxx/Token
+NPE_GET,xx.XPathParser.jj_scan_token(I)Z,Lxx/Token.kind I
+NPE_INV,xx.ParseException.add_escapes(Ljava/lang/String;)Ljava/lang/String;,java.lang.String.length()I
+NPE_INV,xx.ParseException.add_escapes(Ljava/lang/String;)Ljava/lang/String;,java.lang.String.charAt(I)C
+NPE_INV,xx.ParseException.add_escapes(Ljava/lang/String;)Ljava/lang/String;,java.lang.String.charAt(I)C
+NPE_GET,xx.XPathParser.jj_save(II)V,Lxx/XPathParser$JJCalls.gen I
+NPE_GET,xx.XPathParser.jj_save(II)V,Lxx/XPathParser$JJCalls.next Lxx/XPathParser$JJCalls
+NPE_PUT,xx.XPathParser.jj_save(II)V,Lxx/XPathParser$JJCalls.next Lxx/XPathParser$JJCalls
+NPE_GET,xx.XPathParser.jj_save(II)V,Lxx/XPathParser$JJCalls.next Lxx/XPathParser$JJCalls
+NPE_PUT,xx.XPathParser.jj_save(II)V,Lxx/XPathParser$JJCalls.gen I
+NPE_PUT,xx.XPathParser.jj_save(II)V,Lxx/XPathParser$JJCalls.first Lxx/Token
+NPE_PUT,xx.XPathParser.jj_save(II)V,Lxx/XPathParser$JJCalls.arg I
+NPE_GET,xx.XPathParser.PrimaryExpr()Ljava/lang/Object;,Lxx/Token.image Ljava/lang/String
+NPE_GET,xx.XPathParser.PrimaryExpr()Ljava/lang/Object;,Lxx/Token.image Ljava/lang/String
+NPE_INV,xx.XPathParser.PrimaryExpr()Ljava/lang/Object;,java.lang.String.length()I
+NPE_INV,xx.XPathParser.PrimaryExpr()Ljava/lang/Object;,java.lang.String.substring(II)Ljava/lang/String;
+NPE_GET,xx.XPathParser.PrimaryExpr()Ljava/lang/Object;,Lxx/Token.image Ljava/lang/String
+NPE_GET,xx.XPathParser.NodeTest(Ljava/util/ArrayList;)V,Lxx/Token.image Ljava/lang/String
+NPE_GET,xx.XPathParser.NodeTest(Ljava/util/ArrayList;)V,Lxx/Token.image Ljava/lang/String
+NPE_INV,xx.XPathParser.NodeTest(Ljava/util/ArrayList;)V,java.lang.String.length()I
+NPE_INV,xx.XPathParser.NodeTest(Ljava/util/ArrayList;)V,java.lang.String.substring(II)Ljava/lang/String;
+NPE_GET,xx.XPathParser.NameTest()Ljava/lang/Object;,Lxx/Token.image Ljava/lang/String
+NPE_GET,xx.XPathParser.NameTest()Ljava/lang/Object;,Lxx/Token.image Ljava/lang/String
+NPE_GET,xx.XPathParser.NCName()Ljava/lang/String;,Lxx/Token.image Ljava/lang/String
+NPE_GET,xx.XPathParser.NCName_Without_CoreFunctions()Ljava/lang/String;,Lxx/Token.image Ljava/lang/String
+Done

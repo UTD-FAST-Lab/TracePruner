@@ -1,0 +1,91 @@
+NPE_INV,com.teamdev.students.fsm.FiniteStateMachine.moveForward(Lcom/teamdev/students/fsm/StateMachineContext;Ljava/lang/Enum;)Ljava/lang/Enum;,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_INV,com.teamdev.students.calculator.impl.EvaluationService.acceptState(Lcom/teamdev/students/calculator/impl/EvaluationContext;Lcom/teamdev/students/calculator/impl/State;)Z,org.slf4j.Logger.error(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.EvaluationService.acceptState(Lcom/teamdev/students/calculator/impl/EvaluationContext;Lcom/teamdev/students/calculator/impl/State;)Z,com.teamdev.students.calculator.impl.MathExpressionParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;
+NPE_INV,com.teamdev.students.calculator.impl.EvaluationService.acceptState(Lcom/teamdev/students/calculator/impl/EvaluationContext;Lcom/teamdev/students/calculator/impl/State;)Z,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.NumberParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.NumberParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.BinaryOperatorParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.BinaryOperatorParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.BinaryOperatorParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,java.lang.String.length()I
+NPE_INV,com.teamdev.students.calculator.impl.parsers.LeftParenthesisParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.LeftParenthesisParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.RightParenthesisParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.RightParenthesisParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.FunctionParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.FunctionParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.FunctionParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,java.lang.String.length()I
+NPE_INV,com.teamdev.students.calculator.impl.parsers.FunctionLeftParenthesisParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.FunctionLeftParenthesisParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.FunctionRightParenthesisParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.FunctionRightParenthesisParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.ArgumentSeparatorParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.ArgumentSeparatorParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.EndOfExpressionParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.parsers.EndOfExpressionParser.parse(Lcom/teamdev/students/calculator/impl/EvaluationContext;)Lcom/teamdev/students/calculator/impl/EvaluationCommand;,org.slf4j.Logger.info(Ljava/lang/String;)V
+NPE_INV,com.teamdev.students.calculator.impl.EvaluationStack.pushOperator(Lcom/teamdev/students/calculator/impl/BinaryOperator;)V,com.teamdev.students.calculator.impl.operations.AbstractBinaryOperator.isLeftAssociative()Z
+NPE_INV,org.apache.log4j.helpers.Loader.getTCL()Ljava/lang/ClassLoader;,java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+NPE_INV,org.apache.log4j.helpers.LogLog.warn(Ljava/lang/String;Ljava/lang/Throwable;)V,java.lang.Throwable.printStackTrace()V
+NPE_INV,org.apache.log4j.helpers.OptionConverter.toBoolean(Ljava/lang/String;Z)Z,java.lang.String.trim()Ljava/lang/String;
+NPE_INV,org.apache.log4j.helpers.OptionConverter.toLevel(Ljava/lang/String;Lorg/apache/log4j/Level;)Lorg/apache/log4j/Level;,java.lang.String.trim()Ljava/lang/String;
+NPE_INV,org.apache.log4j.helpers.OptionConverter.toLevel(Ljava/lang/String;Lorg/apache/log4j/Level;)Lorg/apache/log4j/Level;,java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+NPE_INV,org.apache.log4j.PropertyConfigurator.parseCatsAndRenderers(Ljava/util/Properties;Lorg/apache/log4j/spi/LoggerRepository;)V,java.lang.String.startsWith(Ljava/lang/String;)Z
+NPE_INV,org.apache.log4j.PropertyConfigurator.parseCatsAndRenderers(Ljava/util/Properties;Lorg/apache/log4j/spi/LoggerRepository;)V,java.lang.String.startsWith(Ljava/lang/String;)Z
+NPE_INV,org.apache.log4j.PropertyConfigurator.parseCatsAndRenderers(Ljava/util/Properties;Lorg/apache/log4j/spi/LoggerRepository;)V,java.lang.String.startsWith(Ljava/lang/String;)Z
+NPE_INV,org.apache.log4j.PropertyConfigurator.parseCatsAndRenderers(Ljava/util/Properties;Lorg/apache/log4j/spi/LoggerRepository;)V,java.lang.String.substring(I)Ljava/lang/String;
+NPE_INV,org.apache.log4j.PropertyConfigurator.parseCatsAndRenderers(Ljava/util/Properties;Lorg/apache/log4j/spi/LoggerRepository;)V,java.lang.String.startsWith(Ljava/lang/String;)Z
+NPE_INV,org.apache.log4j.PropertyConfigurator.parseCatsAndRenderers(Ljava/util/Properties;Lorg/apache/log4j/spi/LoggerRepository;)V,java.lang.String.substring(I)Ljava/lang/String;
+NPE_INV,org.apache.log4j.PropertyConfigurator.parseCatsAndRenderers(Ljava/util/Properties;Lorg/apache/log4j/spi/LoggerRepository;)V,java.lang.String.startsWith(Ljava/lang/String;)Z
+NPE_INV,org.apache.log4j.PropertyConfigurator.parseCatsAndRenderers(Ljava/util/Properties;Lorg/apache/log4j/spi/LoggerRepository;)V,java.lang.String.substring(I)Ljava/lang/String;
+NPE_INV,org.apache.log4j.helpers.OptionConverter.substVars(Ljava/lang/String;Ljava/util/Properties;)Ljava/lang/String;,java.lang.String.indexOf(Ljava/lang/String;I)I
+NPE_INV,org.apache.log4j.helpers.OptionConverter.substVars(Ljava/lang/String;Ljava/util/Properties;)Ljava/lang/String;,java.lang.String.length()I
+NPE_INV,org.apache.log4j.helpers.OptionConverter.substVars(Ljava/lang/String;Ljava/util/Properties;)Ljava/lang/String;,java.lang.String.substring(II)Ljava/lang/String;
+NPE_INV,org.apache.log4j.helpers.OptionConverter.substVars(Ljava/lang/String;Ljava/util/Properties;)Ljava/lang/String;,java.lang.String.substring(II)Ljava/lang/String;
+NPE_INV,org.apache.log4j.helpers.OptionConverter.substVars(Ljava/lang/String;Ljava/util/Properties;)Ljava/lang/String;,java.lang.String.indexOf(II)I
+NPE_INV,org.apache.log4j.helpers.OptionConverter.substVars(Ljava/lang/String;Ljava/util/Properties;)Ljava/lang/String;,java.lang.String.substring(II)Ljava/lang/String;
+NPE_INV,org.apache.log4j.PropertyConfigurator.parseCategory(Ljava/util/Properties;Lorg/apache/log4j/Logger;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V,java.lang.String.startsWith(Ljava/lang/String;)Z
+NPE_INV,org.apache.log4j.PropertyConfigurator.parseCategory(Ljava/util/Properties;Lorg/apache/log4j/Logger;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V,java.lang.String.equals(Ljava/lang/Object;)Z
+NPE_INV,org.apache.log4j.PropertyConfigurator.parseCategory(Ljava/util/Properties;Lorg/apache/log4j/Logger;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V,org.apache.log4j.Category.setLevel(Lorg/apache/log4j/Level;)V
+NPE_INV,org.apache.log4j.PropertyConfigurator.parseCategory(Ljava/util/Properties;Lorg/apache/log4j/Logger;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V,org.apache.log4j.Category.setLevel(Lorg/apache/log4j/Level;)V
+NPE_INV,org.apache.log4j.PropertyConfigurator.parseCategory(Ljava/util/Properties;Lorg/apache/log4j/Logger;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V,org.apache.log4j.Category.getLevel()Lorg/apache/log4j/Level;
+NPE_INV,org.apache.log4j.PropertyConfigurator.parseCategory(Ljava/util/Properties;Lorg/apache/log4j/Logger;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V,org.apache.log4j.Category.removeAllAppenders()V
+NPE_INV,org.apache.log4j.PropertyConfigurator.parseCategory(Ljava/util/Properties;Lorg/apache/log4j/Logger;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V,org.apache.log4j.Category.addAppender(Lorg/apache/log4j/Appender;)V
+NPE_INV,org.apache.log4j.PropertyConfigurator.parseAdditivityForLogger(Ljava/util/Properties;Lorg/apache/log4j/Logger;Ljava/lang/String;)V,java.lang.String.equals(Ljava/lang/Object;)Z
+NPE_INV,org.apache.log4j.PropertyConfigurator.parseAdditivityForLogger(Ljava/util/Properties;Lorg/apache/log4j/Logger;Ljava/lang/String;)V,org.apache.log4j.Category.setAdditivity(Z)V
+NPE_INV,org.apache.log4j.config.PropertySetter.setProperties(Ljava/util/Properties;Ljava/lang/String;)V,java.lang.String.startsWith(Ljava/lang/String;)Z
+NPE_INV,org.apache.log4j.config.PropertySetter.setProperties(Ljava/util/Properties;Ljava/lang/String;)V,java.lang.String.indexOf(II)I
+NPE_INV,org.apache.log4j.config.PropertySetter.setProperties(Ljava/util/Properties;Ljava/lang/String;)V,java.lang.String.substring(I)Ljava/lang/String;
+NPE_INV,org.apache.log4j.helpers.OptionConverter.instantiateByKey(Ljava/util/Properties;Ljava/lang/String;Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;,java.lang.String.trim()Ljava/lang/String;
+NPE_INV,org.apache.log4j.config.PropertySetter.getPropertyDescriptor(Ljava/lang/String;)Ljava/beans/PropertyDescriptor;,java.beans.FeatureDescriptor.getName()Ljava/lang/String;
+NPE_INV,org.apache.log4j.config.PropertySetter.setProperty(Ljava/beans/PropertyDescriptor;Ljava/lang/String;Ljava/lang/String;)V,java.beans.PropertyDescriptor.getWriteMethod()Ljava/lang/reflect/Method;
+NPE_INV,org.apache.log4j.config.PropertySetter.setProperty(Ljava/beans/PropertyDescriptor;Ljava/lang/String;Ljava/lang/String;)V,java.lang.reflect.Method.getParameterTypes()[Ljava/lang/Class;
+NPE_INV,org.apache.log4j.config.PropertySetter.setProperty(Ljava/beans/PropertyDescriptor;Ljava/lang/String;Ljava/lang/String;)V,java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+NPE_INV,org.apache.log4j.config.PropertySetter.introspect()V,java.beans.BeanInfo.getPropertyDescriptors()[Ljava/beans/PropertyDescriptor;
+NPE_INV,org.apache.log4j.config.PropertySetter.convertArg(Ljava/lang/String;Ljava/lang/Class;)Ljava/lang/Object;,java.lang.String.trim()Ljava/lang/String;
+NPE_INV,org.slf4j.impl.Log4jLoggerAdapter.info(Ljava/lang/String;)V,org.apache.log4j.Logger.log(Ljava/lang/String;Lorg/apache/log4j/Priority;Ljava/lang/Object;Ljava/lang/Throwable;)V
+NPE_INV,org.slf4j.impl.Log4jLoggerAdapter.error(Ljava/lang/String;)V,org.apache.log4j.Logger.log(Ljava/lang/String;Lorg/apache/log4j/Priority;Ljava/lang/Object;Ljava/lang/Throwable;)V
+NPE_GET,org.apache.log4j.Priority.equals(Ljava/lang/Object;)Z,Lorg/apache/log4j/Priority.level I
+NPE_INV,org.apache.log4j.config.PropertySetterException.getMessage()Ljava/lang/String;,java.lang.Throwable.getMessage()Ljava/lang/String;
+NPE_INV,org.apache.log4j.Hierarchy.updateParents(Lorg/apache/log4j/Logger;)V,java.util.Vector.addElement(Ljava/lang/Object;)V
+NPE_INV,org.apache.log4j.Hierarchy.updateParents(Lorg/apache/log4j/Logger;)V,java.lang.Object.getClass()Ljava/lang/Class;
+NPE_INV,org.apache.log4j.Hierarchy.updateChildren(Lorg/apache/log4j/ProvisionNode;Lorg/apache/log4j/Logger;)V,java.util.Vector.size()I
+NPE_INV,org.apache.log4j.Hierarchy.updateChildren(Lorg/apache/log4j/ProvisionNode;Lorg/apache/log4j/Logger;)V,java.util.Vector.elementAt(I)Ljava/lang/Object;
+NPE_GET,org.apache.log4j.Hierarchy.updateChildren(Lorg/apache/log4j/ProvisionNode;Lorg/apache/log4j/Logger;)V,Lorg/apache/log4j/Category.name Ljava/lang/String
+NPE_GET,com.teamdev.students.calculator.impl.operations.AbstractBinaryOperator.compareTo(Lcom/teamdev/students/calculator/impl/BinaryOperator;)I,Lcom/teamdev/students/calculator/impl/operations/AbstractBinaryOperator.priority Lcom/teamdev/students/calculator/impl/operations/AbstractBinaryOperator$Priority
+NPE_INV,org.slf4j.impl.Log4jLoggerAdapter.getName()Ljava/lang/String;,org.apache.log4j.Logger.getName()Ljava/lang/String;
+NPE_INV,org.apache.log4j.CategoryKey.equals(Ljava/lang/Object;)Z,java.lang.Object.getClass()Ljava/lang/Class;
+NPE_GET,org.apache.log4j.CategoryKey.equals(Ljava/lang/Object;)Z,Lorg/apache/log4j/CategoryKey.name Ljava/lang/String
+NPE_GET,org.apache.log4j.Category.getEffectiveLevel()Lorg/apache/log4j/Level;,Lorg/apache/log4j/Category.level Lorg/apache/log4j/Level
+NPE_GET,org.apache.log4j.Category.getEffectiveLevel()Lorg/apache/log4j/Level;,Lorg/apache/log4j/Category.level Lorg/apache/log4j/Level
+NPE_GET,org.apache.log4j.Category.getEffectiveLevel()Lorg/apache/log4j/Level;,Lorg/apache/log4j/Category.parent Lorg/apache/log4j/Category
+NPE_INV,org.apache.log4j.helpers.AppenderAttachableImpl.addAppender(Lorg/apache/log4j/Appender;)V,java.util.Vector.contains(Ljava/lang/Object;)Z
+NPE_INV,org.apache.log4j.helpers.AppenderAttachableImpl.addAppender(Lorg/apache/log4j/Appender;)V,java.util.Vector.addElement(Ljava/lang/Object;)V
+NPE_INV,org.apache.log4j.helpers.AppenderAttachableImpl.removeAllAppenders()V,java.util.Vector.size()I
+NPE_INV,org.apache.log4j.helpers.AppenderAttachableImpl.removeAllAppenders()V,java.util.Vector.elementAt(I)Ljava/lang/Object;
+NPE_INV,org.apache.log4j.helpers.AppenderAttachableImpl.removeAllAppenders()V,java.util.Vector.removeAllElements()V
+NPE_GET,org.apache.log4j.Category.callAppenders(Lorg/apache/log4j/spi/LoggingEvent;)V,Lorg/apache/log4j/Category.aai Lorg/apache/log4j/helpers/AppenderAttachableImpl
+NPE_GET,org.apache.log4j.Category.callAppenders(Lorg/apache/log4j/spi/LoggingEvent;)V,Lorg/apache/log4j/Category.aai Lorg/apache/log4j/helpers/AppenderAttachableImpl
+NPE_GET,org.apache.log4j.Category.callAppenders(Lorg/apache/log4j/spi/LoggingEvent;)V,Lorg/apache/log4j/Category.additive Z
+NPE_GET,org.apache.log4j.Category.callAppenders(Lorg/apache/log4j/spi/LoggingEvent;)V,Lorg/apache/log4j/Category.parent Lorg/apache/log4j/Category
+NPE_INV,org.apache.log4j.helpers.AppenderAttachableImpl.appendLoopOnAppenders(Lorg/apache/log4j/spi/LoggingEvent;)I,java.util.Vector.size()I
+NPE_INV,org.apache.log4j.helpers.AppenderAttachableImpl.appendLoopOnAppenders(Lorg/apache/log4j/spi/LoggingEvent;)I,java.util.Vector.elementAt(I)Ljava/lang/Object;
+Done

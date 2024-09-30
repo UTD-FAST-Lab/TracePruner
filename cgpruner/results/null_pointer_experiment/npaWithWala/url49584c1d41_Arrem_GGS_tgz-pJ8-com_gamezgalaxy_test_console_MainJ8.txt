@@ -1,0 +1,366 @@
+NPE_INV,com.gamezgalaxy.test.console.Main.start()V,com.gamezgalaxy.GGS.server.Server.Start()V
+NPE_GET,com.gamezgalaxy.test.console.Main.start()V,Lcom/gamezgalaxy/GGS/server/Server.Running Z
+NPE_INV,com.gamezgalaxy.test.console.Main.start()V,com.gamezgalaxy.GGS.server.Server.getCommandHandler()Lcom/gamezgalaxy/GGS/API/plugin/CommandHandler;
+NPE_INV,com.gamezgalaxy.test.console.Main.start()V,com.gamezgalaxy.GGS.server.Server.getCommandHandler()Lcom/gamezgalaxy/GGS/API/plugin/CommandHandler;
+NPE_INV,com.gamezgalaxy.test.console.Main.start()V,com.gamezgalaxy.GGS.server.Server.Log(Ljava/lang/String;)V
+NPE_GET,com.gamezgalaxy.GGS.chat.Messages.serverBroadcast(Ljava/lang/String;)V,Lcom/gamezgalaxy/GGS/server/Server.players Ljava/util/ArrayList
+NPE_INV,com.gamezgalaxy.GGS.chat.Messages.serverBroadcast(Ljava/lang/String;)V,com.gamezgalaxy.GGS.iomodel.Player.sendMessage(Ljava/lang/String;)V
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.Load(Lcom/gamezgalaxy/GGS/server/Server;)V,javax.xml.parsers.DocumentBuilderFactory.newDocumentBuilder()Ljavax/xml/parsers/DocumentBuilder;
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.Load(Lcom/gamezgalaxy/GGS/server/Server;)V,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.Load(Lcom/gamezgalaxy/GGS/server/Server;)V,java.util.Map$Entry.getKey()Ljava/lang/Object;
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.Load(Lcom/gamezgalaxy/GGS/server/Server;)V,java.util.Map$Entry.getValue()Ljava/lang/Object;
+NPE_PUT,com.gamezgalaxy.GGS.groups.Group.Load(Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/groups/Group.parent Lcom/gamezgalaxy/GGS/groups/Group
+NPE_GET,com.gamezgalaxy.GGS.groups.Group.find(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/groups/Group;,Lcom/gamezgalaxy/GGS/groups/Group.name Ljava/lang/String
+NPE_INV,com.gamezgalaxy.GGS.world.Level.Load(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,java.lang.String.endsWith(Ljava/lang/String;)Z
+NPE_PUT,com.gamezgalaxy.GGS.world.Level.Load(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,Lcom/gamezgalaxy/GGS/world/Level.ticks Ljava/util/ArrayList
+NPE_INV,com.gamezgalaxy.GGS.world.Level.Load(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,java.lang.Object.getClass()Ljava/lang/Class;
+NPE_PUT,com.gamezgalaxy.GGS.world.Level.Load(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,Lcom/gamezgalaxy/GGS/world/Level.physics Ljava/lang/Thread
+NPE_PUT,com.gamezgalaxy.GGS.world.Level.Load(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,Lcom/gamezgalaxy/GGS/world/Level.name Ljava/lang/String
+NPE_PUT,com.gamezgalaxy.GGS.world.Level.Load(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,Lcom/gamezgalaxy/GGS/world/Level.run Z
+NPE_GET,com.gamezgalaxy.GGS.world.Level.Load(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,Lcom/gamezgalaxy/GGS/world/Level.physics Ljava/lang/Thread
+NPE_INV,com.gamezgalaxy.GGS.server.Server$Ticker.run()V,com.gamezgalaxy.GGS.server.Tick.tick()V
+NPE_GET,com.gamezgalaxy.GGS.world.Level.Convert(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,Lcom/mojang/minecraft/level/Level.width I
+NPE_GET,com.gamezgalaxy.GGS.world.Level.Convert(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,Lcom/mojang/minecraft/level/Level.height I
+NPE_GET,com.gamezgalaxy.GGS.world.Level.Convert(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,Lcom/mojang/minecraft/level/Level.height I
+NPE_GET,com.gamezgalaxy.GGS.world.Level.Convert(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,Lcom/mojang/minecraft/level/Level.blocks [B
+NPE_GET,com.gamezgalaxy.GGS.world.Level.Convert(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,Lcom/mojang/minecraft/level/Level.blocks [B
+NPE_INV,com.gamezgalaxy.GGS.API.plugin.CommandHandler.loadPermissions()V,com.gamezgalaxy.GGS.API.plugin.Command.getName()Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.API.plugin.CommandHandler.loadPermissions()V,com.gamezgalaxy.GGS.API.plugin.Command.setPermissionLevel(I)V
+NPE_INV,com.gamezgalaxy.GGS.API.plugin.CommandHandler.savePermissions()V,com.gamezgalaxy.GGS.API.plugin.Command.getName()Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.API.plugin.CommandHandler.savePermissions()V,com.gamezgalaxy.GGS.API.plugin.Command.getPermissionLevel()I
+NPE_INV,com.gamezgalaxy.GGS.world.convert.DatToGGS.load(Ljava/lang/String;)V,com.mojang.minecraft.level.Level.initTransient()V
+NPE_GET,com.gamezgalaxy.GGS.world.convert.DatToGGS.load(Ljava/lang/String;)V,Lcom/mojang/minecraft/level/Level.width I
+NPE_GET,com.gamezgalaxy.GGS.world.convert.DatToGGS.load(Ljava/lang/String;)V,Lcom/mojang/minecraft/level/Level.height I
+NPE_GET,com.gamezgalaxy.GGS.world.Block.getBlock(B)Lcom/gamezgalaxy/GGS/world/Block;,Lcom/gamezgalaxy/GGS/world/Block.ID B
+NPE_INV,com.gamezgalaxy.GGS.API.plugin.CommandHandler.makeDefault()V,com.gamezgalaxy.GGS.API.plugin.Command.getName()Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.API.plugin.CommandHandler.makeDefault()V,com.gamezgalaxy.GGS.API.plugin.Command.getDefaultPermissionLevel()I
+NPE_INV,com.gamezgalaxy.GGS.world.Level.setTile(Lcom/gamezgalaxy/GGS/world/Block;ILcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.world.PhysicsBlock.clone(Lcom/gamezgalaxy/GGS/server/Server;)Lcom/gamezgalaxy/GGS/world/PhysicsBlock;
+NPE_INV,com.gamezgalaxy.GGS.world.Level.setTile(Lcom/gamezgalaxy/GGS/world/Block;ILcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.world.Block.onPlace(Lcom/gamezgalaxy/GGS/world/Level;ILcom/gamezgalaxy/GGS/server/Server;)V
+NPE_GET,com.gamezgalaxy.GGS.world.PhysicsBlock.onDelete(Lcom/gamezgalaxy/GGS/world/Level;ILcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/world/Level.ticks Ljava/util/ArrayList
+NPE_INV,com.gamezgalaxy.GGS.system.heartbeat.Beater.run()V,com.gamezgalaxy.GGS.system.heartbeat.Heart.getURL()Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.system.heartbeat.Beater.run()V,com.gamezgalaxy.GGS.system.heartbeat.Heart.getURL()Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.system.heartbeat.Beater.run()V,com.gamezgalaxy.GGS.system.heartbeat.Heart.Prepare(Lcom/gamezgalaxy/GGS/server/Server;)Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.system.heartbeat.Beater.run()V,com.gamezgalaxy.GGS.system.heartbeat.Heart.Prepare(Lcom/gamezgalaxy/GGS/server/Server;)Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.system.heartbeat.Beater.run()V,com.gamezgalaxy.GGS.system.heartbeat.Heart.onPump(Ljava/io/BufferedReader;Lcom/gamezgalaxy/GGS/server/Server;)Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.system.heartbeat.Beater.run()V,com.gamezgalaxy.GGS.system.heartbeat.Heart.getURL()Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.system.heartbeat.Beater.run()V,com.gamezgalaxy.GGS.system.heartbeat.Heart.getURL()Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.API.EventSystem.registerEvents(Lcom/gamezgalaxy/GGS/API/Listener;)V,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_INV,com.gamezgalaxy.GGS.API.EventSystem.registerEvents(Lcom/gamezgalaxy/GGS/API/Listener;)V,java.util.Map$Entry.getKey()Ljava/lang/Object;
+NPE_INV,com.gamezgalaxy.GGS.API.EventSystem.registerEvents(Lcom/gamezgalaxy/GGS/API/Listener;)V,java.util.Map$Entry.getValue()Ljava/lang/Object;
+NPE_INV,com.gamezgalaxy.GGS.util.properties.Properties.getValue(Ljava/lang/String;)Ljava/lang/String;,java.lang.String.split(Ljava/lang/String;)[Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.util.properties.Properties.getValue(Ljava/lang/String;)Ljava/lang/String;,java.lang.String.trim()Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.util.properties.Properties.getValue(Ljava/lang/String;)Ljava/lang/String;,java.lang.String.split(Ljava/lang/String;)[Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.util.properties.Properties.getValue(Ljava/lang/String;)Ljava/lang/String;,java.lang.String.trim()Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.world.LevelHandler$Saver.tick()V,com.gamezgalaxy.GGS.world.Level.Save()V
+NPE_INV,com.gamezgalaxy.GGS.util.logger.Logger$Log.run()V,java.lang.String.contains(Ljava/lang/CharSequence;)Z
+NPE_GET,com.gamezgalaxy.GGS.world.Level$Ticker.run()V,Lcom/gamezgalaxy/GGS/world/Level.ticks Ljava/util/ArrayList
+NPE_PUT,com.gamezgalaxy.GGS.world.Level$Ticker.run()V,Lcom/gamezgalaxy/GGS/world/Level.ticks Ljava/util/ArrayList
+NPE_GET,com.gamezgalaxy.GGS.world.Level$Ticker.run()V,Lcom/gamezgalaxy/GGS/world/Level.ticks Ljava/util/ArrayList
+NPE_INV,com.gamezgalaxy.GGS.world.Level$Ticker.run()V,com.gamezgalaxy.GGS.world.PhysicsBlock.runInSeperateThread()Z
+NPE_INV,com.gamezgalaxy.GGS.world.Level$Ticker.run()V,com.gamezgalaxy.GGS.server.Tick.tick()V
+NPE_INV,com.gamezgalaxy.GGS.API.EventSystem.addMuffins(Lcom/gamezgalaxy/GGS/API/Listener;)Ljava/util/Map;,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_INV,com.gamezgalaxy.GGS.API.EventSystem.getRegistrationClass(Ljava/lang/Class;)Ljava/lang/Class;,java.lang.Class.getDeclaredMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+NPE_INV,com.gamezgalaxy.GGS.API.EventSystem.getRegistrationClass(Ljava/lang/Class;)Ljava/lang/Class;,java.lang.Class.getSuperclass()Ljava/lang/Class;
+NPE_INV,com.gamezgalaxy.GGS.API.EventSystem.getRegistrationClass(Ljava/lang/Class;)Ljava/lang/Class;,java.lang.Class.getSuperclass()Ljava/lang/Class;
+NPE_INV,com.gamezgalaxy.GGS.API.EventSystem.getRegistrationClass(Ljava/lang/Class;)Ljava/lang/Class;,java.lang.Class.getSuperclass()Ljava/lang/Class;
+NPE_INV,com.gamezgalaxy.GGS.API.EventSystem.getRegistrationClass(Ljava/lang/Class;)Ljava/lang/Class;,java.lang.Class.getSuperclass()Ljava/lang/Class;
+NPE_INV,com.gamezgalaxy.GGS.API.EventSystem.getRegistrationClass(Ljava/lang/Class;)Ljava/lang/Class;,java.lang.Class.getName()Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.API.EventSystem.getEventListeners(Ljava/lang/Class;)Lcom/gamezgalaxy/GGS/API/EventList;,java.lang.Class.getDeclaredMethod(Ljava/lang/String;[Ljava/lang/Class;)Ljava/lang/reflect/Method;
+NPE_INV,com.gamezgalaxy.GGS.API.EventSystem.getEventListeners(Ljava/lang/Class;)Lcom/gamezgalaxy/GGS/API/EventList;,java.lang.reflect.Method.setAccessible(Z)V
+NPE_INV,com.gamezgalaxy.GGS.API.EventSystem.getEventListeners(Ljava/lang/Class;)Lcom/gamezgalaxy/GGS/API/EventList;,java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+NPE_INV,com.gamezgalaxy.GGS.API.plugin.CommandHandler.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;Ljava/lang/String;[Ljava/lang/String;)V,java.lang.String.equals(Ljava/lang/Object;)Z
+NPE_INV,com.gamezgalaxy.GGS.API.plugin.CommandHandler.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;Ljava/lang/String;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.groups.Group.canExecute(Lcom/gamezgalaxy/GGS/API/plugin/Command;)Z
+NPE_INV,com.gamezgalaxy.GGS.API.plugin.CommandHandler.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;Ljava/lang/String;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.API.plugin.Command.getName()Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.API.plugin.CommandHandler.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;Ljava/lang/String;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.API.plugin.Command.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;[Ljava/lang/String;)V
+NPE_GET,com.gamezgalaxy.GGS.world.Level.access$100(Lcom/gamezgalaxy/GGS/world/Level;)Z,Lcom/gamezgalaxy/GGS/world/Level.run Z
+NPE_INV,com.gamezgalaxy.GGS.API.plugin.CommandHandler.find(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/API/plugin/Command;,com.gamezgalaxy.GGS.API.plugin.Command.getName()Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.API.plugin.CommandHandler.find(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/API/plugin/Command;,java.lang.String.equalsIgnoreCase(Ljava/lang/String;)Z
+NPE_INV,com.gamezgalaxy.GGS.API.plugin.CommandHandler.find(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/API/plugin/Command;,com.gamezgalaxy.GGS.API.plugin.Command.getShortcuts()[Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.API.plugin.CommandHandler.find(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/API/plugin/Command;,java.lang.String.equalsIgnoreCase(Ljava/lang/String;)Z
+NPE_INV,com.gamezgalaxy.test.console.Main.sendMessage(Ljava/lang/String;)V,com.gamezgalaxy.GGS.server.Server.Log(Ljava/lang/String;)V
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.getFreeID()B,Lcom/gamezgalaxy/GGS/iomodel/Player.ID B
+NPE_INV,com.gamezgalaxy.GGS.networking.IOClient.Listen()V,java.lang.Thread.start()V
+NPE_GET,com.gamezgalaxy.GGS.networking.IOClient.Listen()V,Lcom/gamezgalaxy/GGS/networking/packets/PacketManager.server Lcom/gamezgalaxy/GGS/server/Server
+NPE_INV,com.gamezgalaxy.GGS.world.Level$Ticker2.run()V,com.gamezgalaxy.GGS.world.PhysicsBlock.tick()V
+NPE_GET,com.gamezgalaxy.GGS.networking.IOClient$Reader.run()V,Lcom/gamezgalaxy/GGS/networking/packets/PacketManager.server Lcom/gamezgalaxy/GGS/server/Server
+NPE_INV,com.gamezgalaxy.GGS.networking.IOClient$Reader.run()V,java.net.Socket.isConnected()Z
+NPE_INV,com.gamezgalaxy.GGS.networking.IOClient$Reader.run()V,java.io.DataInputStream.readByte()B
+NPE_GET,com.gamezgalaxy.GGS.networking.IOClient$Reader.run()V,Lcom/gamezgalaxy/GGS/networking/packets/PacketManager.server Lcom/gamezgalaxy/GGS/server/Server
+NPE_GET,com.gamezgalaxy.GGS.networking.IOClient$Reader.run()V,Lcom/gamezgalaxy/GGS/networking/packets/PacketManager.server Lcom/gamezgalaxy/GGS/server/Server
+NPE_INV,com.gamezgalaxy.GGS.networking.IOClient$Reader.run()V,com.gamezgalaxy.GGS.networking.packets.PacketManager.getPacket(B)Lcom/gamezgalaxy/GGS/networking/packets/Packet;
+NPE_GET,com.gamezgalaxy.GGS.networking.IOClient$Reader.run()V,Lcom/gamezgalaxy/GGS/networking/packets/PacketManager.server Lcom/gamezgalaxy/GGS/server/Server
+NPE_GET,com.gamezgalaxy.GGS.networking.IOClient$Reader.run()V,Lcom/gamezgalaxy/GGS/networking/packets/PacketManager.server Lcom/gamezgalaxy/GGS/server/Server
+NPE_INV,com.gamezgalaxy.GGS.networking.IOClient$Reader.run()V,java.io.DataInputStream.read([B)I
+NPE_GET,com.gamezgalaxy.GGS.networking.IOClient$Reader.run()V,Lcom/gamezgalaxy/GGS/networking/packets/PacketManager.server Lcom/gamezgalaxy/GGS/server/Server
+NPE_GET,com.gamezgalaxy.GGS.networking.IOClient$Reader.run()V,Lcom/gamezgalaxy/GGS/networking/packets/PacketManager.server Lcom/gamezgalaxy/GGS/server/Server
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.canExecute(Lcom/gamezgalaxy/GGS/API/plugin/Command;)Z,com.gamezgalaxy.GGS.API.plugin.Command.isOpCommand()Z
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.canExecute(Lcom/gamezgalaxy/GGS/API/plugin/Command;)Z,com.gamezgalaxy.GGS.API.plugin.Command.getPermissionLevel()I
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.canExecute(Lcom/gamezgalaxy/GGS/API/plugin/Command;)Z,com.gamezgalaxy.GGS.API.plugin.Command.getName()Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.canExecute(Lcom/gamezgalaxy/GGS/API/plugin/Command;)Z,com.gamezgalaxy.GGS.API.plugin.Command.getShortcuts()[Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.canExecute(Lcom/gamezgalaxy/GGS/API/plugin/Command;)Z,com.gamezgalaxy.GGS.groups.Group.canExecute(Lcom/gamezgalaxy/GGS/API/plugin/Command;)Z
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.Help.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.server.Server.getCommandHandler()Lcom/gamezgalaxy/GGS/API/plugin/CommandHandler;
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.Help.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.API.plugin.Command.help(Lcom/gamezgalaxy/GGS/API/CommandExecutor;)V
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.Load.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.server.Server.getLevelHandler()Lcom/gamezgalaxy/GGS/world/LevelHandler;
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.Loaded.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.server.Server.getLevelHandler()Lcom/gamezgalaxy/GGS/world/LevelHandler;
+NPE_GET,com.gamezgalaxy.GGS.defaults.commands.Loaded.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;[Ljava/lang/String;)V,Lcom/gamezgalaxy/GGS/world/Level.name Ljava/lang/String
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.Maps.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;[Ljava/lang/String;)V,java.lang.String.equals(Ljava/lang/Object;)Z
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.Newlvl.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.server.Server.getLevelHandler()Lcom/gamezgalaxy/GGS/world/LevelHandler;
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.Stop.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.server.Server.Stop()V
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Gravel.tick()V,com.gamezgalaxy.GGS.world.Level.getTile(III)Lcom/gamezgalaxy/GGS/world/Block;
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Gravel.tick()V,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Level.PosToInt(III)I
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Level.PosToInt(III)I
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Level.getTile(III)Lcom/gamezgalaxy/GGS/world/Block;
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Level.getTile(III)Lcom/gamezgalaxy/GGS/world/Block;
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Level.PosToInt(III)I
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Level.getTile(III)Lcom/gamezgalaxy/GGS/world/Block;
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Level.getTile(III)Lcom/gamezgalaxy/GGS/world/Block;
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Level.PosToInt(III)I
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Level.getTile(III)Lcom/gamezgalaxy/GGS/world/Block;
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Level.getTile(III)Lcom/gamezgalaxy/GGS/world/Block;
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Level.PosToInt(III)I
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Level.getTile(III)Lcom/gamezgalaxy/GGS/world/Block;
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Level.getTile(III)Lcom/gamezgalaxy/GGS/world/Block;
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Level.PosToInt(III)I
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.tick()V,com.gamezgalaxy.GGS.world.Level.PosToInt(III)I
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Sand.tick()V,com.gamezgalaxy.GGS.world.Level.getTile(III)Lcom/gamezgalaxy/GGS/world/Block;
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Sand.tick()V,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_INV,com.gamezgalaxy.GGS.iomodel.Player.CloseConnection()V,com.gamezgalaxy.GGS.iomodel.Player.Despawn(Lcom/gamezgalaxy/GGS/iomodel/Player;)V
+NPE_INV,com.gamezgalaxy.GGS.system.BanHandler.isBanned(Ljava/lang/String;)Z,java.lang.String.split(Ljava/lang/String;)[Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.system.BanHandler.isBanned(Ljava/lang/String;)Z,java.lang.String.equalsIgnoreCase(Ljava/lang/String;)Z
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.Login()V,Lcom/gamezgalaxy/GGS/world/Level.spawnx I
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.Login()V,Lcom/gamezgalaxy/GGS/world/Level.spawny I
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.Login()V,Lcom/gamezgalaxy/GGS/world/Level.spawnz I
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.Login()V,Lcom/gamezgalaxy/GGS/world/Level.spawnx I
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.Login()V,Lcom/gamezgalaxy/GGS/world/Level.spawny I
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.Login()V,Lcom/gamezgalaxy/GGS/world/Level.spawnz I
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.Login()V,Lcom/gamezgalaxy/GGS/iomodel/Player.level Lcom/gamezgalaxy/GGS/world/Level
+NPE_INV,com.gamezgalaxy.GGS.iomodel.Player.Login()V,com.gamezgalaxy.GGS.iomodel.Player.spawnPlayer(Lcom/gamezgalaxy/GGS/iomodel/Player;)V
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.Login()V,Lcom/gamezgalaxy/GGS/world/Level.spawnx I
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.Login()V,Lcom/gamezgalaxy/GGS/world/Level.spawny I
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.Login()V,Lcom/gamezgalaxy/GGS/world/Level.spawnz I
+NPE_INV,com.gamezgalaxy.GGS.networking.IOClient.WriteData([B)V,com.gamezgalaxy.GGS.networking.packets.PacketManager.getPacket(B)Lcom/gamezgalaxy/GGS/networking/packets/Packet;
+NPE_GET,com.gamezgalaxy.GGS.networking.IOClient.WriteData([B)V,Lcom/gamezgalaxy/GGS/networking/packets/PacketManager.server Lcom/gamezgalaxy/GGS/server/Server
+NPE_GET,com.gamezgalaxy.GGS.networking.IOClient.WriteData([B)V,Lcom/gamezgalaxy/GGS/networking/packets/PacketManager.server Lcom/gamezgalaxy/GGS/server/Server
+NPE_INV,com.gamezgalaxy.GGS.networking.IOClient.WriteData([B)V,java.io.PrintStream.write([B)V
+NPE_INV,com.gamezgalaxy.GGS.networking.IOClient.WriteData([B)V,java.io.PrintStream.flush()V
+NPE_GET,com.gamezgalaxy.GGS.networking.IOClient.CloseConnection()V,Lcom/gamezgalaxy/GGS/networking/packets/PacketManager.server Lcom/gamezgalaxy/GGS/server/Server
+NPE_INV,com.gamezgalaxy.GGS.networking.IOClient.CloseConnection()V,java.io.PrintStream.close()V
+NPE_INV,com.gamezgalaxy.GGS.networking.IOClient.CloseConnection()V,java.io.DataInputStream.close()V
+NPE_INV,com.gamezgalaxy.GGS.networking.IOClient.CloseConnection()V,java.net.Socket.close()V
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.UpdatePos()V,Lcom/gamezgalaxy/GGS/iomodel/Player.level Lcom/gamezgalaxy/GGS/world/Level
+NPE_INV,com.gamezgalaxy.GGS.iomodel.Player.UpdatePos()V,com.gamezgalaxy.GGS.iomodel.Player.WriteData([B)V
+NPE_INV,com.gamezgalaxy.GGS.iomodel.Player.HandleBlockChange(SSSLcom/gamezgalaxy/GGS/world/PlaceMode;B)V,com.gamezgalaxy.GGS.world.Level.getTile(III)Lcom/gamezgalaxy/GGS/world/Block;
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.Ban.execute(Lcom/gamezgalaxy/GGS/iomodel/Player;[Ljava/lang/String;)V,java.lang.String.equalsIgnoreCase(Ljava/lang/String;)Z
+NPE_GET,com.gamezgalaxy.GGS.defaults.commands.Spawn.execute(Lcom/gamezgalaxy/GGS/iomodel/Player;[Ljava/lang/String;)V,Lcom/gamezgalaxy/GGS/world/Level.spawnx I
+NPE_GET,com.gamezgalaxy.GGS.defaults.commands.Spawn.execute(Lcom/gamezgalaxy/GGS/iomodel/Player;[Ljava/lang/String;)V,Lcom/gamezgalaxy/GGS/world/Level.spawny I
+NPE_GET,com.gamezgalaxy.GGS.defaults.commands.Spawn.execute(Lcom/gamezgalaxy/GGS/iomodel/Player;[Ljava/lang/String;)V,Lcom/gamezgalaxy/GGS/world/Level.spawnz I
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.TP.execute(Lcom/gamezgalaxy/GGS/iomodel/Player;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.iomodel.Player.getX()S
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.TP.execute(Lcom/gamezgalaxy/GGS/iomodel/Player;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.iomodel.Player.getY()S
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.TP.execute(Lcom/gamezgalaxy/GGS/iomodel/Player;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.iomodel.Player.getZ()S
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.TP.execute(Lcom/gamezgalaxy/GGS/iomodel/Player;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.iomodel.Player.getX()S
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.TP.execute(Lcom/gamezgalaxy/GGS/iomodel/Player;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.iomodel.Player.getY()S
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.TP.execute(Lcom/gamezgalaxy/GGS/iomodel/Player;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.iomodel.Player.getZ()S
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.TP.execute(Lcom/gamezgalaxy/GGS/iomodel/Player;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.iomodel.Player.setPos(SSS)V
+NPE_INV,com.gamezgalaxy.GGS.system.BanHandler.unban(Ljava/lang/String;)V,java.lang.String.split(Ljava/lang/String;)[Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.system.BanHandler.unban(Ljava/lang/String;)V,java.lang.String.equalsIgnoreCase(Ljava/lang/String;)Z
+NPE_INV,com.gamezgalaxy.GGS.world.PhysicsBlock.move(III)V,com.gamezgalaxy.GGS.world.Level.setTile(Lcom/gamezgalaxy/GGS/world/Block;IIILcom/gamezgalaxy/GGS/server/Server;)V
+NPE_INV,com.gamezgalaxy.GGS.world.PhysicsBlock.move(III)V,com.gamezgalaxy.GGS.world.Level.setTile(Lcom/gamezgalaxy/GGS/world/Block;IIILcom/gamezgalaxy/GGS/server/Server;)V
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.nearSponge(I)Z,com.gamezgalaxy.GGS.world.Level.getTile(I)Lcom/gamezgalaxy/GGS/world/Block;
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.check(I)Z,com.gamezgalaxy.GGS.world.Level.getLength()I
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.check(I)Z,com.gamezgalaxy.GGS.world.Level.getTile(I)Lcom/gamezgalaxy/GGS/world/Block;
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.check(I)Z,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.check(I)Z,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.check(I)Z,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_INV,com.gamezgalaxy.GGS.world.blocks.Lava.check(I)Z,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_INV,com.gamezgalaxy.GGS.world.PhysicsBlock.add(III)V,com.gamezgalaxy.GGS.world.Level.getTile(III)Lcom/gamezgalaxy/GGS/world/Block;
+NPE_INV,com.gamezgalaxy.GGS.world.PhysicsBlock.add(III)V,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_INV,com.gamezgalaxy.GGS.world.PhysicsBlock.add(III)V,com.gamezgalaxy.GGS.world.Level.setTile(Lcom/gamezgalaxy/GGS/world/Block;IIILcom/gamezgalaxy/GGS/server/Server;)V
+NPE_INV,com.gamezgalaxy.GGS.system.BanHandler.pastDate(Ljava/lang/String;)Z,java.lang.String.equals(Ljava/lang/Object;)Z
+NPE_GET,com.gamezgalaxy.GGS.groups.Group.getGroup(Lcom/gamezgalaxy/GGS/iomodel/Player;)Lcom/gamezgalaxy/GGS/groups/Group;,Lcom/gamezgalaxy/GGS/groups/Group.online Ljava/util/ArrayList
+NPE_GET,com.gamezgalaxy.GGS.groups.Group.getGroup(Lcom/gamezgalaxy/GGS/iomodel/Player;)Lcom/gamezgalaxy/GGS/groups/Group;,Lcom/gamezgalaxy/GGS/iomodel/Player.username Ljava/lang/String
+NPE_INV,com.gamezgalaxy.GGS.iomodel.Player.setGroup(Lcom/gamezgalaxy/GGS/groups/Group;)V,com.gamezgalaxy.GGS.groups.Group.removePlayer(Lcom/gamezgalaxy/GGS/iomodel/Player;)V
+NPE_INV,com.gamezgalaxy.GGS.iomodel.Player.setGroup(Lcom/gamezgalaxy/GGS/groups/Group;)V,com.gamezgalaxy.GGS.groups.Group.addPlayer(Lcom/gamezgalaxy/GGS/iomodel/Player;)V
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.setGroup(Lcom/gamezgalaxy/GGS/groups/Group;)V,Lcom/gamezgalaxy/GGS/groups/Group.isOP Z
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.setGroup(Lcom/gamezgalaxy/GGS/groups/Group;)V,Lcom/gamezgalaxy/GGS/groups/Group.isOP Z
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.setGroup(Lcom/gamezgalaxy/GGS/groups/Group;)V,Lcom/gamezgalaxy/GGS/groups/Group.isOP Z
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.setGroup(Lcom/gamezgalaxy/GGS/groups/Group;)V,Lcom/gamezgalaxy/GGS/groups/Group.isOP Z
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.setLevel(Lcom/gamezgalaxy/GGS/world/Level;)V,Lcom/gamezgalaxy/GGS/world/Level.name Ljava/lang/String
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.TP()V,Lcom/gamezgalaxy/GGS/iomodel/Player.level Lcom/gamezgalaxy/GGS/world/Level
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.TP()V,Lcom/gamezgalaxy/GGS/iomodel/Player.pm Lcom/gamezgalaxy/GGS/networking/packets/PacketManager
+NPE_INV,com.gamezgalaxy.GGS.iomodel.Player.SendBlockChange(SSSLcom/gamezgalaxy/GGS/world/Block;)V,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_INV,com.gamezgalaxy.GGS.iomodel.Player.GlobalBlockChange(SSSLcom/gamezgalaxy/GGS/world/Block;Lcom/gamezgalaxy/GGS/world/Level;Lcom/gamezgalaxy/GGS/server/Server;Z)V,com.gamezgalaxy.GGS.world.Level.setTile(Lcom/gamezgalaxy/GGS/world/Block;IIILcom/gamezgalaxy/GGS/server/Server;)V
+NPE_INV,com.gamezgalaxy.GGS.iomodel.Player.GlobalBlockChange(SSSLcom/gamezgalaxy/GGS/world/Block;Lcom/gamezgalaxy/GGS/world/Level;Lcom/gamezgalaxy/GGS/server/Server;Z)V,com.gamezgalaxy.GGS.server.Server.getPacketManager()Lcom/gamezgalaxy/GGS/networking/packets/PacketManager;
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.GlobalBlockChange(SSSLcom/gamezgalaxy/GGS/world/Block;Lcom/gamezgalaxy/GGS/world/Level;Lcom/gamezgalaxy/GGS/server/Server;Z)V,Lcom/gamezgalaxy/GGS/server/Server.players Ljava/util/ArrayList
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.GlobalBlockChange(SSSLcom/gamezgalaxy/GGS/world/Block;Lcom/gamezgalaxy/GGS/world/Level;Lcom/gamezgalaxy/GGS/server/Server;Z)V,Lcom/gamezgalaxy/GGS/iomodel/Player.level Lcom/gamezgalaxy/GGS/world/Level
+NPE_INV,com.gamezgalaxy.GGS.iomodel.Player.GlobalBlockChange(SSSLcom/gamezgalaxy/GGS/world/Block;Lcom/gamezgalaxy/GGS/world/Level;Lcom/gamezgalaxy/GGS/server/Server;Z)V,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_GET,com.gamezgalaxy.GGS.world.blocks.Lava.IntOffset(IIII)I,Lcom/gamezgalaxy/GGS/world/Level.width S
+NPE_GET,com.gamezgalaxy.GGS.world.blocks.Lava.IntOffset(IIII)I,Lcom/gamezgalaxy/GGS/world/Level.width S
+NPE_GET,com.gamezgalaxy.GGS.world.blocks.Lava.IntOffset(IIII)I,Lcom/gamezgalaxy/GGS/world/Level.height S
+NPE_INV,com.gamezgalaxy.GGS.system.BanHandler.getExpire(Ljava/lang/String;)Ljava/lang/String;,java.lang.String.split(Ljava/lang/String;)[Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.system.BanHandler.getExpire(Ljava/lang/String;)Ljava/lang/String;,java.lang.String.equalsIgnoreCase(Ljava/lang/String;)Z
+NPE_INV,com.gamezgalaxy.GGS.system.BanHandler.getExpire(Ljava/lang/String;)Ljava/lang/String;,java.lang.String.split(Ljava/lang/String;)[Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.FinishLevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.server.Server.getEventSystem()Lcom/gamezgalaxy/GGS/API/EventSystem;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.FinishLevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.iomodel.Player.getLevel()Lcom/gamezgalaxy/GGS/world/Level;
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.FinishLevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/world/Level.width S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.FinishLevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.iomodel.Player.getLevel()Lcom/gamezgalaxy/GGS/world/Level;
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.FinishLevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/world/Level.height S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.FinishLevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.iomodel.Player.getLevel()Lcom/gamezgalaxy/GGS/world/Level;
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.FinishLevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/world/Level.depth S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.FinishLevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.iomodel.Player.WriteData([B)V
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.Kick.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.server.Server.getEventSystem()Lcom/gamezgalaxy/GGS/API/EventSystem;
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.Kick.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.kickreason Ljava/lang/String
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.Kick.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.kickreason Ljava/lang/String
+NPE_PUT,com.gamezgalaxy.GGS.networking.packets.minecraft.Kick.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.kickreason Ljava/lang/String
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.Kick.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.kickreason Ljava/lang/String
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.Kick.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.iomodel.Player.WriteData([B)V
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.LevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.server.Server.getEventSystem()Lcom/gamezgalaxy/GGS/API/EventSystem;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.LevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.iomodel.Player.getLevel()Lcom/gamezgalaxy/GGS/world/Level;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.LevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.world.Level.getLength()I
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.LevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.iomodel.Player.getLevel()Lcom/gamezgalaxy/GGS/world/Level;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.LevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.world.Level.getLength()I
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.LevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.iomodel.Player.getLevel()Lcom/gamezgalaxy/GGS/world/Level;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.LevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.world.Level.getLength()I
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.LevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.iomodel.Player.getLevel()Lcom/gamezgalaxy/GGS/world/Level;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.LevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.world.Level.getTile(I)Lcom/gamezgalaxy/GGS/world/Block;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.LevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.world.Block.getVisableBlock()B
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.LevelSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.iomodel.Player.WriteData([B)V
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.LevelStartSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.server.Server.getEventSystem()Lcom/gamezgalaxy/GGS/API/EventSystem;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.LevelStartSend.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.networking.IOClient.WriteData([B)V
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.Message.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.server.Server.getEventSystem()Lcom/gamezgalaxy/GGS/API/EventSystem;
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.Message.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.message Ljava/lang/String
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.Message.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.message Ljava/lang/String
+NPE_PUT,com.gamezgalaxy.GGS.networking.packets.minecraft.Message.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.message Ljava/lang/String
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.Message.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.message Ljava/lang/String
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.Message.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.iomodel.Player.getID()B
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.Message.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.iomodel.Player.WriteData([B)V
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.Ping.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.server.Server.getEventSystem()Lcom/gamezgalaxy/GGS/API/EventSystem;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.Ping.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.networking.IOClient.WriteData([B)V
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.UpdateUser.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.iomodel.Player.getGroup()Lcom/gamezgalaxy/GGS/groups/Group;
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.UpdateUser.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/groups/Group.isOP Z
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.UpdateUser.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.networking.IOClient.WriteData([B)V
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.Welcome.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.server.Server.getEventSystem()Lcom/gamezgalaxy/GGS/API/EventSystem;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.Welcome.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.iomodel.Player.getGroup()Lcom/gamezgalaxy/GGS/groups/Group;
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.Welcome.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/groups/Group.isOP Z
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.Welcome.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/server/Server.Name Ljava/lang/String
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.Welcome.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/server/Server.Name Ljava/lang/String
+NPE_PUT,com.gamezgalaxy.GGS.networking.packets.minecraft.Welcome.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/server/Server.Name Ljava/lang/String
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.Welcome.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/server/Server.MOTD Ljava/lang/String
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.Welcome.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/server/Server.MOTD Ljava/lang/String
+NPE_PUT,com.gamezgalaxy.GGS.networking.packets.minecraft.Welcome.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/server/Server.MOTD Ljava/lang/String
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.Welcome.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/server/Server.Name Ljava/lang/String
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.Welcome.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/server/Server.MOTD Ljava/lang/String
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.Welcome.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;)V,com.gamezgalaxy.GGS.networking.IOClient.WriteData([B)V
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.DespawnPlayer.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.server.Server.getEventSystem()Lcom/gamezgalaxy/GGS/API/EventSystem;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.DespawnPlayer.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,java.lang.Byte.byteValue()B
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.DespawnPlayer.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.networking.IOClient.WriteData([B)V
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.server.Server.getEventSystem()Lcom/gamezgalaxy/GGS/API/EventSystem;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getID()B
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getX()S
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.oldX S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getY()S
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.oldY S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getZ()S
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.oldZ S
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.yaw B
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.pitch B
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getID()B
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getX()S
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.oldX S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getY()S
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.oldY S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getZ()S
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.oldZ S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getID()B
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.yaw B
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.pitch B
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.WriteData([B)V
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getX()S
+NPE_PUT,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.oldX S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getY()S
+NPE_PUT,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.oldY S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getZ()S
+NPE_PUT,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.oldZ S
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.yaw B
+NPE_PUT,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.oldyaw B
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.pitch B
+NPE_PUT,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.oldpitch B
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.MOTD.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.server.Server.getEventSystem()Lcom/gamezgalaxy/GGS/API/EventSystem;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.MOTD.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,java.lang.String.length()I
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.MOTD.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,java.lang.String.length()I
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.MOTD.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,java.lang.String.getBytes(Ljava/lang/String;)[B
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.MOTD.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,java.lang.String.getBytes(Ljava/lang/String;)[B
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.MOTD.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.networking.IOClient.WriteData([B)V
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.SetBlock.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.server.Server.getEventSystem()Lcom/gamezgalaxy/GGS/API/EventSystem;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.SetBlock.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,java.lang.Short.shortValue()S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.SetBlock.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,java.lang.Short.shortValue()S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.SetBlock.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,java.lang.Short.shortValue()S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.SetBlock.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,java.lang.Byte.byteValue()B
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.SetBlock.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.networking.IOClient.WriteData([B)V
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.SpawnPlayer.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.server.Server.getEventSystem()Lcom/gamezgalaxy/GGS/API/EventSystem;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.SpawnPlayer.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getID()B
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.SpawnPlayer.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getDisplayName()Ljava/lang/String;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.SpawnPlayer.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getX()S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.SpawnPlayer.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getY()S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.SpawnPlayer.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getZ()S
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.SpawnPlayer.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.yaw B
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.SpawnPlayer.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.pitch B
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.SpawnPlayer.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.WriteData([B)V
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.TP.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.server.Server.getEventSystem()Lcom/gamezgalaxy/GGS/API/EventSystem;
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.TP.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getID()B
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.TP.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getX()S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.TP.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getY()S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.TP.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.getZ()S
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.TP.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.yaw B
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.TP.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,Lcom/gamezgalaxy/GGS/iomodel/Player.pitch B
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.TP.Write(Lcom/gamezgalaxy/GGS/networking/IOClient;Lcom/gamezgalaxy/GGS/server/Server;[Ljava/lang/Object;)V,com.gamezgalaxy.GGS.iomodel.Player.WriteData([B)V
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.posUpdate(Lcom/gamezgalaxy/GGS/iomodel/Player;)Z,com.gamezgalaxy.GGS.iomodel.Player.getX()S
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.posUpdate(Lcom/gamezgalaxy/GGS/iomodel/Player;)Z,Lcom/gamezgalaxy/GGS/iomodel/Player.oldX S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.posUpdate(Lcom/gamezgalaxy/GGS/iomodel/Player;)Z,com.gamezgalaxy.GGS.iomodel.Player.getY()S
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.posUpdate(Lcom/gamezgalaxy/GGS/iomodel/Player;)Z,Lcom/gamezgalaxy/GGS/iomodel/Player.oldY S
+NPE_INV,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.posUpdate(Lcom/gamezgalaxy/GGS/iomodel/Player;)Z,com.gamezgalaxy.GGS.iomodel.Player.getZ()S
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.posUpdate(Lcom/gamezgalaxy/GGS/iomodel/Player;)Z,Lcom/gamezgalaxy/GGS/iomodel/Player.oldZ S
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.rotUpdate(Lcom/gamezgalaxy/GGS/iomodel/Player;)Z,Lcom/gamezgalaxy/GGS/iomodel/Player.yaw B
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.rotUpdate(Lcom/gamezgalaxy/GGS/iomodel/Player;)Z,Lcom/gamezgalaxy/GGS/iomodel/Player.oldyaw B
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.rotUpdate(Lcom/gamezgalaxy/GGS/iomodel/Player;)Z,Lcom/gamezgalaxy/GGS/iomodel/Player.pitch B
+NPE_GET,com.gamezgalaxy.GGS.networking.packets.minecraft.GlobalPosUpdate.rotUpdate(Lcom/gamezgalaxy/GGS/iomodel/Player;)Z,Lcom/gamezgalaxy/GGS/iomodel/Player.oldpitch B
+NPE_INV,com.gamezgalaxy.GGS.server.Server.Stop()V,com.gamezgalaxy.GGS.iomodel.Player.sendMessage(Ljava/lang/String;)V
+NPE_INV,com.gamezgalaxy.GGS.server.Server.Stop()V,com.gamezgalaxy.GGS.world.Level.Unload(Lcom/gamezgalaxy/GGS/server/Server;)V
+NPE_INV,com.gamezgalaxy.GGS.server.Server.Stop()V,com.gamezgalaxy.GGS.world.Level.Save()V
+NPE_INV,com.gamezgalaxy.GGS.server.Server.Stop()V,com.gamezgalaxy.GGS.iomodel.Player.Kick(Ljava/lang/String;)V
+NPE_INV,com.gamezgalaxy.GGS.API.action.Action.waitForResponse()Ljava/lang/Object;,com.gamezgalaxy.GGS.iomodel.Player.getServer()Lcom/gamezgalaxy/GGS/server/Server;
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.changeLevel(Lcom/gamezgalaxy/GGS/world/Level;Z)V,Lcom/gamezgalaxy/GGS/world/Level.spawnx I
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.changeLevel(Lcom/gamezgalaxy/GGS/world/Level;Z)V,Lcom/gamezgalaxy/GGS/world/Level.spawny I
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.changeLevel(Lcom/gamezgalaxy/GGS/world/Level;Z)V,Lcom/gamezgalaxy/GGS/world/Level.spawnz I
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.changeLevel(Lcom/gamezgalaxy/GGS/world/Level;Z)V,Lcom/gamezgalaxy/GGS/world/Level.spawnx I
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.changeLevel(Lcom/gamezgalaxy/GGS/world/Level;Z)V,Lcom/gamezgalaxy/GGS/world/Level.spawny I
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.changeLevel(Lcom/gamezgalaxy/GGS/world/Level;Z)V,Lcom/gamezgalaxy/GGS/world/Level.spawnz I
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.changeLevel(Lcom/gamezgalaxy/GGS/world/Level;Z)V,Lcom/gamezgalaxy/GGS/iomodel/Player.level Lcom/gamezgalaxy/GGS/world/Level
+NPE_INV,com.gamezgalaxy.GGS.iomodel.Player.changeLevel(Lcom/gamezgalaxy/GGS/world/Level;Z)V,com.gamezgalaxy.GGS.iomodel.Player.spawnPlayer(Lcom/gamezgalaxy/GGS/iomodel/Player;)V
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.changeLevel(Lcom/gamezgalaxy/GGS/world/Level;Z)V,Lcom/gamezgalaxy/GGS/world/Level.spawnx I
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.changeLevel(Lcom/gamezgalaxy/GGS/world/Level;Z)V,Lcom/gamezgalaxy/GGS/world/Level.spawny I
+NPE_GET,com.gamezgalaxy.GGS.iomodel.Player.changeLevel(Lcom/gamezgalaxy/GGS/world/Level;Z)V,Lcom/gamezgalaxy/GGS/world/Level.spawnz I
+NPE_INV,com.gamezgalaxy.GGS.API.action.Action.invalidCall(Lcom/gamezgalaxy/GGS/server/Server;J)Z,com.gamezgalaxy.GGS.iomodel.Player.getReaderThreadID()J
+NPE_INV,com.gamezgalaxy.GGS.API.action.ChatAction.setup()V,com.gamezgalaxy.GGS.iomodel.Player.getServer()Lcom/gamezgalaxy/GGS/server/Server;
+NPE_GET,com.gamezgalaxy.GGS.world.LevelHandler.findLevel(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,Lcom/gamezgalaxy/GGS/world/Level.name Ljava/lang/String
+NPE_INV,com.gamezgalaxy.GGS.world.LevelHandler.findLevel(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,java.lang.String.equalsIgnoreCase(Ljava/lang/String;)Z
+NPE_GET,com.gamezgalaxy.GGS.world.LevelHandler.findLevel(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,Lcom/gamezgalaxy/GGS/world/Level.name Ljava/lang/String
+NPE_INV,com.gamezgalaxy.GGS.world.LevelHandler.findLevel(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,java.lang.String.contains(Ljava/lang/CharSequence;)Z
+NPE_GET,com.gamezgalaxy.GGS.world.LevelHandler.findLevel(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,Lcom/gamezgalaxy/GGS/world/Level.name Ljava/lang/String
+NPE_INV,com.gamezgalaxy.GGS.world.LevelHandler.findLevel(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/world/Level;,java.lang.String.contains(Ljava/lang/CharSequence;)Z
+NPE_INV,com.gamezgalaxy.GGS.API.EventList.unregister(Lcom/gamezgalaxy/GGS/API/Listener;)V,com.gamezgalaxy.GGS.API.RegisteredListener.getListen()Lcom/gamezgalaxy/GGS/API/Listener;
+NPE_GET,com.gamezgalaxy.GGS.server.Server.findPlayer(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/iomodel/Player;,Lcom/gamezgalaxy/GGS/iomodel/Player.username Ljava/lang/String
+NPE_INV,com.gamezgalaxy.GGS.server.Server.findPlayer(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/iomodel/Player;,java.lang.String.equals(Ljava/lang/Object;)Z
+NPE_GET,com.gamezgalaxy.GGS.server.Server.findPlayer(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/iomodel/Player;,Lcom/gamezgalaxy/GGS/iomodel/Player.username Ljava/lang/String
+NPE_GET,com.gamezgalaxy.GGS.server.Server.findPlayer(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/iomodel/Player;,Lcom/gamezgalaxy/GGS/iomodel/Player.username Ljava/lang/String
+NPE_INV,com.gamezgalaxy.GGS.world.Level.Unload(Lcom/gamezgalaxy/GGS/server/Server;Z)V,com.gamezgalaxy.GGS.iomodel.Player.getLevel()Lcom/gamezgalaxy/GGS/world/Level;
+NPE_INV,com.gamezgalaxy.GGS.world.Level.Unload(Lcom/gamezgalaxy/GGS/server/Server;Z)V,com.gamezgalaxy.GGS.iomodel.Player.changeLevel(Lcom/gamezgalaxy/GGS/world/Level;Z)V
+Done

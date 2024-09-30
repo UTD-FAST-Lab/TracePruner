@@ -1,0 +1,4 @@
+NPE_INV,com.google.common.collect.Multisets.sizeImpl(Lcom/google/common/collect/Multiset;)I,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_INV,com.google.common.collect.Multisets.addAllImpl(Lcom/google/common/collect/Multiset;Ljava/util/Collection;)Z,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_INV,com.google.common.collect.AbstractMultiset.isEmpty()Z,java.util.Set.isEmpty()Z
+Done

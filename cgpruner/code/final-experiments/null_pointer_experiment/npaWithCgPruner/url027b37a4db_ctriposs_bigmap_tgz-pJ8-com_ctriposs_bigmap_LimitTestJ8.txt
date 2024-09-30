@@ -1,0 +1,13 @@
+NPE_GET,com.ctriposs.bigmap.MapEntryFactoryImpl.findFreeEntryByLength(II)Lcom/ctriposs/bigmap/MapEntry;,Lcom/ctriposs/bigmap/MapEntryFactoryImpl$FreeNode.size I
+NPE_GET,com.ctriposs.bigmap.MapEntryFactoryImpl.findFreeEntryByLength(II)Lcom/ctriposs/bigmap/MapEntry;,Lcom/ctriposs/bigmap/MapEntryFactoryImpl$FreeNode.next Lcom/ctriposs/bigmap/MapEntryFactoryImpl$FreeNode
+NPE_GET,com.ctriposs.bigmap.MapEntryFactoryImpl.findFreeEntryByLength(II)Lcom/ctriposs/bigmap/MapEntry;,Lcom/ctriposs/bigmap/MapEntryFactoryImpl$FreeNode.next Lcom/ctriposs/bigmap/MapEntryFactoryImpl$FreeNode
+NPE_GET,com.ctriposs.bigmap.MapEntryFactoryImpl.findFreeEntryByLength(II)Lcom/ctriposs/bigmap/MapEntry;,Lcom/ctriposs/bigmap/MapEntryFactoryImpl$FreeNode.next Lcom/ctriposs/bigmap/MapEntryFactoryImpl$FreeNode
+NPE_PUT,com.ctriposs.bigmap.MapEntryFactoryImpl.findFreeEntryByLength(II)Lcom/ctriposs/bigmap/MapEntry;,Lcom/ctriposs/bigmap/MapEntryFactoryImpl$FreeNode.next Lcom/ctriposs/bigmap/MapEntryFactoryImpl$FreeNode
+NPE_PUT,com.ctriposs.bigmap.MapEntryFactoryImpl.findFreeEntryByLength(II)Lcom/ctriposs/bigmap/MapEntry;,Lcom/ctriposs/bigmap/MapEntryFactoryImpl$FreeNode.next Lcom/ctriposs/bigmap/MapEntryFactoryImpl$FreeNode
+NPE_GET,com.ctriposs.bigmap.MapEntryFactoryImpl.findFreeEntryByLength(II)Lcom/ctriposs/bigmap/MapEntry;,Lcom/ctriposs/bigmap/MapEntryFactoryImpl$FreeNode.size I
+NPE_GET,com.ctriposs.bigmap.MapEntryFactoryImpl.findFreeEntryByLength(II)Lcom/ctriposs/bigmap/MapEntry;,Lcom/ctriposs/bigmap/MapEntryFactoryImpl$FreeNode.size I
+NPE_GET,com.ctriposs.bigmap.MapEntryFactoryImpl.findFreeEntryByLength(II)Lcom/ctriposs/bigmap/MapEntry;,Lcom/ctriposs/bigmap/MapEntryFactoryImpl$FreeNode.index J
+NPE_GET,com.ctriposs.bigmap.MapEntryFactoryImpl.findFreeEntryByLength(II)Lcom/ctriposs/bigmap/MapEntry;,Lcom/ctriposs/bigmap/MapEntryFactoryImpl$FreeNode.index J
+NPE_GET,com.ctriposs.bigmap.MapEntryFactoryImpl.findFreeEntryByLength(II)Lcom/ctriposs/bigmap/MapEntry;,Lcom/ctriposs/bigmap/MapEntryFactoryImpl$FreeNode.index J
+NPE_INV,org.apache.log4j.config.PropertySetter.getPropertyDescriptor(Ljava/lang/String;)Ljava/beans/PropertyDescriptor;,java.beans.FeatureDescriptor.getName()Ljava/lang/String;
+Done

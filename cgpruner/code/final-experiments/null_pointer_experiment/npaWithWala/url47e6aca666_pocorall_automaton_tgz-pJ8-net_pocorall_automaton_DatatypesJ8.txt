@@ -1,0 +1,430 @@
+NPE_INV,net.pocorall.automaton.Datatypes.main([Ljava/lang/String;)V,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_INV,net.pocorall.automaton.Datatypes.main([Ljava/lang/String;)V,java.util.Map$Entry.getKey()Ljava/lang/Object;
+NPE_INV,net.pocorall.automaton.Datatypes.main([Ljava/lang/String;)V,java.util.Map$Entry.getValue()Ljava/lang/Object;
+NPE_INV,net.pocorall.automaton.Datatypes.buildAll()V,net.pocorall.automaton.DefaultAutomaton.clone()Lnet/pocorall/automaton/DefaultAutomaton;
+NPE_INV,net.pocorall.automaton.Datatypes.buildAll()V,net.pocorall.automaton.DefaultAutomaton.clone()Lnet/pocorall/automaton/DefaultAutomaton;
+NPE_INV,net.pocorall.automaton.Datatypes.buildAll()V,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.Datatypes.buildAll()V,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.Datatypes.buildAll()V,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_INV,net.pocorall.automaton.Datatypes.buildAll()V,java.util.Map$Entry.getValue()Ljava/lang/Object;
+NPE_INV,net.pocorall.automaton.Datatypes.buildAll()V,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_INV,net.pocorall.automaton.Datatypes.buildAll()V,java.lang.Integer.intValue()I
+NPE_INV,net.pocorall.automaton.Datatypes.buildAll()V,java.util.Map$Entry.getKey()Ljava/lang/Object;
+NPE_INV,net.pocorall.automaton.Datatypes.buildAll()V,net.pocorall.automaton.DefaultAutomaton.clone()Lnet/pocorall/automaton/DefaultAutomaton;
+NPE_INV,net.pocorall.automaton.Datatypes.buildAll()V,net.pocorall.automaton.DefaultAutomaton.clone()Lnet/pocorall/automaton/DefaultAutomaton;
+NPE_INV,net.pocorall.automaton.BasicAutomataFactory.makeCharSet(Ljava/lang/String;)Lnet/pocorall/automaton/DefaultAutomaton;,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.BasicAutomataFactory.makeCharRange(CC)Lnet/pocorall/automaton/DefaultAutomaton;,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.BasicOperations.union(Ljava/util/Collection;)Lnet/pocorall/automaton/DefaultAutomaton;,net.pocorall.automaton.DefaultAutomaton.isEmpty()Z
+NPE_INV,net.pocorall.automaton.BasicOperations.union(Ljava/util/Collection;)Lnet/pocorall/automaton/DefaultAutomaton;,net.pocorall.automaton.DefaultAutomaton.cloneExpanded()Lnet/pocorall/automaton/DefaultAutomaton;
+NPE_INV,net.pocorall.automaton.BasicOperations.union(Ljava/util/Collection;)Lnet/pocorall/automaton/DefaultAutomaton;,net.pocorall.automaton.DefaultAutomaton.cloneExpandedIfRequired()Lnet/pocorall/automaton/DefaultAutomaton;
+NPE_INV,net.pocorall.automaton.RegExp.<init>(Ljava/lang/String;I)V,java.lang.String.length()I
+NPE_GET,net.pocorall.automaton.State.addEpsilon(Lnet/pocorall/automaton/State;)V,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_GET,net.pocorall.automaton.State.addEpsilon(Lnet/pocorall/automaton/State;)V,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_GET,net.pocorall.automaton.State.addEpsilon(Lnet/pocorall/automaton/State;)V,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_INV,net.pocorall.automaton.State.addEpsilon(Lnet/pocorall/automaton/State;)V,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_INV,net.pocorall.automaton.State.addEpsilon(Lnet/pocorall/automaton/State;)V,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.reduce()V,net.pocorall.automaton.State.getSortedTransitions(Z)Ljava/util/List;
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.reduce()V,net.pocorall.automaton.State.resetTransitions()V
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.reduce()V,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.reduce()V,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.reduce()V,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.reduce()V,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.reduce()V,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.reduce()V,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.reduce()V,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.reduce()V,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.reduce()V,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.reduce()V,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.reduce()V,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.reduce()V,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.reduce()V,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.reduce()V,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.reduce()V,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.RegExp.toAutomaton(Ljava/util/Map;Lnet/pocorall/automaton/AutomatonProvider;Z)Lnet/pocorall/automaton/DefaultAutomaton;,net.pocorall.automaton.RegExp$Kind.ordinal()I
+NPE_INV,net.pocorall.automaton.RegExp.toAutomaton(Ljava/util/Map;Lnet/pocorall/automaton/AutomatonProvider;Z)Lnet/pocorall/automaton/DefaultAutomaton;,net.pocorall.automaton.DefaultAutomaton.clone()Lnet/pocorall/automaton/DefaultAutomaton;
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.getStates()Ljava/util/Set;,net.pocorall.automaton.State.getSortedTransitions(Z)Ljava/util/List;
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.getStates()Ljava/util/Set;,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.getStates()Ljava/util/Set;,java.util.Collection.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.getStates()Ljava/util/Set;,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.getStates()Ljava/util/Set;,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.getStates()Ljava/util/Set;,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_PUT,net.pocorall.automaton.LinkedAutomaton.setStateNumbers(Ljava/util/Set;)V,Lnet/pocorall/automaton/State.number I
+NPE_INV,net.pocorall.automaton.RegExp.match(C)Z,java.lang.String.length()I
+NPE_INV,net.pocorall.automaton.RegExp.match(C)Z,java.lang.String.charAt(I)C
+NPE_GET,net.pocorall.automaton.RegExp.findLeaves(Lnet/pocorall/automaton/RegExp;Lnet/pocorall/automaton/RegExp$Kind;Ljava/util/List;Ljava/util/Map;Lnet/pocorall/automaton/AutomatonProvider;Z)V,Lnet/pocorall/automaton/RegExp.kind Lnet/pocorall/automaton/RegExp$Kind
+NPE_GET,net.pocorall.automaton.RegExp.findLeaves(Lnet/pocorall/automaton/RegExp;Lnet/pocorall/automaton/RegExp$Kind;Ljava/util/List;Ljava/util/Map;Lnet/pocorall/automaton/AutomatonProvider;Z)V,Lnet/pocorall/automaton/RegExp.exp1 Lnet/pocorall/automaton/RegExp
+NPE_GET,net.pocorall.automaton.RegExp.findLeaves(Lnet/pocorall/automaton/RegExp;Lnet/pocorall/automaton/RegExp$Kind;Ljava/util/List;Ljava/util/Map;Lnet/pocorall/automaton/AutomatonProvider;Z)V,Lnet/pocorall/automaton/RegExp.exp2 Lnet/pocorall/automaton/RegExp
+NPE_INV,net.pocorall.automaton.BasicOperations.concatenate(Ljava/util/List;)Lnet/pocorall/automaton/DefaultAutomaton;,net.pocorall.automaton.DefaultAutomaton.isSingleton()Z
+NPE_GET,net.pocorall.automaton.BasicOperations.concatenate(Ljava/util/List;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/DefaultAutomaton.singleton Ljava/lang/String
+NPE_INV,net.pocorall.automaton.BasicOperations.concatenate(Ljava/util/List;)Lnet/pocorall/automaton/DefaultAutomaton;,net.pocorall.automaton.DefaultAutomaton.isEmpty()Z
+NPE_INV,net.pocorall.automaton.BasicOperations.concatenate(Ljava/util/List;)Lnet/pocorall/automaton/DefaultAutomaton;,net.pocorall.automaton.DefaultAutomaton.cloneExpanded()Lnet/pocorall/automaton/DefaultAutomaton;
+NPE_INV,net.pocorall.automaton.BasicOperations.concatenate(Ljava/util/List;)Lnet/pocorall/automaton/DefaultAutomaton;,net.pocorall.automaton.DefaultAutomaton.cloneExpandedIfRequired()Lnet/pocorall/automaton/DefaultAutomaton;
+NPE_INV,net.pocorall.automaton.BasicOperations.concatenate(Ljava/util/List;)Lnet/pocorall/automaton/DefaultAutomaton;,net.pocorall.automaton.DefaultAutomaton.isEmptyString()Z
+NPE_INV,net.pocorall.automaton.BasicOperations.concatenate(Ljava/util/List;)Lnet/pocorall/automaton/DefaultAutomaton;,net.pocorall.automaton.DefaultAutomaton.cloneExpanded()Lnet/pocorall/automaton/DefaultAutomaton;
+NPE_INV,net.pocorall.automaton.BasicOperations.concatenate(Ljava/util/List;)Lnet/pocorall/automaton/DefaultAutomaton;,net.pocorall.automaton.DefaultAutomaton.cloneExpandedIfRequired()Lnet/pocorall/automaton/DefaultAutomaton;
+NPE_PUT,net.pocorall.automaton.BasicOperations.concatenate(Ljava/util/List;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_INV,net.pocorall.automaton.BasicOperations.concatenate(Ljava/util/List;)Lnet/pocorall/automaton/DefaultAutomaton;,net.pocorall.automaton.State.addEpsilon(Lnet/pocorall/automaton/State;)V
+NPE_GET,net.pocorall.automaton.BasicOperations.concatenate(Ljava/util/List;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_INV,net.pocorall.automaton.BasicOperations.repeat(Lnet/pocorall/automaton/DefaultAutomaton;II)Lnet/pocorall/automaton/DefaultAutomaton;,net.pocorall.automaton.State.addEpsilon(Lnet/pocorall/automaton/State;)V
+NPE_INV,net.pocorall.automaton.BasicOperations.repeat(Lnet/pocorall/automaton/DefaultAutomaton;II)Lnet/pocorall/automaton/DefaultAutomaton;,net.pocorall.automaton.State.addEpsilon(Lnet/pocorall/automaton/State;)V
+NPE_INV,net.pocorall.automaton.BasicAutomataFactory.makeAnyString()Lnet/pocorall/automaton/DefaultAutomaton;,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.DefaultAutomaton.expandSingleton()V,java.lang.String.length()I
+NPE_INV,net.pocorall.automaton.DefaultAutomaton.expandSingleton()V,java.lang.String.charAt(I)C
+NPE_INV,net.pocorall.automaton.DefaultAutomaton.expandSingleton()V,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.BasicOperations.repeat(Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,net.pocorall.automaton.State.addEpsilon(Lnet/pocorall/automaton/State;)V
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.getAcceptStates()Ljava/util/Set;,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.getAcceptStates()Ljava/util/Set;,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.getAcceptStates()Ljava/util/Set;,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.getAcceptStates()Ljava/util/Set;,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.getAcceptStates()Ljava/util/Set;,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.getAcceptStates()Ljava/util/Set;,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,Lnet/pocorall/automaton/StatePair.s1 Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,Lnet/pocorall/automaton/StatePair.s1 Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,Lnet/pocorall/automaton/StatePair.s2 Lnet/pocorall/automaton/State
+NPE_INV,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,java.util.HashSet.add(Ljava/lang/Object;)Z
+NPE_GET,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,Lnet/pocorall/automaton/StatePair.s2 Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,Lnet/pocorall/automaton/StatePair.s2 Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,Lnet/pocorall/automaton/StatePair.s1 Lnet/pocorall/automaton/State
+NPE_INV,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,java.util.HashSet.add(Ljava/lang/Object;)Z
+NPE_GET,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,Lnet/pocorall/automaton/StatePair.s2 Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,Lnet/pocorall/automaton/StatePair.s1 Lnet/pocorall/automaton/State
+NPE_INV,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,Lnet/pocorall/automaton/StatePair.s1 Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,Lnet/pocorall/automaton/StatePair.s1 Lnet/pocorall/automaton/State
+NPE_INV,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,java.util.HashSet.add(Ljava/lang/Object;)Z
+NPE_GET,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,Lnet/pocorall/automaton/StatePair.s1 Lnet/pocorall/automaton/State
+NPE_INV,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,java.util.HashSet.add(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,Lnet/pocorall/automaton/StatePair.s1 Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,Lnet/pocorall/automaton/StatePair.s1 Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,Lnet/pocorall/automaton/StatePair.s2 Lnet/pocorall/automaton/State
+NPE_INV,net.pocorall.automaton.BasicOperations.addEpsilons(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Collection;)V,net.pocorall.automaton.State.addEpsilon(Lnet/pocorall/automaton/State;)V
+NPE_INV,net.pocorall.automaton.State.addTransition(Lnet/pocorall/automaton/Transition;)V,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.RegExp.parseRepeatExp()Lnet/pocorall/automaton/RegExp;,java.lang.String.substring(II)Ljava/lang/String;
+NPE_INV,net.pocorall.automaton.RegExp.parseRepeatExp()Lnet/pocorall/automaton/RegExp;,java.lang.String.substring(II)Ljava/lang/String;
+NPE_INV,net.pocorall.automaton.RegExp.more()Z,java.lang.String.length()I
+NPE_INV,net.pocorall.automaton.RegExp.peek(Ljava/lang/String;)Z,java.lang.String.charAt(I)C
+NPE_GET,net.pocorall.automaton.RegExp.makeConcatenation(Lnet/pocorall/automaton/RegExp;Lnet/pocorall/automaton/RegExp;)Lnet/pocorall/automaton/RegExp;,Lnet/pocorall/automaton/RegExp.kind Lnet/pocorall/automaton/RegExp$Kind
+NPE_GET,net.pocorall.automaton.RegExp.makeConcatenation(Lnet/pocorall/automaton/RegExp;Lnet/pocorall/automaton/RegExp;)Lnet/pocorall/automaton/RegExp;,Lnet/pocorall/automaton/RegExp.kind Lnet/pocorall/automaton/RegExp$Kind
+NPE_GET,net.pocorall.automaton.RegExp.makeConcatenation(Lnet/pocorall/automaton/RegExp;Lnet/pocorall/automaton/RegExp;)Lnet/pocorall/automaton/RegExp;,Lnet/pocorall/automaton/RegExp.kind Lnet/pocorall/automaton/RegExp$Kind
+NPE_GET,net.pocorall.automaton.RegExp.makeConcatenation(Lnet/pocorall/automaton/RegExp;Lnet/pocorall/automaton/RegExp;)Lnet/pocorall/automaton/RegExp;,Lnet/pocorall/automaton/RegExp.kind Lnet/pocorall/automaton/RegExp$Kind
+NPE_PUT,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,net.pocorall.automaton.State.getSortedTransitionArray(Z)[Lnet/pocorall/automaton/Transition;
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_PUT,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_PUT,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_PUT,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHuffman(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,net.pocorall.automaton.State.getTransitions()Ljava/util/Set;
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.Set.size()I
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/Transition.max C
+NPE_PUT,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.ArrayList.set(ILjava/lang/Object;)Ljava/lang/Object;
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.LinkedList.add(Ljava/lang/Object;)Z
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,net.pocorall.automaton.State.step(C)Lnet/pocorall/automaton/State;
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.ArrayList.get(I)Ljava/lang/Object;
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.LinkedList.add(Ljava/lang/Object;)Z
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.LinkedList.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/MinimizationOperations$IntPair.n1 I
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/MinimizationOperations$IntPair.n2 I
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/MinimizationOperations$StateListNode.q Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.ArrayList.get(I)Ljava/lang/Object;
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.LinkedList.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.ArrayList.add(Ljava/lang/Object;)Z
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/MinimizationOperations$StateListNode.next Lnet/pocorall/automaton/MinimizationOperations$StateListNode
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.lang.Integer.intValue()I
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.ArrayList.size()I
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.LinkedList.size()I
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.ArrayList.iterator()Ljava/util/Iterator;
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.LinkedList.remove(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.LinkedList.add(Ljava/lang/Object;)Z
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.ArrayList.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.ArrayList.clear()V
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.LinkedList.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_PUT,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/State.number I
+NPE_INV,net.pocorall.automaton.MinimizationOperations.minimizeHopcroft(Lnet/pocorall/automaton/LinkedAutomaton;)V,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.DefaultAutomaton.getNumberOfStates()I,java.lang.String.length()I
+NPE_INV,net.pocorall.automaton.DefaultAutomaton.getNumberOfTransitions()I,java.lang.String.length()I
+NPE_INV,net.pocorall.automaton.RegExp.next()C,java.lang.String.charAt(I)C
+NPE_GET,net.pocorall.automaton.RegExp.makeString(Lnet/pocorall/automaton/RegExp;Lnet/pocorall/automaton/RegExp;)Lnet/pocorall/automaton/RegExp;,Lnet/pocorall/automaton/RegExp.kind Lnet/pocorall/automaton/RegExp$Kind
+NPE_GET,net.pocorall.automaton.RegExp.makeString(Lnet/pocorall/automaton/RegExp;Lnet/pocorall/automaton/RegExp;)Lnet/pocorall/automaton/RegExp;,Lnet/pocorall/automaton/RegExp.s Ljava/lang/String
+NPE_GET,net.pocorall.automaton.RegExp.makeString(Lnet/pocorall/automaton/RegExp;Lnet/pocorall/automaton/RegExp;)Lnet/pocorall/automaton/RegExp;,Lnet/pocorall/automaton/RegExp.c C
+NPE_GET,net.pocorall.automaton.RegExp.makeString(Lnet/pocorall/automaton/RegExp;Lnet/pocorall/automaton/RegExp;)Lnet/pocorall/automaton/RegExp;,Lnet/pocorall/automaton/RegExp.kind Lnet/pocorall/automaton/RegExp$Kind
+NPE_GET,net.pocorall.automaton.RegExp.makeString(Lnet/pocorall/automaton/RegExp;Lnet/pocorall/automaton/RegExp;)Lnet/pocorall/automaton/RegExp;,Lnet/pocorall/automaton/RegExp.s Ljava/lang/String
+NPE_GET,net.pocorall.automaton.RegExp.makeString(Lnet/pocorall/automaton/RegExp;Lnet/pocorall/automaton/RegExp;)Lnet/pocorall/automaton/RegExp;,Lnet/pocorall/automaton/RegExp.c C
+NPE_GET,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/LinkedAutomaton.deterministic Z
+NPE_GET,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;)V,Lnet/pocorall/automaton/LinkedAutomaton.initial Lnet/pocorall/automaton/State
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.totalize()V,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.totalize()V,net.pocorall.automaton.State.getSortedTransitions(Z)Ljava/util/List;
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.totalize()V,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.totalize()V,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.totalize()V,Lnet/pocorall/automaton/Transition.min C
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.totalize()V,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.totalize()V,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.totalize()V,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.totalize()V,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.totalize()V,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_GET,net.pocorall.automaton.MinimizationOperations.statesAgree([[Lnet/pocorall/automaton/Transition;[[ZII)Z,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.MinimizationOperations.statesAgree([[Lnet/pocorall/automaton/Transition;[[ZII)Z,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.MinimizationOperations.statesAgree([[Lnet/pocorall/automaton/Transition;[[ZII)Z,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.MinimizationOperations.statesAgree([[Lnet/pocorall/automaton/Transition;[[ZII)Z,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.MinimizationOperations.statesAgree([[Lnet/pocorall/automaton/Transition;[[ZII)Z,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.MinimizationOperations.statesAgree([[Lnet/pocorall/automaton/Transition;[[ZII)Z,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.MinimizationOperations.statesAgree([[Lnet/pocorall/automaton/Transition;[[ZII)Z,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.MinimizationOperations.statesAgree([[Lnet/pocorall/automaton/Transition;[[ZII)Z,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.MinimizationOperations.statesAgree([[Lnet/pocorall/automaton/Transition;[[ZII)Z,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.MinimizationOperations.statesAgree([[Lnet/pocorall/automaton/Transition;[[ZII)Z,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.MinimizationOperations.addTriggers([[Lnet/pocorall/automaton/Transition;Ljava/util/ArrayList;II)V,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.MinimizationOperations.addTriggers([[Lnet/pocorall/automaton/Transition;Ljava/util/ArrayList;II)V,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.MinimizationOperations.addTriggers([[Lnet/pocorall/automaton/Transition;Ljava/util/ArrayList;II)V,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.MinimizationOperations.addTriggers([[Lnet/pocorall/automaton/Transition;Ljava/util/ArrayList;II)V,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.MinimizationOperations.addTriggers([[Lnet/pocorall/automaton/Transition;Ljava/util/ArrayList;II)V,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.MinimizationOperations.addTriggers([[Lnet/pocorall/automaton/Transition;Ljava/util/ArrayList;II)V,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.MinimizationOperations.addTriggers([[Lnet/pocorall/automaton/Transition;Ljava/util/ArrayList;II)V,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.MinimizationOperations.addTriggers([[Lnet/pocorall/automaton/Transition;Ljava/util/ArrayList;II)V,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.MinimizationOperations.addTriggers([[Lnet/pocorall/automaton/Transition;Ljava/util/ArrayList;II)V,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.MinimizationOperations.addTriggers([[Lnet/pocorall/automaton/Transition;Ljava/util/ArrayList;II)V,Lnet/pocorall/automaton/State.number I
+NPE_INV,net.pocorall.automaton.MinimizationOperations.addTriggers([[Lnet/pocorall/automaton/Transition;Ljava/util/ArrayList;II)V,java.util.ArrayList.get(I)Ljava/lang/Object;
+NPE_INV,net.pocorall.automaton.MinimizationOperations.addTriggers([[Lnet/pocorall/automaton/Transition;Ljava/util/ArrayList;II)V,java.util.ArrayList.set(ILjava/lang/Object;)Ljava/lang/Object;
+NPE_INV,net.pocorall.automaton.MinimizationOperations.addTriggers([[Lnet/pocorall/automaton/Transition;Ljava/util/ArrayList;II)V,java.util.ArrayList.get(I)Ljava/lang/Object;
+NPE_INV,net.pocorall.automaton.MinimizationOperations.addTriggers([[Lnet/pocorall/automaton/Transition;Ljava/util/ArrayList;II)V,java.util.HashSet.add(Ljava/lang/Object;)Z
+NPE_GET,net.pocorall.automaton.MinimizationOperations.addTriggers([[Lnet/pocorall/automaton/Transition;Ljava/util/ArrayList;II)V,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.MinimizationOperations.addTriggers([[Lnet/pocorall/automaton/Transition;Ljava/util/ArrayList;II)V,Lnet/pocorall/automaton/Transition.max C
+NPE_INV,net.pocorall.automaton.MinimizationOperations.markPair([[ZLjava/util/ArrayList;II)V,java.util.ArrayList.get(I)Ljava/lang/Object;
+NPE_INV,net.pocorall.automaton.MinimizationOperations.markPair([[ZLjava/util/ArrayList;II)V,java.util.ArrayList.get(I)Ljava/lang/Object;
+NPE_INV,net.pocorall.automaton.MinimizationOperations.markPair([[ZLjava/util/ArrayList;II)V,java.util.HashSet.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.MinimizationOperations.markPair([[ZLjava/util/ArrayList;II)V,Lnet/pocorall/automaton/MinimizationOperations$IntPair.n1 I
+NPE_GET,net.pocorall.automaton.MinimizationOperations.markPair([[ZLjava/util/ArrayList;II)V,Lnet/pocorall/automaton/MinimizationOperations$IntPair.n2 I
+NPE_PUT,net.pocorall.automaton.SpecialOperations.reverse(Lnet/pocorall/automaton/LinkedAutomaton;)Ljava/util/Set;,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_INV,net.pocorall.automaton.SpecialOperations.reverse(Lnet/pocorall/automaton/LinkedAutomaton;)Ljava/util/Set;,net.pocorall.automaton.State.getTransitions()Ljava/util/Set;
+NPE_INV,net.pocorall.automaton.SpecialOperations.reverse(Lnet/pocorall/automaton/LinkedAutomaton;)Ljava/util/Set;,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.SpecialOperations.reverse(Lnet/pocorall/automaton/LinkedAutomaton;)Ljava/util/Set;,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.SpecialOperations.reverse(Lnet/pocorall/automaton/LinkedAutomaton;)Ljava/util/Set;,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.SpecialOperations.reverse(Lnet/pocorall/automaton/LinkedAutomaton;)Ljava/util/Set;,Lnet/pocorall/automaton/Transition.max C
+NPE_INV,net.pocorall.automaton.SpecialOperations.reverse(Lnet/pocorall/automaton/LinkedAutomaton;)Ljava/util/Set;,java.util.HashSet.add(Ljava/lang/Object;)Z
+NPE_PUT,net.pocorall.automaton.SpecialOperations.reverse(Lnet/pocorall/automaton/LinkedAutomaton;)Ljava/util/Set;,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_PUT,net.pocorall.automaton.SpecialOperations.reverse(Lnet/pocorall/automaton/LinkedAutomaton;)Ljava/util/Set;,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_INV,net.pocorall.automaton.SpecialOperations.reverse(Lnet/pocorall/automaton/LinkedAutomaton;)Ljava/util/Set;,net.pocorall.automaton.State.addEpsilon(Lnet/pocorall/automaton/State;)V
+NPE_INV,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Set;)V,net.pocorall.automaton.LinkedAutomaton.getStartPoints()[C
+NPE_PUT,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Set;)V,Lnet/pocorall/automaton/LinkedAutomaton.initial Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Set;)V,Lnet/pocorall/automaton/LinkedAutomaton.initial Lnet/pocorall/automaton/State
+NPE_INV,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Set;)V,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Set;)V,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_PUT,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Set;)V,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_INV,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Set;)V,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Set;)V,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_INV,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Set;)V,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Set;)V,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Set;)V,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Set;)V,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Set;)V,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_INV,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Set;)V,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_PUT,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Set;)V,Lnet/pocorall/automaton/LinkedAutomaton.deterministic Z
+NPE_INV,net.pocorall.automaton.BasicOperations.determinize(Lnet/pocorall/automaton/LinkedAutomaton;Ljava/util/Set;)V,net.pocorall.automaton.LinkedAutomaton.removeDeadTransitions()V
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.getStartPoints()[C,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.getStartPoints()[C,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.getStartPoints()[C,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.getStartPoints()[C,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.getStartPoints()[C,Lnet/pocorall/automaton/Transition.max C
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.getStartPoints()[C,java.lang.Character.charValue()C
+NPE_INV,net.pocorall.automaton.State.step(C)Lnet/pocorall/automaton/State;,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.State.step(C)Lnet/pocorall/automaton/State;,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.State.step(C)Lnet/pocorall/automaton/State;,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.State.step(C)Lnet/pocorall/automaton/State;,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.getNumberOfTransitions()I,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.getNumberOfTransitions()I,java.util.Set.size()I
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.removeDeadTransitions()V,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.removeDeadTransitions()V,net.pocorall.automaton.State.resetTransitions()V
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.removeDeadTransitions()V,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.removeDeadTransitions()V,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.removeDeadTransitions()V,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.removeDeadTransitions()V,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_PUT,net.pocorall.automaton.MinimizationOperations$StateListNode.<init>(Lnet/pocorall/automaton/State;Lnet/pocorall/automaton/MinimizationOperations$StateList;)V,Lnet/pocorall/automaton/MinimizationOperations$StateListNode.next Lnet/pocorall/automaton/MinimizationOperations$StateListNode
+NPE_GET,net.pocorall.automaton.StatePair.equals(Ljava/lang/Object;)Z,Lnet/pocorall/automaton/StatePair.s1 Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.StatePair.equals(Ljava/lang/Object;)Z,Lnet/pocorall/automaton/StatePair.s2 Lnet/pocorall/automaton/State
+NPE_INV,net.pocorall.automaton.RegExp.parseSimpleExp()Lnet/pocorall/automaton/RegExp;,java.lang.String.substring(II)Ljava/lang/String;
+NPE_INV,net.pocorall.automaton.RegExp.parseSimpleExp()Lnet/pocorall/automaton/RegExp;,java.lang.String.substring(II)Ljava/lang/String;
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.getLiveStates(Ljava/util/Set;)Ljava/util/Set;,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.getLiveStates(Ljava/util/Set;)Ljava/util/Set;,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.getLiveStates(Ljava/util/Set;)Ljava/util/Set;,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.getLiveStates(Ljava/util/Set;)Ljava/util/Set;,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.getLiveStates(Ljava/util/Set;)Ljava/util/Set;,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_PUT,net.pocorall.automaton.MinimizationOperations$StateListNode.remove()V,Lnet/pocorall/automaton/MinimizationOperations$StateListNode.next Lnet/pocorall/automaton/MinimizationOperations$StateListNode
+NPE_INV,net.pocorall.automaton.State.getSortedTransitionArray(Z)[Lnet/pocorall/automaton/Transition;,java.util.Set.size()I
+NPE_INV,net.pocorall.automaton.State.getSortedTransitionArray(Z)[Lnet/pocorall/automaton/Transition;,java.util.Set.toArray([Ljava/lang/Object;)[Ljava/lang/Object;
+NPE_GET,net.pocorall.automaton.Transition.equals(Ljava/lang/Object;)Z,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.Transition.equals(Ljava/lang/Object;)Z,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.Transition.equals(Ljava/lang/Object;)Z,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_INV,net.pocorall.automaton.StatePair.hashCode()I,net.pocorall.automaton.State.hashCode()I
+NPE_INV,net.pocorall.automaton.StatePair.hashCode()I,net.pocorall.automaton.State.hashCode()I
+NPE_INV,net.pocorall.automaton.DefaultAutomaton.toString()Ljava/lang/String;,java.lang.String.toCharArray()[C
+NPE_INV,net.pocorall.automaton.DefaultAutomaton.toString()Ljava/lang/String;,net.pocorall.automaton.State.toString()Ljava/lang/String;
+NPE_INV,net.pocorall.automaton.State.toString()Ljava/lang/String;,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_INV,net.pocorall.automaton.State.toString()Ljava/lang/String;,net.pocorall.automaton.Transition.toString()Ljava/lang/String;
+NPE_INV,net.pocorall.automaton.DefaultAutomaton.equals(Ljava/lang/Object;)Z,net.pocorall.automaton.DefaultAutomaton.isSingleton()Z
+NPE_GET,net.pocorall.automaton.DefaultAutomaton.equals(Ljava/lang/Object;)Z,Lnet/pocorall/automaton/DefaultAutomaton.singleton Ljava/lang/String
+NPE_INV,net.pocorall.automaton.DefaultAutomaton.equals(Ljava/lang/Object;)Z,java.lang.String.equals(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.DefaultAutomaton.equals(Ljava/lang/Object;)Z,net.pocorall.automaton.DefaultAutomaton.hashCode()I
+NPE_INV,net.pocorall.automaton.DefaultAutomaton.equals(Ljava/lang/Object;)Z,net.pocorall.automaton.DefaultAutomaton.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;)Z
+NPE_INV,net.pocorall.automaton.DefaultAutomaton.isEmpty()Z,java.util.Set.isEmpty()Z
+NPE_GET,net.pocorall.automaton.BasicOperations.complement(Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_PUT,net.pocorall.automaton.BasicOperations.complement(Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_PUT,net.pocorall.automaton.BasicOperations.complement(Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.clone()Lnet/pocorall/automaton/LinkedAutomaton;,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_PUT,net.pocorall.automaton.LinkedAutomaton.clone()Lnet/pocorall/automaton/LinkedAutomaton;,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.clone()Lnet/pocorall/automaton/LinkedAutomaton;,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.clone()Lnet/pocorall/automaton/LinkedAutomaton;,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.clone()Lnet/pocorall/automaton/LinkedAutomaton;,Lnet/pocorall/automaton/State.transitions Ljava/util/Set
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.clone()Lnet/pocorall/automaton/LinkedAutomaton;,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.clone()Lnet/pocorall/automaton/LinkedAutomaton;,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.clone()Lnet/pocorall/automaton/LinkedAutomaton;,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.clone()Lnet/pocorall/automaton/LinkedAutomaton;,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/StatePair.s Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/StatePair.s1 Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/StatePair.s2 Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/StatePair.s1 Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/StatePair.s2 Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/StatePair.s Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/StatePair.s Lnet/pocorall/automaton/State
+NPE_INV,net.pocorall.automaton.BasicOperations.intersection(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,java.util.Set.add(Ljava/lang/Object;)Z
+NPE_PUT,net.pocorall.automaton.BasicOperations.concatenate(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_INV,net.pocorall.automaton.BasicOperations.concatenate(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,net.pocorall.automaton.State.addEpsilon(Lnet/pocorall/automaton/State;)V
+NPE_INV,net.pocorall.automaton.BasicOperations.union(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Lnet/pocorall/automaton/DefaultAutomaton;,java.lang.String.equals(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.BasicOperations.isEmptyString(Lnet/pocorall/automaton/DefaultAutomaton;)Z,java.lang.String.length()I
+NPE_INV,net.pocorall.automaton.BasicOperations.isEmptyString(Lnet/pocorall/automaton/DefaultAutomaton;)Z,java.util.Set.isEmpty()Z
+NPE_INV,net.pocorall.automaton.DefaultAutomaton.run(Ljava/lang/String;)Ljava/lang/Object;,java.lang.String.equals(Ljava/lang/Object;)Z
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.getSortedTransitions(Ljava/util/Set;)[[Lnet/pocorall/automaton/Transition;,Lnet/pocorall/automaton/State.number I
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.getSortedTransitions(Ljava/util/Set;)[[Lnet/pocorall/automaton/Transition;,net.pocorall.automaton.State.getSortedTransitionArray(Z)[Lnet/pocorall/automaton/Transition;
+NPE_GET,net.pocorall.automaton.State.compareTo(Lnet/pocorall/automaton/State;)I,Lnet/pocorall/automaton/State.id I
+NPE_INV,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,net.pocorall.automaton.DefaultAutomaton.isSingleton()Z
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/DefaultAutomaton.singleton Ljava/lang/String
+NPE_INV,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,java.lang.String.equals(Ljava/lang/Object;)Z
+NPE_INV,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,net.pocorall.automaton.DefaultAutomaton.run(Ljava/lang/String;)Ljava/lang/Object;
+NPE_INV,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,net.pocorall.automaton.DefaultAutomaton.getStates()Ljava/util/Set;
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/DefaultAutomaton.initial Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/StatePair.s1 Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/StatePair.s2 Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/StatePair.s1 Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/StatePair.s2 Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.BasicOperations.subsetOf(Lnet/pocorall/automaton/DefaultAutomaton;Lnet/pocorall/automaton/DefaultAutomaton;)Z,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.run(Ljava/lang/String;)Ljava/lang/Object;,java.lang.String.length()I
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.run(Ljava/lang/String;)Ljava/lang/Object;,java.lang.String.charAt(I)C
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.run(Ljava/lang/String;)Ljava/lang/Object;,net.pocorall.automaton.State.step(C)Lnet/pocorall/automaton/State;
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.run(Ljava/lang/String;)Ljava/lang/Object;,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.run(Ljava/lang/String;)Ljava/lang/Object;,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.run(Ljava/lang/String;)Ljava/lang/Object;,java.lang.String.length()I
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.run(Ljava/lang/String;)Ljava/lang/Object;,java.lang.String.charAt(I)C
+NPE_INV,net.pocorall.automaton.LinkedAutomaton.run(Ljava/lang/String;)Ljava/lang/Object;,net.pocorall.automaton.State.step(CLjava/util/Collection;)V
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.run(Ljava/lang/String;)Ljava/lang/Object;,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.run(Ljava/lang/String;)Ljava/lang/Object;,Lnet/pocorall/automaton/State.accept Ljava/lang/Object
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.run(Ljava/lang/String;)Ljava/lang/Object;,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.LinkedAutomaton.run(Ljava/lang/String;)Ljava/lang/Object;,Lnet/pocorall/automaton/State.number I
+NPE_INV,net.pocorall.automaton.State.step(CLjava/util/Collection;)V,java.util.Set.iterator()Ljava/util/Iterator;
+NPE_GET,net.pocorall.automaton.State.step(CLjava/util/Collection;)V,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.State.step(CLjava/util/Collection;)V,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.State.step(CLjava/util/Collection;)V,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.min C
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.max C
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/Transition.to Lnet/pocorall/automaton/State
+NPE_GET,net.pocorall.automaton.TransitionComparator.compare(Lnet/pocorall/automaton/Transition;Lnet/pocorall/automaton/Transition;)I,Lnet/pocorall/automaton/State.number I
+NPE_GET,net.pocorall.automaton.Transition.toString()Ljava/lang/String;,Lnet/pocorall/automaton/State.number I
+Done

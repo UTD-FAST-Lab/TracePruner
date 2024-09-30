@@ -1,0 +1,18 @@
+NPE_INV,com.gamezgalaxy.test.console.Main.start()V,com.gamezgalaxy.GGS.server.Server.Start()V
+NPE_GET,com.gamezgalaxy.test.console.Main.start()V,Lcom/gamezgalaxy/GGS/server/Server.Running Z
+NPE_INV,com.gamezgalaxy.test.console.Main.start()V,com.gamezgalaxy.GGS.server.Server.getCommandHandler()Lcom/gamezgalaxy/GGS/API/plugin/CommandHandler;
+NPE_INV,com.gamezgalaxy.test.console.Main.start()V,com.gamezgalaxy.GGS.server.Server.getCommandHandler()Lcom/gamezgalaxy/GGS/API/plugin/CommandHandler;
+NPE_INV,com.gamezgalaxy.test.console.Main.start()V,com.gamezgalaxy.GGS.server.Server.Log(Ljava/lang/String;)V
+NPE_GET,com.gamezgalaxy.GGS.chat.Messages.serverBroadcast(Ljava/lang/String;)V,Lcom/gamezgalaxy/GGS/server/Server.players Ljava/util/ArrayList
+NPE_GET,com.gamezgalaxy.GGS.world.PhysicsBlock.onDelete(Lcom/gamezgalaxy/GGS/world/Level;ILcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/world/Level.ticks Ljava/util/ArrayList
+NPE_INV,com.gamezgalaxy.test.console.Main.sendMessage(Ljava/lang/String;)V,com.gamezgalaxy.GGS.server.Server.Log(Ljava/lang/String;)V
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.Help.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.server.Server.getCommandHandler()Lcom/gamezgalaxy/GGS/API/plugin/CommandHandler;
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.Load.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.server.Server.getLevelHandler()Lcom/gamezgalaxy/GGS/world/LevelHandler;
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.Loaded.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.server.Server.getLevelHandler()Lcom/gamezgalaxy/GGS/world/LevelHandler;
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.Newlvl.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.server.Server.getLevelHandler()Lcom/gamezgalaxy/GGS/world/LevelHandler;
+NPE_INV,com.gamezgalaxy.GGS.defaults.commands.Stop.execute(Lcom/gamezgalaxy/GGS/API/CommandExecutor;[Ljava/lang/String;)V,com.gamezgalaxy.GGS.server.Server.Stop()V
+NPE_INV,com.gamezgalaxy.GGS.world.PhysicsBlock.move(III)V,com.gamezgalaxy.GGS.world.Level.setTile(Lcom/gamezgalaxy/GGS/world/Block;IIILcom/gamezgalaxy/GGS/server/Server;)V
+NPE_INV,com.gamezgalaxy.GGS.world.PhysicsBlock.move(III)V,com.gamezgalaxy.GGS.world.Level.setTile(Lcom/gamezgalaxy/GGS/world/Block;IIILcom/gamezgalaxy/GGS/server/Server;)V
+NPE_INV,com.gamezgalaxy.GGS.world.PhysicsBlock.add(III)V,com.gamezgalaxy.GGS.world.Level.getTile(III)Lcom/gamezgalaxy/GGS/world/Block;
+NPE_INV,com.gamezgalaxy.GGS.world.PhysicsBlock.add(III)V,com.gamezgalaxy.GGS.world.Level.setTile(Lcom/gamezgalaxy/GGS/world/Block;IIILcom/gamezgalaxy/GGS/server/Server;)V
+Done

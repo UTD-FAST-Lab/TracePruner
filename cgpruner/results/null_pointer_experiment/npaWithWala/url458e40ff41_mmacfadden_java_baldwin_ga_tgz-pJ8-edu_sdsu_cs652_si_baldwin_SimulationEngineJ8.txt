@@ -1,0 +1,148 @@
+NPE_INV,edu.sdsu.cs652.si.baldwin.SimulationEngine.runSimulations()V,edu.sdsu.cs652.si.baldwin.SimulationProfile.getMaxLearningGuesses()I
+NPE_INV,edu.sdsu.cs652.si.baldwin.SimulationEngine.runSimulations()V,edu.sdsu.cs652.si.baldwin.SimulationProfile.getLearningPenalty()D
+NPE_INV,edu.sdsu.cs652.si.baldwin.SimulationEngine.runSimulations()V,edu.sdsu.cs652.si.baldwin.SimulationProfile.getMaxLearningGuesses()I
+NPE_INV,edu.sdsu.cs652.si.baldwin.SimulationEngine.runSimulations()V,edu.sdsu.cs652.si.baldwin.SimulationProfile.getLearningPenalty()D
+NPE_INV,edu.sdsu.cs652.si.baldwin.BaldwinGA.runSimulation(Z)D,edu.sdsu.cs652.si.baldwin.ChromosomeMetaData.getAntigenFitnessData()Ljava/util/List;
+NPE_INV,edu.sdsu.cs652.si.baldwin.BaldwinGA.runSimulation(Z)D,edu.sdsu.cs652.si.baldwin.AntigenFitnessData.getGeneticMatchScore()I
+NPE_INV,org.jgap.NaturalSelector.<init>(Lorg/jgap/Configuration;)V,org.jgap.Configuration.getMonitor()Lorg/jgap/audit/IEvolutionMonitor;
+NPE_INV,org.jgap.impl.JGAPFactory.getUniqueKey(Ljava/lang/String;)Ljava/lang/String;,java.lang.Long.longValue()J
+NPE_GET,org.jgap.impl.CrossoverOperator.compareTo(Ljava/lang/Object;)I,Lorg/jgap/impl/CrossoverOperator.m_crossoverRateCalc Lorg/jgap/IUniversalRateCalculator
+NPE_GET,org.jgap.impl.CrossoverOperator.compareTo(Ljava/lang/Object;)I,Lorg/jgap/impl/CrossoverOperator.m_crossoverRateCalc Lorg/jgap/IUniversalRateCalculator
+NPE_GET,org.jgap.impl.CrossoverOperator.compareTo(Ljava/lang/Object;)I,Lorg/jgap/impl/CrossoverOperator.m_crossoverRate I
+NPE_GET,org.jgap.impl.CrossoverOperator.compareTo(Ljava/lang/Object;)I,Lorg/jgap/impl/CrossoverOperator.m_crossoverRate I
+NPE_GET,org.jgap.impl.CrossoverOperator.compareTo(Ljava/lang/Object;)I,Lorg/jgap/impl/CrossoverOperator.m_allowFullCrossOver Z
+NPE_GET,org.jgap.impl.CrossoverOperator.compareTo(Ljava/lang/Object;)I,Lorg/jgap/impl/CrossoverOperator.m_xoverNewAge Z
+NPE_GET,org.jgap.impl.MutationOperator.compareTo(Ljava/lang/Object;)I,Lorg/jgap/impl/MutationOperator.m_mutationRateCalc Lorg/jgap/IUniversalRateCalculator
+NPE_GET,org.jgap.impl.MutationOperator.compareTo(Ljava/lang/Object;)I,Lorg/jgap/impl/MutationOperator.m_mutationRateCalc Lorg/jgap/IUniversalRateCalculator
+NPE_GET,org.jgap.impl.MutationOperator.compareTo(Ljava/lang/Object;)I,Lorg/jgap/impl/MutationOperator.m_config Lorg/jgap/impl/MutationOperator$MutationOperatorConfigurable
+NPE_GET,org.jgap.impl.MutationOperator.compareTo(Ljava/lang/Object;)I,Lorg/jgap/impl/MutationOperator.m_config Lorg/jgap/impl/MutationOperator$MutationOperatorConfigurable
+NPE_INV,org.jgap.Chromosome.compareTo(Ljava/lang/Object;)I,org.jgap.IChromosome.getGenes()[Lorg/jgap/Gene;
+NPE_INV,org.jgap.Chromosome.compareTo(Ljava/lang/Object;)I,org.jgap.IChromosome.size()I
+NPE_INV,org.jgap.Chromosome.compareTo(Ljava/lang/Object;)I,org.jgap.IChromosome.size()I
+NPE_INV,org.jgap.Chromosome.compareTo(Ljava/lang/Object;)I,org.jgap.IChromosome.getFitnessValueDirectly()D
+NPE_INV,org.jgap.Chromosome.compareTo(Ljava/lang/Object;)I,org.jgap.IChromosome.getFitnessValueDirectly()D
+NPE_INV,org.jgap.Chromosome.compareTo(Ljava/lang/Object;)I,org.jgap.IChromosome.getApplicationData()Ljava/lang/Object;
+NPE_INV,org.jgap.Chromosome.compareTo(Ljava/lang/Object;)I,org.jgap.IChromosome.getApplicationData()Ljava/lang/Object;
+NPE_INV,org.jgap.Chromosome.compareTo(Ljava/lang/Object;)I,org.jgap.IChromosome.getApplicationData()Ljava/lang/Object;
+NPE_INV,org.jgap.Chromosome.compareTo(Ljava/lang/Object;)I,java.lang.Comparable.compareTo(Ljava/lang/Object;)I
+NPE_INV,org.jgap.Chromosome.compareTo(Ljava/lang/Object;)I,java.lang.Object.getClass()Ljava/lang/Class;
+NPE_INV,org.jgap.Chromosome.compareTo(Ljava/lang/Object;)I,org.jgap.IChromosome.getApplicationData()Ljava/lang/Object;
+NPE_INV,org.jgap.Chromosome.compareTo(Ljava/lang/Object;)I,java.lang.Object.getClass()Ljava/lang/Class;
+NPE_INV,org.jgap.BaseGene.equals(Ljava/lang/Object;)Z,org.jgap.Gene.getApplicationData()Ljava/lang/Object;
+NPE_INV,org.jgap.Chromosome.toString()Ljava/lang/String;,java.lang.Object.toString()Ljava/lang/String;
+NPE_GET,org.jgap.impl.WeightedRouletteSelector.equals(Ljava/lang/Object;)Z,Lorg/jgap/impl/WeightedRouletteSelector.m_totalNumberOfUsedSlots D
+NPE_GET,org.jgap.impl.WeightedRouletteSelector.equals(Ljava/lang/Object;)Z,Lorg/jgap/impl/WeightedRouletteSelector.m_config Lorg/jgap/impl/WeightedRouletteSelector$WeightedRouletteSelConfig
+NPE_GET,org.jgap.impl.WeightedRouletteSelector.equals(Ljava/lang/Object;)Z,Lorg/jgap/impl/WeightedRouletteSelector.m_config Lorg/jgap/impl/WeightedRouletteSelector$WeightedRouletteSelConfig
+NPE_GET,org.jgap.impl.WeightedRouletteSelector.equals(Ljava/lang/Object;)Z,Lorg/jgap/impl/WeightedRouletteSelector.m_counterPool Lorg/jgap/impl/Pool
+NPE_GET,org.jgap.impl.WeightedRouletteSelector.equals(Ljava/lang/Object;)Z,Lorg/jgap/impl/WeightedRouletteSelector.m_wheel Lgnu/trove/THashMap
+NPE_INV,org.jgap.impl.BestChromosomesSelector.equals(Ljava/lang/Object;)Z,org.jgap.impl.BestChromosomesSelector.getDoubletteChromosomesAllowed()Z
+NPE_GET,org.jgap.impl.BestChromosomesSelector.equals(Ljava/lang/Object;)Z,Lorg/jgap/impl/BestChromosomesSelector.m_fitnessValueComparator Ljava/util/Comparator
+NPE_GET,org.jgap.impl.BestChromosomesSelector.equals(Ljava/lang/Object;)Z,Lorg/jgap/impl/BestChromosomesSelector.m_config Lorg/jgap/impl/BestChromosomesSelector$BestChromosomesSelectorConfig
+NPE_GET,org.jgap.impl.BestChromosomesSelector.equals(Ljava/lang/Object;)Z,Lorg/jgap/impl/BestChromosomesSelector.m_chromosomes Lorg/jgap/Population
+NPE_INV,org.jgap.impl.FixedBinaryGene.compareTo(Ljava/lang/Object;)I,org.jgap.impl.FixedBinaryGene.getLength()I
+NPE_INV,org.jgap.impl.FixedBinaryGene.compareTo(Ljava/lang/Object;)I,org.jgap.impl.FixedBinaryGene.getBit(I)Z
+NPE_INV,org.jgap.impl.FixedBinaryGene.compareTo(Ljava/lang/Object;)I,org.jgap.impl.FixedBinaryGene.getApplicationData()Ljava/lang/Object;
+NPE_INV,org.jgap.BaseGene.compareApplicationData(Ljava/lang/Object;Ljava/lang/Object;)I,org.jgap.ICompareToHandler.perform(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;
+NPE_INV,org.jgap.impl.GABreeder.bulkFunctionEvaluation(Lorg/jgap/Configuration;Lorg/jgap/BulkFitnessFunction;Lorg/jgap/Population;Z)Lorg/jgap/Population;,org.jgap.Chromosome.setFitnessValueDirectly(D)V
+NPE_INV,org.jgap.impl.GABreeder.fillPopulationRandomlyToOriginalSize(Lorg/jgap/Configuration;Lorg/jgap/Population;)V,org.jgap.IInitializer.perform(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;
+NPE_INV,gnu.trove.THashMap.equals(Ljava/lang/Object;)Z,java.util.Map.size()I
+NPE_INV,org.jgap.event.EventManager.fireGeneticEvent(Lorg/jgap/event/GeneticEvent;)V,java.util.List.iterator()Ljava/util/Iterator;
+NPE_INV,org.jgap.event.EventManager.fireGeneticEvent(Lorg/jgap/event/GeneticEvent;)V,org.jgap.event.GeneticEventListener.geneticEventFired(Lorg/jgap/event/GeneticEvent;)V
+NPE_INV,org.jgap.impl.CrossoverOperator.operate(Lorg/jgap/Population;Ljava/util/List;)V,org.jgap.IChromosome.setUniqueIDTemplate(Ljava/lang/String;I)V
+NPE_INV,org.jgap.impl.CrossoverOperator.operate(Lorg/jgap/Population;Ljava/util/List;)V,org.jgap.IChromosome.setUniqueIDTemplate(Ljava/lang/String;I)V
+NPE_INV,org.jgap.impl.CrossoverOperator.operate(Lorg/jgap/Population;Ljava/util/List;)V,org.jgap.IChromosome.setUniqueIDTemplate(Ljava/lang/String;I)V
+NPE_INV,org.jgap.impl.CrossoverOperator.operate(Lorg/jgap/Population;Ljava/util/List;)V,org.jgap.IChromosome.setUniqueIDTemplate(Ljava/lang/String;I)V
+NPE_INV,org.jgap.impl.MutationOperator.operate(Lorg/jgap/Population;Ljava/util/List;)V,org.jgap.IChromosome.getGenes()[Lorg/jgap/Gene;
+NPE_INV,org.jgap.impl.MutationOperator.operate(Lorg/jgap/Population;Ljava/util/List;)V,org.jgap.IChromosome.setUniqueIDTemplate(Ljava/lang/String;I)V
+NPE_INV,org.jgap.Population.compareTo(Ljava/lang/Object;)I,org.jgap.Population.size()I
+NPE_INV,org.jgap.Population.compareTo(Ljava/lang/Object;)I,org.jgap.Population.getChromosomes()Ljava/util/List;
+NPE_INV,org.jgap.impl.JGAPFactory.findHandlerFor(Ljava/lang/Object;Ljava/lang/Class;Ljava/util/List;Lorg/jgap/IHandler;Ljava/lang/String;)Lorg/jgap/IHandler;,java.lang.Object.getClass()Ljava/lang/Class;
+NPE_INV,org.jgap.impl.CrossoverOperator.doCrossover(Lorg/jgap/IChromosome;Lorg/jgap/IChromosome;Ljava/util/List;Lorg/jgap/RandomGenerator;)V,org.jgap.IChromosome.getGenes()[Lorg/jgap/Gene;
+NPE_INV,org.jgap.impl.CrossoverOperator.doCrossover(Lorg/jgap/IChromosome;Lorg/jgap/IChromosome;Ljava/util/List;Lorg/jgap/RandomGenerator;)V,org.jgap.IChromosome.getGenes()[Lorg/jgap/Gene;
+NPE_INV,gnu.trove.THashMap$EqProcedure.execute(Ljava/lang/Object;Ljava/lang/Object;)Z,java.util.Map.get(Ljava/lang/Object;)Ljava/lang/Object;
+NPE_INV,gnu.trove.THashMap$EqProcedure.execute(Ljava/lang/Object;Ljava/lang/Object;)Z,java.lang.Object.equals(Ljava/lang/Object;)Z
+NPE_INV,org.jgap.impl.DefaultInitializer.isHandlerFor(Ljava/lang/Object;Ljava/lang/Class;)Z,org.jgap.IInitializer.isHandlerFor(Ljava/lang/Object;Ljava/lang/Class;)Z
+NPE_INV,org.jgap.impl.DefaultCompareToHandler.isHandlerFor(Ljava/lang/Object;Ljava/lang/Class;)Z,java.lang.Object.getClass()Ljava/lang/Class;
+NPE_INV,gnu.trove.TObjectHash.equals(Ljava/lang/Object;Ljava/lang/Object;)Z,java.lang.Object.equals(Ljava/lang/Object;)Z
+NPE_INV,org.jgap.BreederBase.compareTo(Ljava/lang/Object;)I,java.lang.Object.getClass()Ljava/lang/Class;
+NPE_INV,org.jgap.Chromosome.clone()Ljava/lang/Object;,org.jgap.IChromosome.getGenes()[Lorg/jgap/Gene;
+NPE_INV,org.jgap.Chromosome.clone()Ljava/lang/Object;,org.jgap.ICloneHandler.perform(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;
+NPE_INV,org.jgap.Chromosome.clone()Ljava/lang/Object;,org.jgap.IChromosome.setGenes([Lorg/jgap/Gene;)V
+NPE_INV,org.jgap.Chromosome.clone()Ljava/lang/Object;,org.jgap.IChromosome.setFitnessValue(D)V
+NPE_INV,org.jgap.Chromosome.clone()Ljava/lang/Object;,org.jgap.IChromosome.setConstraintChecker(Lorg/jgap/IGeneConstraintChecker;)V
+NPE_INV,org.jgap.Chromosome.clone()Ljava/lang/Object;,org.jgap.IChromosome.setApplicationData(Ljava/lang/Object;)V
+NPE_INV,org.jgap.Chromosome.clone()Ljava/lang/Object;,org.jgap.Chromosome.setMultiObjectives(Ljava/util/List;)V
+NPE_INV,org.jgap.impl.DefaultCompareToHandler.compareTo(Ljava/lang/Object;)I,java.lang.Object.getClass()Ljava/lang/Class;
+NPE_INV,org.jgap.impl.DefaultCompareToHandler.compareTo(Ljava/lang/Object;)I,java.lang.Object.getClass()Ljava/lang/Class;
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.add(Lorg/jgap/IChromosome;)V,org.jgap.impl.SlotCounter.increment()V
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.add(Lorg/jgap/IChromosome;)V,org.jgap.impl.SlotCounter.reset(D)V
+NPE_INV,org.jgap.impl.BestChromosomesSelector.add(Lorg/jgap/IChromosome;)V,org.jgap.Configuration.getJGAPFactory()Lorg/jgap/IJGAPFactory;
+NPE_INV,org.jgap.impl.BestChromosomesSelector.add(Lorg/jgap/IChromosome;)V,org.jgap.ICloneHandler.perform(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;
+NPE_INV,org.jgap.impl.BestChromosomesSelector.add(Lorg/jgap/IChromosome;)V,org.jgap.IChromosome.setAge(I)V
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.selectChromosomes(ILorg/jgap/Population;)V,org.jgap.Configuration.getRandomGenerator()Lorg/jgap/RandomGenerator;
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.selectChromosomes(ILorg/jgap/Population;)V,java.util.Map$Entry.getKey()Ljava/lang/Object;
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.selectChromosomes(ILorg/jgap/Population;)V,java.util.Map$Entry.getValue()Ljava/lang/Object;
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.selectChromosomes(ILorg/jgap/Population;)V,org.jgap.impl.SlotCounter.getFitnessValue()D
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.selectChromosomes(ILorg/jgap/Population;)V,org.jgap.impl.SlotCounter.getCounterValue()I
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.selectChromosomes(ILorg/jgap/Population;)V,org.jgap.IChromosome.setIsSelectedForNextGeneration(Z)V
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.selectChromosomes(ILorg/jgap/Population;)V,org.jgap.Configuration.getJGAPFactory()Lorg/jgap/IJGAPFactory;
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.selectChromosomes(ILorg/jgap/Population;)V,org.jgap.ICloneHandler.perform(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.selectChromosomes(ILorg/jgap/Population;)V,org.jgap.IChromosome.getUniqueID()Ljava/lang/String;
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.selectChromosomes(ILorg/jgap/Population;)V,org.jgap.IChromosome.setUniqueIDTemplate(Ljava/lang/String;I)V
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.selectChromosomes(ILorg/jgap/Population;)V,org.jgap.IChromosome.getUniqueID()Ljava/lang/String;
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.selectChromosomes(ILorg/jgap/Population;)V,org.jgap.IChromosome.setUniqueIDTemplate(Ljava/lang/String;I)V
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.selectChromosomes(ILorg/jgap/Population;)V,org.jgap.IChromosome.setUniqueIDTemplate(Ljava/lang/String;I)V
+NPE_INV,org.jgap.impl.BestChromosomesSelector.selectChromosomes(ILorg/jgap/Population;)V,org.jgap.Configuration.getJGAPFactory()Lorg/jgap/IJGAPFactory;
+NPE_INV,org.jgap.impl.BestChromosomesSelector.selectChromosomes(ILorg/jgap/Population;)V,org.jgap.ICloneHandler.perform(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;
+NPE_INV,org.jgap.impl.BestChromosomesSelector.selectChromosomes(ILorg/jgap/Population;)V,org.jgap.IChromosome.setAge(I)V
+NPE_INV,org.jgap.impl.BestChromosomesSelector.selectChromosomes(ILorg/jgap/Population;)V,org.jgap.IChromosome.setIsSelectedForNextGeneration(Z)V
+NPE_INV,org.jgap.impl.BestChromosomesSelector.selectChromosomes(ILorg/jgap/Population;)V,org.jgap.IChromosome.setUniqueIDTemplate(Ljava/lang/String;I)V
+NPE_INV,org.jgap.Chromosome.randomInitialChromosome(Lorg/jgap/Configuration;)Lorg/jgap/IChromosome;,org.jgap.IChromosome.getGenes()[Lorg/jgap/Gene;
+NPE_INV,org.jgap.Chromosome.randomInitialChromosome(Lorg/jgap/Configuration;)Lorg/jgap/IChromosome;,org.jgap.IChromosome.setFitnessValueDirectly(D)V
+NPE_INV,edu.sdsu.cs652.si.baldwin.AntigenUniverse.getAnitgenSubset(I)[[Z,java.lang.Integer.intValue()I
+NPE_INV,org.jgap.Chromosome.cloneObject(Lorg/jgap/Configuration;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;,java.lang.Object.getClass()Ljava/lang/Class;
+NPE_INV,org.jgap.Chromosome.cloneObject(Lorg/jgap/Configuration;Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;,org.jgap.ICloneHandler.perform(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.scaleFitnessValues()V,org.jgap.impl.SlotCounter.getFitnessValue()D
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.scaleFitnessValues()V,org.jgap.impl.SlotCounter.getFitnessValue()D
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.scaleFitnessValues()V,org.jgap.impl.SlotCounter.getFitnessValue()D
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.scaleFitnessValues()V,org.jgap.impl.SlotCounter.getCounterValue()I
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.scaleFitnessValues()V,org.jgap.impl.SlotCounter.scaleFitnessValue(D)V
+NPE_INV,org.jgap.impl.WeightedRouletteSelector.spinWheel(Lorg/jgap/RandomGenerator;[D[D[Lorg/jgap/IChromosome;)Lorg/jgap/IChromosome;,org.jgap.Configuration.getFitnessEvaluator()Lorg/jgap/FitnessEvaluator;
+NPE_INV,org.jgap.NaturalSelector$FitnessAgeValueComparator.compare(Ljava/lang/Object;Ljava/lang/Object;)I,org.jgap.Configuration.getFitnessEvaluator()Lorg/jgap/FitnessEvaluator;
+NPE_INV,org.jgap.NaturalSelector$FitnessAgeValueComparator.compare(Ljava/lang/Object;Ljava/lang/Object;)I,org.jgap.Configuration.getFitnessEvaluator()Lorg/jgap/FitnessEvaluator;
+NPE_INV,org.jgap.impl.DefaultCloneHandler.isHandlerFor(Ljava/lang/Object;Ljava/lang/Class;)Z,java.lang.Object.getClass()Ljava/lang/Class;
+NPE_INV,org.jgap.impl.DefaultCloneHandler.isHandlerFor(Ljava/lang/Object;Ljava/lang/Class;)Z,java.lang.reflect.Method.isAccessible()Z
+NPE_INV,org.jgap.impl.DefaultCloneHandler.isHandlerFor(Ljava/lang/Object;Ljava/lang/Class;)Z,java.lang.reflect.Method.setAccessible(Z)V
+NPE_INV,org.jgap.impl.DefaultCloneHandler.isHandlerFor(Ljava/lang/Object;Ljava/lang/Class;)Z,java.lang.reflect.Method.isAccessible()Z
+NPE_INV,org.jgap.impl.DefaultCloneHandler.isHandlerFor(Ljava/lang/Object;Ljava/lang/Class;)Z,java.lang.reflect.Method.setAccessible(Z)V
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_config Lorg/jgap/Configuration$ConfigurationConfigurable
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_factory Lorg/jgap/IJGAPFactory
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_breeder Lorg/jgap/IBreeder
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_objectiveFunction Lorg/jgap/FitnessFunction
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_fitnessEvaluator Lorg/jgap/FitnessEvaluator
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_bulkObjectiveFunction Lorg/jgap/BulkFitnessFunction
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_sampleChromosome Lorg/jgap/IChromosome
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_randomGenerator Lorg/jgap/RandomGenerator
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_geneticOperators Ljava/util/List
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_chromosomeSize I
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_preSelectors Lorg/jgap/impl/ChainOfSelectors
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_postSelectors Lorg/jgap/impl/ChainOfSelectors
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_preserveFittestIndividual Z
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.threadKey Ljava/lang/String
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_keepPopulationSizeConstant Z
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_alwaysCalculateFitness Z
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_minPercentageSizePopulation I
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_selectFromPrevGen D
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_generationNr I
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_name Ljava/lang/String
+NPE_GET,org.jgap.Configuration.compareTo(Ljava/lang/Object;)I,Lorg/jgap/Configuration.m_settingsLocked Z
+NPE_INV,org.jgap.impl.DefaultCloneHandler.perform(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;,java.lang.Object.getClass()Ljava/lang/Class;
+NPE_INV,org.jgap.impl.DefaultCloneHandler.perform(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;,org.jgap.util.ICloneable.clone()Ljava/lang/Object;
+NPE_INV,org.jgap.impl.DefaultCloneHandler.perform(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;,java.lang.Object.getClass()Ljava/lang/Class;
+NPE_INV,org.jgap.impl.DefaultCloneHandler.perform(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;,org.jgap.IApplicationData.clone()Ljava/lang/Object;
+NPE_INV,org.jgap.impl.DefaultCloneHandler.perform(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;,java.lang.Object.getClass()Ljava/lang/Class;
+NPE_INV,org.jgap.impl.DefaultCloneHandler.perform(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;,java.lang.reflect.Method.setAccessible(Z)V
+NPE_INV,org.jgap.impl.DefaultCloneHandler.perform(Ljava/lang/Object;Ljava/lang/Class;Ljava/lang/Object;)Ljava/lang/Object;,java.lang.reflect.Method.invoke(Ljava/lang/Object;[Ljava/lang/Object;)Ljava/lang/Object;
+NPE_INV,org.jgap.impl.DefaultCloneHandler.compareTo(Ljava/lang/Object;)I,java.lang.Object.getClass()Ljava/lang/Class;
+NPE_INV,org.jgap.impl.DefaultCloneHandler.compareTo(Ljava/lang/Object;)I,java.lang.Object.getClass()Ljava/lang/Class;
+Done

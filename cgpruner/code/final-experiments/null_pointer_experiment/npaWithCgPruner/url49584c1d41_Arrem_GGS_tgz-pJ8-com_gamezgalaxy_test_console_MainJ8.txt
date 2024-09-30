@@ -1,0 +1,32 @@
+NPE_INV,com.gamezgalaxy.test.console.Main.start()V,com.gamezgalaxy.GGS.server.Server.Start()V
+NPE_GET,com.gamezgalaxy.test.console.Main.start()V,Lcom/gamezgalaxy/GGS/server/Server.Running Z
+NPE_INV,com.gamezgalaxy.test.console.Main.start()V,com.gamezgalaxy.GGS.server.Server.getCommandHandler()Lcom/gamezgalaxy/GGS/API/plugin/CommandHandler;
+NPE_INV,com.gamezgalaxy.test.console.Main.start()V,com.gamezgalaxy.GGS.server.Server.getCommandHandler()Lcom/gamezgalaxy/GGS/API/plugin/CommandHandler;
+NPE_INV,com.gamezgalaxy.test.console.Main.start()V,com.gamezgalaxy.GGS.server.Server.Log(Ljava/lang/String;)V
+NPE_GET,com.gamezgalaxy.GGS.chat.Messages.serverBroadcast(Ljava/lang/String;)V,Lcom/gamezgalaxy/GGS/server/Server.players Ljava/util/ArrayList
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.read(Lorg/w3c/dom/Element;Lcom/gamezgalaxy/GGS/server/Server;)Lcom/gamezgalaxy/GGS/groups/Group;,java.util.ArrayList.add(Ljava/lang/Object;)Z
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.find(Ljava/lang/String;)Lcom/gamezgalaxy/GGS/groups/Group;,java.lang.String.equals(Ljava/lang/Object;)Z
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.loadMembers()V,java.util.ArrayList.add(Ljava/lang/Object;)Z
+NPE_GET,com.gamezgalaxy.GGS.world.PhysicsBlock.onDelete(Lcom/gamezgalaxy/GGS/world/Level;ILcom/gamezgalaxy/GGS/server/Server;)V,Lcom/gamezgalaxy/GGS/world/Level.ticks Ljava/util/ArrayList
+NPE_GET,com.gamezgalaxy.GGS.world.Level$Ticker.run()V,Lcom/gamezgalaxy/GGS/world/Level.ticks Ljava/util/ArrayList
+NPE_PUT,com.gamezgalaxy.GGS.world.Level$Ticker.run()V,Lcom/gamezgalaxy/GGS/world/Level.ticks Ljava/util/ArrayList
+NPE_GET,com.gamezgalaxy.GGS.world.Level$Ticker.run()V,Lcom/gamezgalaxy/GGS/world/Level.ticks Ljava/util/ArrayList
+NPE_INV,com.gamezgalaxy.test.console.Main.sendMessage(Ljava/lang/String;)V,com.gamezgalaxy.GGS.server.Server.Log(Ljava/lang/String;)V
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.canExecute(Lcom/gamezgalaxy/GGS/API/plugin/Command;)Z,java.util.ArrayList.contains(Ljava/lang/Object;)Z
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.canExecute(Lcom/gamezgalaxy/GGS/API/plugin/Command;)Z,java.util.ArrayList.contains(Ljava/lang/Object;)Z
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.canExecute(Lcom/gamezgalaxy/GGS/API/plugin/Command;)Z,com.gamezgalaxy.GGS.groups.Group.canExecute(Lcom/gamezgalaxy/GGS/API/plugin/Command;)Z
+NPE_INV,com.gamezgalaxy.GGS.world.PhysicsBlock.move(III)V,com.gamezgalaxy.GGS.world.Level.setTile(Lcom/gamezgalaxy/GGS/world/Block;IIILcom/gamezgalaxy/GGS/server/Server;)V
+NPE_INV,com.gamezgalaxy.GGS.world.PhysicsBlock.move(III)V,com.gamezgalaxy.GGS.world.Level.setTile(Lcom/gamezgalaxy/GGS/world/Block;IIILcom/gamezgalaxy/GGS/server/Server;)V
+NPE_INV,com.gamezgalaxy.GGS.world.PhysicsBlock.add(III)V,com.gamezgalaxy.GGS.world.Level.getTile(III)Lcom/gamezgalaxy/GGS/world/Block;
+NPE_INV,com.gamezgalaxy.GGS.world.PhysicsBlock.add(III)V,com.gamezgalaxy.GGS.world.Level.setTile(Lcom/gamezgalaxy/GGS/world/Block;IIILcom/gamezgalaxy/GGS/server/Server;)V
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.getGroup(Lcom/gamezgalaxy/GGS/iomodel/Player;)Lcom/gamezgalaxy/GGS/groups/Group;,java.util.ArrayList.iterator()Ljava/util/Iterator;
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.removePlayer(Lcom/gamezgalaxy/GGS/iomodel/Player;)V,java.util.ArrayList.contains(Ljava/lang/Object;)Z
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.removePlayer(Lcom/gamezgalaxy/GGS/iomodel/Player;)V,java.util.ArrayList.remove(Ljava/lang/Object;)Z
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.removeMember(Ljava/lang/String;)V,java.util.ArrayList.contains(Ljava/lang/Object;)Z
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.removeMember(Ljava/lang/String;)V,java.util.ArrayList.remove(Ljava/lang/Object;)Z
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.saveMembers()V,java.util.ArrayList.iterator()Ljava/util/Iterator;
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.addPlayer(Lcom/gamezgalaxy/GGS/iomodel/Player;)V,java.util.ArrayList.contains(Ljava/lang/Object;)Z
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.addPlayer(Lcom/gamezgalaxy/GGS/iomodel/Player;)V,java.util.ArrayList.add(Ljava/lang/Object;)Z
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.addMember(Ljava/lang/String;)V,java.util.ArrayList.contains(Ljava/lang/Object;)Z
+NPE_INV,com.gamezgalaxy.GGS.groups.Group.addMember(Ljava/lang/String;)V,java.util.ArrayList.add(Ljava/lang/Object;)Z
+Done
