@@ -1,0 +1,40 @@
+# Use a base image with Python and Java pre-installed
+FROM python:3.10-slim
+
+# Install dependencies (Java, Stack, wget, unzip)
+RUN apt-get update && apt-get install -y \
+    openjdk-8-jdk \
+    stack \
+    wget \
+    unzip \
+    && rm -rf /var/lib/apt/lists/*
+
+# Set environment variables (Optional)
+ENV JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
+ENV PATH=$JAVA_HOME/bin:$PATH
+
+# Copy your Python scripts and other files
+COPY . /cgpruner
+
+# Set the working directory inside the container
+WORKDIR /cgpruner
+
+# Install Python dependencies (if any)
+RUN pip install -r requirements.txt
+
+# Build the javaq project (Haskell project)
+RUN cd javaq && stack setup && stack build && stack install
+
+# Set PATH to include the javaq executable from .stack-work/bin
+ENV PATH="/cgpruner/javaq/.stack-work/install/x86_64-linux*/*/bin:${PATH}"
+
+# Download NJR-1 dataset and unzip it
+RUN wget https://zenodo.org/records/4839913/files/njr-1_dataset.zip \
+    && unzip njr-1_dataset.zip -d njr-1_dataset \
+    && rm -rf njr-1_dataset.zip
+
+# adding the output folder
+RUN mkdir output/static_cgs && mkdir output/stats
+
+# Set the default command for the container (running your script)
+CMD ["bash"]
