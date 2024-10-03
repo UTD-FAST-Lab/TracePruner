@@ -1,3 +1,5 @@
+# mohammad rafieian
+
 
 import os
 import argparse
@@ -19,12 +21,15 @@ WALA_CORE_JAR = "tools/wala/com.ibm.wala.core-1.5.9.jar"
 WALA_SHRIKE_JAR = "tools/wala/com.ibm.wala.shrike-1.5.9.jar"
 WALA_UTIL_JAR = "tools/wala/com.ibm.wala.util-1.5.9.jar"
 
-OUTPUT_FOLDER = '/20TB/mohammad/cg_dataset/cgpruner_static_cg'
-PROGRAM_FILES = '/home/mohammad/projects/cgPruner/cgpruner/programs.txt'
-NJR1_DATASET_FOLDER = '/20TB/mohammad/cg_dataset/njr-1-dataset/june2020_dataset'
 
-ml4_study_path = '/home/mohammad/projects/cgPruner/WALADriver'
-csv_file = f"{ml4_study_path}/1-way-eliminated.csv"
+# data_folder = os.getenv('DATA_FOLDER')
+data_folder = '/home/mohammad/projects/CallGraphPruner_data'    #change this to environment
+OUTPUT_FOLDER = f'{data_folder}/output/static_cgs'
+PROGRAM_FILES = '../programs.txt'
+NJR1_DATASET_FOLDER = f'{data_folder}/njr-1_dataset/june2020_dataset'
+
+# ml4_study_path = '/home/mohammad/projects/cgPruner/WALADriver'
+csv_file = "../1-way-eliminated.csv"
 
 is_default = False
 WALA_DEFAULT_CONFIG = '-reflectionSetting NONE -cgalgo ZERO_CFA -sensitivity 1 -handleStaticInit true -useConstantSpecificKeys false -handleZeroLengthArray true -useLexicalScopingForGlobals false -useStacksForLexcialScoping false'
@@ -103,7 +108,7 @@ def run_wala(program, config='', config_num=0):
 	wala_driver_class = WALA_DRIVER[:-5] #remove .java
 	RAW_WALA_OUTPUT = f'tmp/raw_wala_output_{config_num}_{program}.csv'
 
-	command = f'java {wala_driver_class} -classpath {jar_file} -mainclass {mainclass} -output {RAW_WALA_OUTPUT} -resolveinterfaces true '
+	command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java {wala_driver_class} -classpath {jar_file} -mainclass {mainclass} -output {RAW_WALA_OUTPUT} -resolveinterfaces true '
 	# -reflection false -analysis 0cfa
 
 	if not is_default:
@@ -115,7 +120,7 @@ def run_wala(program, config='', config_num=0):
 
 	# Run javaq to get methods
 	METHODS_FILE = f'tmp/methods_{config_num}_{program}.txt'
-	os.system(f'javaq --cp {jar_file} list-methods > {METHODS_FILE}')
+	os.system(f'/home/mohammad/projects/CallGraphPruner/cgpruner/javaq/.stack-work/install/x86_64-linux-tinfo6/957f5142b7e8110d4a9248773920af363e8c0e689145f498a5a9416c55915651/8.10.4/bin/javaq --cp {jar_file} list-methods > {METHODS_FILE}')
 
 	#Finally compute the transitive closure
 	os.system(f'python3 {CLOSE_GRAPH_SCRIPT} {RAW_WALA_OUTPUT} {METHODS_FILE} {output_file}')
@@ -141,7 +146,7 @@ def main():
 	with open(PROGRAM_FILES, 'r') as file:
 		programs = [program.strip() for program in file.readlines()]
 
-	run_wala_in_parallel(configurations, 5, programs)
+	run_wala_in_parallel(configurations, 10, programs)
 	
 	
 
@@ -157,7 +162,7 @@ if __name__ == '__main__':
 	os.environ["CLASSPATH"] = class_path_string
 
 	#compile java driver
-	os.system(f'javac {WALA_DRIVER}')
+	os.system(f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/javac {WALA_DRIVER}')
 	
 	main()
 

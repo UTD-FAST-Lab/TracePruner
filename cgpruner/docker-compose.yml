@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  cgpruner:
+    build: .
+    container_name: cgpruner_container
+    volumes:
+      - /home/mohammad/projects/CallGraphPruner_data:/data               # Mount the data folder from the host to the container
+      - ./code:/cgpruner               # Mount your local code to the /cgpruner folder inside the container
+      - ./javaq:/javaq
+
+    environment:
+      - DATA_FOLDER=/data  # The path inside the container where data will be stored
+
+    tty: true                      # Allocates a pseudo-TTY (for bash to run interactively)
+    # stdin_open: true               # Keeps the stdin open for interaction (like bash)
+

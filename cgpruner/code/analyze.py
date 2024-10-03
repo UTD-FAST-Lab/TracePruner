@@ -3,11 +3,12 @@ import csv
 import json
 
 # Directories
-STATIC_FOLDER = '/20TB/mohammad/cg_dataset/cgpruner_static_cg'
-PRUNED_FOLDER = '/20TB/mohammad/cg_dataset/cgpruner_pruned_cg'
-DYNAMIC_FOLDER = '/home/mohammad/projects/cgPruner/cgpruner/dataset-high-precision-callgraphs/full_callgraphs_set'
-OUTPUT_FOLDER = '/20TB/mohammad/cg_dataset/cgpruner_output'
-EVAL_FILE = os.path.join(OUTPUT_FOLDER, 'eval3.json')
+data_folder = '/home/mohammad/projects/CallGraphPruner_data'    #change this to environment
+STATIC_FOLDER = f'{data_folder}/output/static_cgs'
+PRUNED_FOLDER = f'{data_folder}/output/pruned_cgs'
+DYNAMIC_FOLDER = f'{data_folder}/dataset-high-precision-callgraphs/full_callgraphs_set'
+OUTPUT_FOLDER = f'{data_folder}/output/stats'
+EVAL_FILE = os.path.join(OUTPUT_FOLDER, 'eval.json')
 
 def load_cgs(program, config):
     static_cg = set()
