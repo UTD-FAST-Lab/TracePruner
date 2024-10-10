@@ -5,10 +5,15 @@ EXTRA_INFO_SCRIPT = 'tools/balancer-cg/generate_extra_information_from_dataset.p
 INFERENCE_SCRIPT = 'tools/balancer-cg/inference.py'
 TMP_FOLDER = "tmp"
 
-data_folder = '/home/mohammad/projects/CallGraphPruner_data'    #change this to environment
-CG_DIR = f'{data_folder}/output/static_cgs'
-OUTPUT_DIR = f'{data_folder}/output/pruned_cgs'
-CLASSIFIER_PATH = f'{data_folder}/dataset-high-precision-callgraphs/learned_classifiers/wala.joblib'
+data_folder = '/20TB/mohammad'    #change this to environment
+# data_folder = '/home/mohammad/projects/CallGraphPruner_data'    #change this to environment
+model_type = 'config'     #original, cofig, config_trace
+
+CG_DIR = f'{data_folder}/models/pruner_{model_type}/output/static_cgs/testing_cgs'
+OUTPUT_DIR = f'{data_folder}/models/pruner_{model_type}/output/pruned_cgs'
+
+# CLASSIFIER_PATH = f'{data_folder}/dataset-high-precision-callgraphs/learned_classifiers/wala.joblib'
+CLASSIFIER_PATH = f'{data_folder}/models/pruner_{model_type}/pruner_{model_type}.pkl'
 CUTOFF = 0.45
 
 
@@ -27,7 +32,12 @@ def run_model(INPUT_FILE, program, config):
 def main():
     programs = [p for p in os.listdir(CG_DIR) if os.path.isdir(os.path.join(CG_DIR, p))]
     # print(programs)
-    # programs.remove('url1a41b8e9f2_mr1azl_INF345_tgz-pJ8-TestParserJ8')
+    ignore_programs = (
+        'url1a41b8e9f2_mr1azl_INF345_tgz-pJ8-TestParserJ8',
+        'url27a7ae3508_serkan_ozal_ocean_of_memories_tgz-pJ8-com_zeroturnaround_rebellabs_oceanofmemories_article1_objectlayout_ObjectMemoryLayoutDemoJ8'
+    )
+    programs = [p for p in programs if p not in ignore_programs] 
+    # print(programs)
 
     # Use ThreadPoolExecutor with 10 threads
     with concurrent.futures.ThreadPoolExecutor(max_workers=10) as executor:

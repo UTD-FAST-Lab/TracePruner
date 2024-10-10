@@ -6,6 +6,7 @@ import random
 import pathlib
 from sklearn.ensemble import RandomForestClassifier
 from joblib import dump, load
+import pandas as pd
 
 INPUT_FILE = sys.argv[1]
 LEARNED_CLASSIFIER = sys.argv[2]
@@ -30,11 +31,13 @@ with open(INPUT_FILE, 'r') as readfp:
         edge_names.append(f'{row["method"]},{row["offset"]},{row["target"]}')
 
 #Convert into array format
-edge_features = np.array(edge_features)
+# edge_features = np.array(edge_features)
+edge_features_df = pd.DataFrame(edge_features, columns=header_names)
+
 
 #Prediction
 clf = load(LEARNED_CLASSIFIER) 
-y_pred_proba = clf.predict_proba(edge_features)
+y_pred_proba = clf.predict_proba(edge_features_df)
 y_pred_proba = y_pred_proba[:,1] #just use probability of label 1
 
 #Print the set of edges with probability >= CUTOFF
