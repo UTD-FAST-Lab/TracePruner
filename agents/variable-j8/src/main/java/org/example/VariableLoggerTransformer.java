@@ -21,7 +21,7 @@ public class VariableLoggerTransformer implements ClassFileTransformer  {
             if (className != null && className.contains("wala") ) {   // this is for jayhorn
                 System.out.println("Transforming class: " + className);
                 ClassReader cr = new ClassReader(classfileBuffer);
-                ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_FRAMES);
+                ClassWriter cw = new ClassWriter(cr, ClassWriter.COMPUTE_FRAMES | ClassWriter.COMPUTE_MAXS);
                 ClassVisitor cv = new VariableClassVisitor(cw, className);
                 cr.accept(cv, ClassReader.EXPAND_FRAMES);
                 return cw.toByteArray();

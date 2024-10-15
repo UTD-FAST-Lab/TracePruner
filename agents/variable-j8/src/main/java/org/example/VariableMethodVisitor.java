@@ -35,42 +35,53 @@ public class VariableMethodVisitor extends MethodVisitor {
     // Intercept STORE instructions (local variable writes)
     @Override
     public void visitVarInsn(int opcode, int varIndex) {
-        if (opcode >= Opcodes.ISTORE && opcode <= Opcodes.ASTORE) {
-            String varName = localVarNames.getOrDefault(varIndex, "var" + varIndex); // Fallback to index if no name
-            logVariableWrite(varIndex, varName, opcode);
-        }
+    // Call the original instruction first
         super.visitVarInsn(opcode, varIndex);
-    }
 
-    private void logVariableWrite(int varIndex, String varName, int opcode) {
-        // Depending on the type, load the value from the stack and print it
-        switch (opcode) {
-            case Opcodes.ISTORE: // integer store
-                mv.visitVarInsn(Opcodes.ILOAD, varIndex);
-                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Integer", "toString", "(I)Ljava/lang/String;", false);
-                break;
-            case Opcodes.FSTORE: // float store
-                mv.visitVarInsn(Opcodes.FLOAD, varIndex);
-                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Float", "toString", "(F)Ljava/lang/String;", false);
-                break;
-            case Opcodes.DSTORE: // double store
-                mv.visitVarInsn(Opcodes.DLOAD, varIndex);
-                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Double", "toString", "(D)Ljava/lang/String;", false);
-                break;
-            case Opcodes.LSTORE: // long store
-                mv.visitVarInsn(Opcodes.LLOAD, varIndex);
-                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/Long", "toString", "(J)Ljava/lang/String;", false);
-                break;
-            case Opcodes.ASTORE: // reference store
-                mv.visitVarInsn(Opcodes.ALOAD, varIndex);
-                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/String", "valueOf", "(Ljava/lang/Object;)Ljava/lang/String;", false);
-                break;
+        if (opcode >= Opcodes.ISTORE && opcode <= Opcodes.ASTORE) {
+            // Get the variable name for logging
+            String varName = localVarNames.getOrDefault(varIndex, "var" + varIndex);
+
+            // Load System.out
+            mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+
+            // Create StringBuilder
+            mv.visitTypeInsn(Opcodes.NEW, "java/lang/StringBuilder");
+            mv.visitInsn(Opcodes.DUP);
+            mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false);
+
+            // Append "Variable <varName> = "
+            mv.visitLdcInsn("AgentLogger|Variable: " + className.replace('/', '.') + "." + methodName + " " + desc +" Variable " + varName + " = ");
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
+
+            // Load the variable value and append it
+            switch (opcode) {
+                case Opcodes.ISTORE:
+                    mv.visitVarInsn(Opcodes.ILOAD, varIndex);
+                    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(I)Ljava/lang/StringBuilder;", false);
+                    break;
+                case Opcodes.FSTORE:
+                    mv.visitVarInsn(Opcodes.FLOAD, varIndex);
+                    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(F)Ljava/lang/StringBuilder;", false);
+                    break;
+                case Opcodes.DSTORE:
+                    mv.visitVarInsn(Opcodes.DLOAD, varIndex);
+                    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(D)Ljava/lang/StringBuilder;", false);
+                    break;
+                case Opcodes.LSTORE:
+                    mv.visitVarInsn(Opcodes.LLOAD, varIndex);
+                    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false);
+                    break;
+                case Opcodes.ASTORE:
+                    mv.visitVarInsn(Opcodes.ALOAD, varIndex);
+                    mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/Object;)Ljava/lang/StringBuilder;", false);
+                    break;
+            }
+
+            // Convert StringBuilder to String and print
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
+            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
         }
-        
-        // Logging the variable name and value
-        mv.visitLdcInsn("Variable " + varName + " = ");
-        mv.visitInsn(Opcodes.SWAP);
-        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "java/lang/System", "out", "(Ljava/lang/Object;)V", false);
     }
-
+    
 }

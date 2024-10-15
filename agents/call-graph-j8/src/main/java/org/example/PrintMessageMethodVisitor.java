@@ -20,11 +20,11 @@ public class PrintMessageMethodVisitor extends MethodVisitor {
     public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
         // Print call graph information
 
-        if (owner.startsWith("jayhorn")){
-            mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-            mv.visitLdcInsn("AgentLogger|CG_edge: " + className.replace('/', '.') + "." + methodName + " " + desc + " -> " + owner.replace('/', '.') + "." + name + " " + descriptor);
-            mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
-        }
+        
+        mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
+        mv.visitLdcInsn("AgentLogger|CG_edge: " + className.replace('/', '.') + "." + methodName + " " + desc + " -> " + owner.replace('/', '.') + "." + name + " " + descriptor);
+        mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
+    
 
         super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
     }

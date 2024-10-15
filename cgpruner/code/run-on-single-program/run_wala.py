@@ -31,7 +31,7 @@ NJR1_DATASET_FOLDER = f'{data_folder}/njr-1_dataset/june2020_dataset'
 # ml4_study_path = '/home/mohammad/projects/cgPruner/WALADriver'
 csv_file = "../1-way-eliminated.csv"
 
-is_default = False
+is_default = True
 WALA_DEFAULT_CONFIG = '-reflectionSetting NONE -cgalgo ZERO_CFA -sensitivity 1 -handleStaticInit true -useConstantSpecificKeys false -handleZeroLengthArray true -useLexicalScopingForGlobals false -useStacksForLexcialScoping false'
 
 #Parse command line args
