@@ -101,7 +101,8 @@ def run_wala(program, config='', config_num=0):
     agents = (
         '/home/mohammad/projects/CallGraphPruner/agents/branch-j8/target/branch-j8-1.0-SNAPSHOT-jar-with-dependencies.jar',
         '/home/mohammad/projects/CallGraphPruner/agents/call-graph-j8/target/call-graph-j8-1.0-SNAPSHOT-jar-with-dependencies.jar',
-        '/home/mohammad/projects/CallGraphPruner/agents/variable-j8/target/variables-1.0-SNAPSHOT-jar-with-dependencies.jar'
+        '/home/mohammad/projects/CallGraphPruner/agents/variable-j8/target/variables-1.0-SNAPSHOT-jar-with-dependencies.jar',
+        '/home/mohammad/projects/CallGraphPruner/agents/integrated-j8/target/integrated-j8-1.0-SNAPSHOT-jar-with-dependencies.jar'
     )
 
     if not os.path.exists(os.path.join(OUTPUT_FOLDER, program)):
@@ -115,7 +116,7 @@ def run_wala(program, config='', config_num=0):
     wala_driver_class = WALA_DRIVER[:-5] #remove .java
     RAW_WALA_OUTPUT = f'tmp/raw_wala_output_{config_num}_{program}.csv'
 
-    command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agents[1]} {wala_driver_class} -classpath {jar_file} -mainclass {mainclass} -output {RAW_WALA_OUTPUT} -resolveinterfaces true > tmp/test.txt'
+    command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agents[3]} {wala_driver_class} -classpath {jar_file} -mainclass {mainclass} -output {RAW_WALA_OUTPUT} -resolveinterfaces true > tmp/test.txt'
     # -reflection false -analysis 0cfa
 
     # if not is_default:
