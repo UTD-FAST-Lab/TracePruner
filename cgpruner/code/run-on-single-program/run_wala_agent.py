@@ -116,13 +116,14 @@ def run_wala(program, config='', config_num=0):
     wala_driver_class = WALA_DRIVER[:-5] #remove .java
     RAW_WALA_OUTPUT = f'tmp/raw_wala_output_{config_num}_{program}.csv'
 
-    command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agents[3]} {wala_driver_class} -classpath {jar_file} -mainclass {mainclass} -output {RAW_WALA_OUTPUT} -resolveinterfaces true > tmp/test.txt'
+    command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agents[3]}=logLevel=method,agentLevel=cg {wala_driver_class} -classpath {jar_file} -mainclass {mainclass} -output {RAW_WALA_OUTPUT} -resolveinterfaces true '
     # -reflection false -analysis 0cfa
-
+# -javaagent:{agents[3]}=logLevel=method,agentLevel=cg
     # if not is_default:
     # 	command += config
     # else:
-    # 	command += WALA_DEFAULT_CONFIG
+    command += WALA_DEFAULT_CONFIG
+    command += ' > tmp/testcg.txt'
 
     os.system(command)
 

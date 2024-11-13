@@ -235,54 +235,55 @@ public class WalaCallgraph {
   }
     
 
-    final long startTime = System.currentTimeMillis();
+    // final long startTime = System.currentTimeMillis();
 
-		final MonitorUtil.IProgressMonitor pm = new MonitorUtil.IProgressMonitor() {
-			private boolean cancelled;
+		// final MonitorUtil.IProgressMonitor pm = new MonitorUtil.IProgressMonitor() {
+		// 	private boolean cancelled;
 
-			@Override
-			public void beginTask(final String s, final int i) {
+		// 	@Override
+		// 	public void beginTask(final String s, final int i) {
 
-			}
+		// 	}
 
-			@Override
-			public void subTask(final String s) {
+		// 	@Override
+		// 	public void subTask(final String s) {
 
-			}
+		// 	}
 
-			@Override
-			public void cancel() {
-				this.cancelled = true;
-        System.out.println("Process canceled.");
-			}
+		// 	@Override
+		// 	public void cancel() {
+		// 		this.cancelled = true;
+    //     System.out.println("Process canceled.");
+		// 	}
 
-			@Override
-			public boolean isCanceled() {
-				if (System.currentTimeMillis() - startTime > 4500000) {
-					this.cancelled = true;
-          System.out.println("Process canceled due to timeout.");
-				}
-				return this.cancelled;
-			}
+		// 	@Override
+		// 	public boolean isCanceled() {
+		// 		if (System.currentTimeMillis() - startTime > 4500000) {
+		// 			this.cancelled = true;
+    //       System.out.println("Process canceled due to timeout.");
+		// 		}
+		// 		return this.cancelled;
+		// 	}
 
-			@Override
-			public void done() {
+		// 	@Override
+		// 	public void done() {
 
-			}
+		// 	}
 
-			@Override
-			public void worked(final int i) {
+		// 	@Override
+		// 	public void worked(final int i) {
 
-			}
+		// 	}
 
-			@Override
-			public String getCancelMessage() {
-				return "Timed out.";
-			}
-		};
+		// 	@Override
+		// 	public String getCancelMessage() {
+		// 		return "Timed out.";
+		// 	}
+		// };
 
 
-    CallGraph graph = builder.makeCallGraph(options, pm);
+    // CallGraph graph = builder.makeCallGraph(options, pm);
+    CallGraph graph = builder.makeCallGraph(options, null);
 
     File file = new File(outputfile);    
     file.createNewFile();
