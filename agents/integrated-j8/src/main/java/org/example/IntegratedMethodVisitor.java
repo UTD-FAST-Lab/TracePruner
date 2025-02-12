@@ -24,19 +24,41 @@ public class IntegratedMethodVisitor extends MethodVisitor {
 
 
     // call garph range
-    private static final String START_SOURCE_CLASS = "tools/wala/driver/WalaCallgraph";
-    private static final String START_SOURCE_METHOD = "main";
-    private static final String START_SOURCE_DESC = "([Ljava/lang/String;)V";
+    // private static final String START_SOURCE_CLASS = "tools/wala/driver/WalaCallgraph";
+    // private static final String START_SOURCE_METHOD = "main";
+    // private static final String START_SOURCE_DESC = "([Ljava/lang/String;)V";
+    // private static final String START_TARGET_CLASS = "com/ibm/wala/ipa/callgraph/impl/Util";
+    // private static final String START_TARGET_METHOD = "makeZeroCFABuilder";
+    // private static final String START_TARGET_DESC = "(Lcom/ibm/wala/classLoader/Language;Lcom/ibm/wala/ipa/callgraph/AnalysisOptions;Lcom/ibm/wala/ipa/callgraph/IAnalysisCacheView;Lcom/ibm/wala/ipa/cha/IClassHierarchy;Lcom/ibm/wala/ipa/callgraph/AnalysisScope;)Lcom/ibm/wala/ipa/callgraph/propagation/SSAPropagationCallGraphBuilder;";
+
+    // private static final String END_SOURCE_CLASS = "tools/wala/driver/WalaCallgraph";
+    // private static final String END_SOURCE_METHOD = "main";
+    // private static final String END_SOURCE_DESC = "([Ljava/lang/String;)V";
+    // private static final String END_TARGET_CLASS = "com/ibm/wala/ipa/callgraph/CallGraph";
+    // private static final String END_TARGET_METHOD = "iterator";
+    // private static final String END_TARGET_DESC = "()Ljava/util/Iterator;";
+    private static final String START_SOURCE_CLASS = "WalaJCGAdapter$";
+    private static final String START_SOURCE_METHOD = "serializeCG";
+    private static final String START_SOURCE_DESC = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)J";
     private static final String START_TARGET_CLASS = "com/ibm/wala/ipa/callgraph/impl/Util";
     private static final String START_TARGET_METHOD = "makeZeroCFABuilder";
     private static final String START_TARGET_DESC = "(Lcom/ibm/wala/classLoader/Language;Lcom/ibm/wala/ipa/callgraph/AnalysisOptions;Lcom/ibm/wala/ipa/callgraph/IAnalysisCacheView;Lcom/ibm/wala/ipa/cha/IClassHierarchy;Lcom/ibm/wala/ipa/callgraph/AnalysisScope;)Lcom/ibm/wala/ipa/callgraph/propagation/SSAPropagationCallGraphBuilder;";
+    // private static final String START_TARGET_CLASS = "com/ibm/wala/ipa/cha/ClassHierarchy";
+    // private static final String START_TARGET_METHOD = "resolveMethod";
+    // private static final String START_TARGET_DESC = "(Lcom/ibm/wala/types/MethodReference;)Lcom/ibm/wala/classLoader/IMethod;";
+    private static final String END_SOURCE_CLASS = "WalaJCGAdapter$";
+    private static final String END_SOURCE_METHOD = "serializeCG";
+    private static final String END_SOURCE_DESC = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)J";
+    private static final String END_TARGET_CLASS = "com/ibm/wala/ipa/cha/ClassHierarchy";
+    private static final String END_TARGET_METHOD = "resolveMethod";
+    private static final String END_TARGET_DESC = "(Lcom/ibm/wala/types/MethodReference;)Lcom/ibm/wala/classLoader/IMethod;";
 
-    private static final String END_SOURCE_CLASS = "tools/wala/driver/WalaCallgraph";
-    private static final String END_SOURCE_METHOD = "main";
-    private static final String END_SOURCE_DESC = "([Ljava/lang/String;)V";
-    private static final String END_TARGET_CLASS = "com/ibm/wala/ipa/callgraph/CallGraph";
-    private static final String END_TARGET_METHOD = "iterator";
-    private static final String END_TARGET_DESC = "()Ljava/util/Iterator;";
+    // private static final String END_SOURCE_CLASS = "WalaJCGAdapter";
+    // private static final String END_SOURCE_METHOD = "serializeCG";
+    // private static final String END_SOURCE_DESC = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)J";
+    // private static final String END_TARGET_CLASS = "java.io.FileWriter";
+    // private static final String END_TARGET_METHOD = "<init>";
+    // private static final String END_TARGET_DESC = "(Ljava/lang/String;)V";
 
     // Flag to control recording
     private static boolean recording = false;
@@ -54,27 +76,11 @@ public class IntegratedMethodVisitor extends MethodVisitor {
         this.desc = desc;
     }
 
-    // @Override
-    // public void visitCode() {
-    //     super.visitCode();
-
-    //     // Check if this is the "start" method and inject runtime start recording
-    //     if (className.equals("com/ibm/wala/ipa/callgraph/impl/Util") && methodName.equals("makeZeroCFABuilder") && desc.equals("(Lcom/ibm/wala/classLoader/Language;Lcom/ibm/wala/ipa/callgraph/AnalysisOptions;Lcom/ibm/wala/ipa/callgraph/IAnalysisCacheView;Lcom/ibm/wala/ipa/cha/IClassHierarchy;Lcom/ibm/wala/ipa/callgraph/AnalysisScope;)Lcom/ibm/wala/ipa/callgraph/propagation/SSAPropagationCallGraphBuilder;")) {
-    //         System.out.println("here start");
-    //         mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/RecordingControl", "startRecording", "()V", false);
-    //     }
-    //     if (className.equals("com/ibm/wala/ipa/callgraph/CallGraph") && methodName.equals("iterator") && desc.equals("()Ljava/util/Iterator;")) {
-    //         System.out.println("here");
-    //         mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/RecordingControl", "stopRecording", "()V", false);
-    //     }
-    // }
-
 
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
         // Print call graph information
         super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
-
         if (className.equals(START_SOURCE_CLASS) && methodName.equals(START_SOURCE_METHOD) && desc.equals(START_SOURCE_DESC)
             && owner.equals(START_TARGET_CLASS) && name.equals(START_TARGET_METHOD) && descriptor.equals(START_TARGET_DESC)) {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/RecordingControl", "startRecording", "()V", false);
@@ -83,6 +89,7 @@ public class IntegratedMethodVisitor extends MethodVisitor {
             && owner.equals(END_TARGET_CLASS) && name.equals(END_TARGET_METHOD) && descriptor.equals(END_TARGET_DESC)) {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/RecordingControl", "stopRecording", "()V", false);
         }
+        // CallGraphBuilder.makeCallGraph
 
         if (agentLevel == IntegratedLoggerAgent.AgentLevel.FULL || agentLevel == IntegratedLoggerAgent.AgentLevel.CG){
 

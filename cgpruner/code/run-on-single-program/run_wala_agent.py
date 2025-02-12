@@ -21,6 +21,8 @@ WALA_CORE_JAR = "tools/wala/com.ibm.wala.core-1.5.9.jar"
 WALA_SHRIKE_JAR = "tools/wala/com.ibm.wala.shrike-1.5.9.jar"
 WALA_UTIL_JAR = "tools/wala/com.ibm.wala.util-1.5.9.jar"
 
+JCG_JAR = "/home/mohammad/projects/CallGraphPruner/cats/jcg_wala_testadapter/target/scala-2.12/JCG-WALA-Test-Adapter-assembly-1.0.jar"
+
 
 # data_folder = os.getenv('DATA_FOLDER')
 data_folder = '/home/mohammad/projects/CallGraphPruner_data'    #change this to environment
@@ -116,14 +118,17 @@ def run_wala(program, config='', config_num=0):
     wala_driver_class = WALA_DRIVER[:-5] #remove .java
     RAW_WALA_OUTPUT = f'tmp/raw_wala_output_{config_num}_{program}.csv'
 
-    command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agents[3]}=logLevel=method,agentLevel=cg {wala_driver_class} -classpath {jar_file} -mainclass {mainclass} -output {RAW_WALA_OUTPUT} -resolveinterfaces true '
+
+    command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agents[3]}=logLevel=method,agentLevel=cg -jar {JCG_JAR} 0-1-CFA VC2 vc.Class '
+    # command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agents[3]}=logLevel=method,agentLevel=cg {wala_driver_class} -classpath {jar_file} -mainclass {mainclass} -output {RAW_WALA_OUTPUT} -resolveinterfaces true '
+    # command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:/home/mohammad/projects/CallGraphPruner/agents/bytebuddy-agent/target/bytebuddy-agent-1.0-SNAPSHOT-jar-with-dependencies.jar {wala_driver_class} -classpath {jar_file} -mainclass {mainclass} -output {RAW_WALA_OUTPUT} -resolveinterfaces true '
     # -reflection false -analysis 0cfa
 # -javaagent:{agents[3]}=logLevel=method,agentLevel=cg
     # if not is_default:
     # 	command += config
     # else:
-    command += WALA_DEFAULT_CONFIG
-    command += ' > tmp/testcg.txt'
+    # command += WALA_DEFAULT_CONFIG
+    command += ' > tmp/VC2.txt'
 
     os.system(command)
 
