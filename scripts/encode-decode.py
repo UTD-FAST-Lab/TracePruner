@@ -49,7 +49,7 @@ def encode_file(file_path, string_to_id, id_to_string):
                         unique_strings.add(s)
 
                 # Encode edges
-                encoded_edges.append((string_to_id[left], string_to_id[right]))
+                encoded_edges.append(string_to_id[left], string_to_id[right])
 
     return encoded_edges
 

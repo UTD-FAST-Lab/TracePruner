@@ -46,6 +46,8 @@ def extract_edge_traces(trace_file, edges_dir):
         for inst in current_invokes:
             current_invokes[inst].append(line)
     
+    
+    
 if __name__ == "__main__":
 
     program_name = "VC4.txt"  

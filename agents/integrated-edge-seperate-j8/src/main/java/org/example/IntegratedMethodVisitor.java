@@ -25,9 +25,27 @@ public class IntegratedMethodVisitor extends MethodVisitor {
 
     // call garph range
 
-    private static final String START_SOURCE_CLASS = "WalaJCGAdapter$";
-    private static final String START_SOURCE_METHOD = "serializeCG";
-    private static final String START_SOURCE_DESC = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)J";
+    // jcg driver
+
+    // private static final String START_SOURCE_CLASS = "WalaJCGAdapter$";
+    // private static final String START_SOURCE_METHOD = "serializeCG";
+    // private static final String START_SOURCE_DESC = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)J";
+    // private static final String START_TARGET_CLASS = "com/ibm/wala/ipa/callgraph/impl/Util";
+    // private static final String START_TARGET_METHOD = "makeZeroCFABuilder";
+    // private static final String START_TARGET_DESC = "(Lcom/ibm/wala/classLoader/Language;Lcom/ibm/wala/ipa/callgraph/AnalysisOptions;Lcom/ibm/wala/ipa/callgraph/IAnalysisCacheView;Lcom/ibm/wala/ipa/cha/IClassHierarchy;Lcom/ibm/wala/ipa/callgraph/AnalysisScope;)Lcom/ibm/wala/ipa/callgraph/propagation/SSAPropagationCallGraphBuilder;";
+
+    // private static final String END_SOURCE_CLASS = "WalaJCGAdapter$";
+    // private static final String END_SOURCE_METHOD = "serializeCG";
+    // private static final String END_SOURCE_DESC = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)J";
+    // private static final String END_TARGET_CLASS = "com/ibm/wala/ipa/cha/ClassHierarchy";
+    // private static final String END_TARGET_METHOD = "resolveMethod";
+    // private static final String END_TARGET_DESC = "(Lcom/ibm/wala/types/MethodReference;)Lcom/ibm/wala/classLoader/IMethod;";
+
+    // cgPruner driver
+
+    private static final String START_SOURCE_CLASS = "com/example/WalaCallgraph";
+    private static final String START_SOURCE_METHOD = "main";
+    private static final String START_SOURCE_DESC = "([Ljava/lang/String;)V";
     private static final String START_TARGET_CLASS = "com/ibm/wala/ipa/callgraph/impl/Util";
     private static final String START_TARGET_METHOD = "makeZeroCFABuilder";
     private static final String START_TARGET_DESC = "(Lcom/ibm/wala/classLoader/Language;Lcom/ibm/wala/ipa/callgraph/AnalysisOptions;Lcom/ibm/wala/ipa/callgraph/IAnalysisCacheView;Lcom/ibm/wala/ipa/cha/IClassHierarchy;Lcom/ibm/wala/ipa/callgraph/AnalysisScope;)Lcom/ibm/wala/ipa/callgraph/propagation/SSAPropagationCallGraphBuilder;";

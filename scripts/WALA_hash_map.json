@@ -2083,7 +2083,23 @@
         "com.ibm.wala.ipa.callgraph.propagation.PropagationCallGraphBuilder$ArrayLoadOperator.getFixedSet ()Lcom/ibm/wala/ipa/callgraph/propagation/PointsToSetVariable;": 2081,
         "com.ibm.wala.ipa.callgraph.propagation.PropagationCallGraphBuilder$ArrayLoadOperator.lambda$evaluate$0 (Lcom/ibm/wala/ipa/callgraph/propagation/PointerKey;Lcom/ibm/wala/ipa/callgraph/propagation/PropagationCallGraphBuilder$MutableBoolean;I)V": 2082,
         "com.ibm.wala.ipa.callgraph.propagation.PropagationSystem.newFieldRead (Lcom/ibm/wala/ipa/callgraph/propagation/PointerKey;Lcom/ibm/wala/fixpoint/UnaryOperator;Lcom/ibm/wala/ipa/callgraph/propagation/PointerKey;)Z": 2083,
-        "com.ibm.wala.util.intset.MutableIntSet.foreachExcluding (Lcom/ibm/wala/util/intset/IntSet;Lcom/ibm/wala/util/intset/IntSetAction;)V": 2084
+        "com.ibm.wala.util.intset.MutableIntSet.foreachExcluding (Lcom/ibm/wala/util/intset/IntSet;Lcom/ibm/wala/util/intset/IntSetAction;)V": 2084,
+        "com.ibm.wala.classLoader.ShrikeBTMethod.toString ()Ljava/lang/String;": 2085,
+        "com.ibm.wala.types.MethodReference.toString ()Ljava/lang/String;": 2086,
+        "com.ibm.wala.types.Selector.toString ()Ljava/lang/String;": 2087,
+        "com.ibm.wala.types.Descriptor.toString ()Ljava/lang/String;": 2088,
+        "com.ibm.wala.types.Descriptor$Key.toString ()Ljava/lang/String;": 2089,
+        "com.ibm.wala.types.Descriptor$Key.appendSemicolonIfNeeded (Ljava/lang/StringBuilder;Lcom/ibm/wala/types/TypeName;)V": 2090,
+        "com.ibm.wala.types.TypeName.toUnicodeString ()Ljava/lang/String;": 2091,
+        "com.ibm.wala.types.TypeName$TypeNameKey.toUnicodeString ()Ljava/lang/String;": 2092,
+        "com.ibm.wala.core.util.strings.Atom.toUnicodeString ()Ljava/lang/String;": 2093,
+        "com.ibm.wala.core.util.strings.UTF8Convert.fromUTF8 ([B)Ljava/lang/String;": 2094,
+        "com.ibm.wala.ssa.SSAInstruction.toString ()Ljava/lang/String;": 2095,
+        "com.ibm.wala.ssa.SSAInstruction.toString (Lcom/ibm/wala/ssa/SymbolTable;)Ljava/lang/String;": 2096,
+        "com.ibm.wala.ssa.SSAAbstractInvokeInstruction.toString (Lcom/ibm/wala/ssa/SymbolTable;)Ljava/lang/String;": 2097,
+        "com.ibm.wala.classLoader.CallSiteReference.getInvocationString ()Ljava/lang/String;": 2098,
+        "com.ibm.wala.classLoader.CallSiteReference.getInvocationString (Lcom/ibm/wala/shrike/shrikeBT/IInvokeInstruction$IDispatch;)Ljava/lang/String;": 2099,
+        "com.ibm.wala.ssa.SSAAbstractInvokeInstruction.getValueString (Lcom/ibm/wala/ssa/SymbolTable;I)Ljava/lang/String;": 2100
     },
     "id_to_string": {
         "1": "WalaJCGAdapter$.serializeCG (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)J",
@@ -4169,6 +4185,22 @@
         "2081": "com.ibm.wala.ipa.callgraph.propagation.PropagationCallGraphBuilder$ArrayLoadOperator.getFixedSet ()Lcom/ibm/wala/ipa/callgraph/propagation/PointsToSetVariable;",
         "2082": "com.ibm.wala.ipa.callgraph.propagation.PropagationCallGraphBuilder$ArrayLoadOperator.lambda$evaluate$0 (Lcom/ibm/wala/ipa/callgraph/propagation/PointerKey;Lcom/ibm/wala/ipa/callgraph/propagation/PropagationCallGraphBuilder$MutableBoolean;I)V",
         "2083": "com.ibm.wala.ipa.callgraph.propagation.PropagationSystem.newFieldRead (Lcom/ibm/wala/ipa/callgraph/propagation/PointerKey;Lcom/ibm/wala/fixpoint/UnaryOperator;Lcom/ibm/wala/ipa/callgraph/propagation/PointerKey;)Z",
-        "2084": "com.ibm.wala.util.intset.MutableIntSet.foreachExcluding (Lcom/ibm/wala/util/intset/IntSet;Lcom/ibm/wala/util/intset/IntSetAction;)V"
+        "2084": "com.ibm.wala.util.intset.MutableIntSet.foreachExcluding (Lcom/ibm/wala/util/intset/IntSet;Lcom/ibm/wala/util/intset/IntSetAction;)V",
+        "2085": "com.ibm.wala.classLoader.ShrikeBTMethod.toString ()Ljava/lang/String;",
+        "2086": "com.ibm.wala.types.MethodReference.toString ()Ljava/lang/String;",
+        "2087": "com.ibm.wala.types.Selector.toString ()Ljava/lang/String;",
+        "2088": "com.ibm.wala.types.Descriptor.toString ()Ljava/lang/String;",
+        "2089": "com.ibm.wala.types.Descriptor$Key.toString ()Ljava/lang/String;",
+        "2090": "com.ibm.wala.types.Descriptor$Key.appendSemicolonIfNeeded (Ljava/lang/StringBuilder;Lcom/ibm/wala/types/TypeName;)V",
+        "2091": "com.ibm.wala.types.TypeName.toUnicodeString ()Ljava/lang/String;",
+        "2092": "com.ibm.wala.types.TypeName$TypeNameKey.toUnicodeString ()Ljava/lang/String;",
+        "2093": "com.ibm.wala.core.util.strings.Atom.toUnicodeString ()Ljava/lang/String;",
+        "2094": "com.ibm.wala.core.util.strings.UTF8Convert.fromUTF8 ([B)Ljava/lang/String;",
+        "2095": "com.ibm.wala.ssa.SSAInstruction.toString ()Ljava/lang/String;",
+        "2096": "com.ibm.wala.ssa.SSAInstruction.toString (Lcom/ibm/wala/ssa/SymbolTable;)Ljava/lang/String;",
+        "2097": "com.ibm.wala.ssa.SSAAbstractInvokeInstruction.toString (Lcom/ibm/wala/ssa/SymbolTable;)Ljava/lang/String;",
+        "2098": "com.ibm.wala.classLoader.CallSiteReference.getInvocationString ()Ljava/lang/String;",
+        "2099": "com.ibm.wala.classLoader.CallSiteReference.getInvocationString (Lcom/ibm/wala/shrike/shrikeBT/IInvokeInstruction$IDispatch;)Ljava/lang/String;",
+        "2100": "com.ibm.wala.ssa.SSAAbstractInvokeInstruction.getValueString (Lcom/ibm/wala/ssa/SymbolTable;I)Ljava/lang/String;"
     }
 }
