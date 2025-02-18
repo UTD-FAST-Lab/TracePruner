@@ -85,56 +85,82 @@ class TraceEncoder:
         self.encoded_edge_traces_dir = encoded_edge_traces_dir
 
 
-    def update_scg_mapping(self, count, src, instruction, target):
+    def update_scg_mapping(self, edge_filepath, src, instruction, target):
         '''adds the edge to the mapping file'''
+        
+        edge = {
+            'src': src,
+            'instruction': instruction,
+            'target': target,
+            'edge_path': edge_filepath
+        }
+
+        return edge
+
+
+    def extract_edge_trace(self, filename, encoded_edges_dir):
+        '''extract the edges of the trace'''
+        count = 0   
+        invoke_traces = {}
+        current_invokes = {}
+        static_edges = []
+        file_path = os.path.join(self.encoded_traces_dir, filename)
+
+        with open(file_path, 'r') as f:
+            for line in f:
+                line = line.strip()
+                
+                if "AgentLogger|visitinvoke:" in line:
+                    match = re.search(r'AgentLogger\|visitinvoke: (.+)', line)
+                    if match:
+                        instruction = match.group(1)
+                        current_invokes[instruction] = []
+                        invoke_traces[instruction] = []
+                    
+                if "AgentLogger|addEdge:" in line:
+                    match = re.search(r'addEdge: (Node: < .*? > Context: Everywhere) (.*?) (Node: < .*? > Context: Everywhere)', line)
+                    if match:
+                        src = match.group(1)  # Captures the source node
+                        instruction = match.group(2)  # Captures the instruction
+                        target = match.group(3)  # Captures the target node
+                        
+                        if instruction in current_invokes:
+                            current_invokes[instruction].append(line)
+                            
+                            count += 1
+
+                            edge_filename = f"{count}.log"
+                            edge_filepath = os.path.join(encoded_edges_dir, edge_filename)
+                            with open(edge_filepath, 'w') as f:
+                                f.write("\n".join(current_invokes[instruction]) + "\n\n")
+
+                            edge = self.update_scg_mapping(edge_filepath, src, instruction, target)
+                            static_edges.append(edge)
+
+                            current_invokes[instruction].pop()
+                            
+                            # current_invokes[instruction] = []  # Reset for the next edge
+                
+                for inst in current_invokes:
+                    current_invokes[inst].append(line)
+
+        # save the edges to the mapping file
+        map_path = os.path.join(self.encoded_edge_traces_dir, filename.split('.')[0], 'edge_map.json')
+        with open(map_path, "w", encoding="utf-8") as fin:
+            json.dump(static_edges, fin, indent=4)
 
     def extract_edge_traces(self):
 
+        for filename in os.listdir(self.encoded_traces_dir):
+            if filename.endswith(".encoded"):
 
+                # create the folder structure for encoded edge traces of this program
+                encoded_base_dir = os.path.join(self.encoded_edge_traces_dir, filename.split('.')[0])
+                encoded_edges_dir = os.path.join(encoded_base_dir, "edges")
+                os.makedirs(encoded_edges_dir, exist_ok=True)
 
-        count = 0   
-        with open(self.trace_path, 'r') as f:
-            lines = f.readlines()
-            
-        invoke_traces = {}
-        current_invokes = {}
-        
-        for line in lines:
-            line = line.strip()
-            
-            if "AgentLogger|visitinvoke:" in line:
-                match = re.search(r'AgentLogger\|visitinvoke: (.+)', line)
-                if match:
-                    instruction = match.group(1)
-                    current_invokes[instruction] = []
-                    invoke_traces[instruction] = []
-                
-            if "AgentLogger|addEdge:" in line:
-                match = re.search(r'addEdge: (Node: < .*? > Context: Everywhere) (.*?) (Node: < .*? > Context: Everywhere)', line)
-                if match:
-                    src = match.group(1)  # Captures the source node
-                    instruction = match.group(2)  # Captures the instruction
-                    target = match.group(3)  # Captures the target node
-                    
-                    if instruction in current_invokes:
-                        count += 1
+                self.extract_edge_trace(filename, encoded_edges_dir)
 
-                        filename = f"{count}.log"
-                        filepath = os.path.join(self.edges_dir, filename)
-
-                        self.update_scg_mapping(count, src, instruction, target)
-                        
-                        current_invokes[instruction].append(line)
-
-                        with open(filepath, 'w') as f:
-                            f.write("\n".join(current_invokes[instruction]) + "\n\n")
-
-                        current_invokes[instruction].pop()
-                        
-                        # current_invokes[instruction] = []  # Reset for the next edge
-            
-            for inst in current_invokes:
-                current_invokes[inst].append(line)
 
     def load_hash_map(self):
         """Load existing hash map from file, or create a new one."""
@@ -236,8 +262,8 @@ if __name__ == "__main__":
         # trace_path = os.path.join(traces_dir, program_name)
 
         tc = TraceEncoder(wala_hash_map_path, traces_dir, encoded_traces_dir, encoded_edge_traces_dir)
-        tc.process_files()
-        # tc.extract_edge_traces()
+        # tc.process_files()
+        tc.extract_edge_traces()
 
 
     if args.feature:
