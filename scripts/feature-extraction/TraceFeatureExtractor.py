@@ -67,27 +67,32 @@ class TraceEncoder:
     '''extracts the the traces of each edge and encode the names of the functions using a map'''
 
 
-    def __init__(self, HASH_MAP_FILE, program_name, edge_traces_dir, trace_path, encoded_edge_traces_dir):
+    def __init__(self, HASH_MAP_FILE, traces_dir, encoded_traces_dir, encoded_edge_traces_dir):
         self.HASH_MAP_FILE = HASH_MAP_FILE
 
         # create the folder structure for actual edge traces
-        base_dir = os.path.join(edge_traces_dir, program_name.split('.')[0])
-        edges_dir = os.path.join(base_dir, "edges")
-        os.makedirs(edges_dir, exist_ok=True)
+        # base_dir = os.path.join(encoded_traces_dir, program_name.split('.')[0])
+        # edges_dir = os.path.join(base_dir, "edges")
+        # os.makedirs(edges_dir, exist_ok=True)
 
         # create the folder structure for encoded edge traces
-        encoded_base_dir = os.path.join(encoded_edge_traces_dir, program_name.split('.')[0])
-        encoded_edges_dir = os.path.join(encoded_base_dir, "edges")
-        os.makedirs(encoded_edges_dir, exist_ok=True)
+        # encoded_base_dir = os.path.join(encoded_edge_traces_dir, program_name.split('.')[0])
+        # encoded_edges_dir = os.path.join(encoded_base_dir, "edges")
+        # os.makedirs(encoded_edges_dir, exist_ok=True)
 
-        self.trace_path = trace_path
-        self.edges_dir = edges_dir
-        self.encoded_edges_dir = encoded_edges_dir
+        self.traces_dir = traces_dir
+        self.encoded_traces_dir = encoded_traces_dir
+        self.encoded_edge_traces_dir = encoded_edge_traces_dir
+
+
+    def update_scg_mapping(self, count, src, instruction, target):
+        '''adds the edge to the mapping file'''
 
     def extract_edge_traces(self):
 
-        count = 0
-        
+
+
+        count = 0   
         with open(self.trace_path, 'r') as f:
             lines = f.readlines()
             
@@ -116,6 +121,8 @@ class TraceEncoder:
 
                         filename = f"{count}.log"
                         filepath = os.path.join(self.edges_dir, filename)
+
+                        self.update_scg_mapping(count, src, instruction, target)
                         
                         current_invokes[instruction].append(line)
 
@@ -142,60 +149,54 @@ class TraceEncoder:
         with open(self.HASH_MAP_FILE, "w", encoding="utf-8") as f:
             json.dump({"string_to_id": string_to_id, "id_to_string": id_to_string}, f, indent=4)
 
-    def encode_file(self, file_path, string_to_id, id_to_string):
+    def encode_file(self, file_path, filename, string_to_id, id_to_string):
         """Encode a file, updating the hash map if needed."""
-        encoded_edges = []
         unique_strings = set(string_to_id.keys())  # Get current unique strings
+
+        encoded_path = os.path.join(self.encoded_traces_dir, filename)
+        encoded_file = encoded_path + ".encoded"
         
         # Read file and process edges
-        with open(file_path, "r", encoding="utf-8") as f:
-            for line in f:
+        with open(file_path, "r", encoding="utf-8") as fin, open(encoded_file, "w", encoding="utf-8") as fw:
+            for line in fin:
                 line = line.strip()
-                if not line.startswith("AgentLogger|CG_edge: "):
-                    continue  # Skip lines that do not match
+                if line.startswith("AgentLogger|visitinvoke: ") or line.startswith("AgentLogger|addEdge: "):
+                    fw.write(f'{line}\n')
 
-                # Remove the prefix before splitting
-                line = line[len("AgentLogger|CG_edge: "):]
+                elif line.startswith("AgentLogger|CG_edge: "):
+                    # Remove the prefix before splitting
+                    line = line[len("AgentLogger|CG_edge: "):]
 
-                # Split by "->" with optional spaces
-                parts = re.split(r"\s*->\s*", line)
-                if len(parts) == 2:
-                    left, right = parts
-                    
-                    # Assign new IDs if needed
-                    for s in [left, right]:
-                        if s not in unique_strings:
-                            new_id = len(string_to_id) + 1
-                            string_to_id[s] = new_id
-                            id_to_string[new_id] = s
-                            unique_strings.add(s)
+                    # Split by "->" with optional spaces
+                    parts = re.split(r"\s*->\s*", line)
+                    if len(parts) == 2:
+                        left, right = parts
+                        
+                        # Assign new IDs if needed
+                        for s in [left, right]:
+                            if s not in unique_strings:
+                                new_id = len(string_to_id) + 1
+                                string_to_id[s] = new_id
+                                id_to_string[new_id] = s
+                                unique_strings.add(s)
 
-                    # Encode edges
-                    encoded_edges.append((string_to_id[left], string_to_id[right]))
+                        # Save encoded results
+                        fw.write(f"{string_to_id[left]},{string_to_id[right]}\n")
 
-        return encoded_edges
     
     def decode_edges(self, encoded_edges, id_to_string):
         """Decode numeric edges back into text format."""
         return [(id_to_string[left], id_to_string[right]) for left, right in encoded_edges]
 
+
     def process_files(self):
         """Process multiple files, encoding each one while maintaining a consistent hash map."""
         string_to_id, id_to_string = self.load_hash_map()
         
-        for filename in os.listdir(self.edges_dir):
-            if filename.endswith(".log"):
-                file_path = os.path.join(self.edges_dir, filename)
-                encoded_edges = self.encode_file(file_path, string_to_id, id_to_string)
-                
-                # Save encoded results
-                encoded_path = os.path.join(self.encoded_edges_dir, filename)
-                encoded_file = encoded_path + ".encoded"
-                with open(encoded_file, "w", encoding="utf-8") as f:
-                    for edge in encoded_edges:
-                        f.write(f"{edge[0]},{edge[1]}\n")
-                
-                print(f"Encoded {file_path} -> {encoded_file}")
+        for filename in os.listdir(self.traces_dir):
+            if filename.endswith(".txt"):
+                file_path = os.path.join(self.traces_dir, filename)
+                self.encode_file(file_path, filename, string_to_id, id_to_string)
 
         # Save updated hash map for future use
         self.save_hash_map(string_to_id, id_to_string)
@@ -208,8 +209,7 @@ def parse_cmd_arguments():
     parser = argparse.ArgumentParser(description="Process some command-line arguments.")
 
     # Add arguments
-    parser.add_argument("--program", type=str, help="name of the target program")
-    # parser.add_argument("--output", type=str, help="Path to the output file")
+    # parser.add_argument("--program", type=str, help="name of the target program")
     parser.add_argument("--trace", action="store_true", help="Enable trace extraction")
     parser.add_argument("--feature", action="store_true", help="Enable feature extraction")
 
@@ -225,25 +225,23 @@ if __name__ == "__main__":
     args = parse_cmd_arguments()
 
 
-    program_name = args.program
+    # program_name = args.program
 
     if args.trace:
         # extracting traces of indivudaul edges and encoding them.
         wala_hash_map_path = '/home/mohammad/projects/CallGraphPruner/scripts/WALA_hash_map.json'
-
         traces_dir = '/home/mohammad/projects/CallGraphPruner/data/cgs' 
-        trace_path = os.path.join(traces_dir, program_name)
-        edge_traces_dir = '/home/mohammad/projects/CallGraphPruner/data/edge-traces'           
+        encoded_traces_dir = '/home/mohammad/projects/CallGraphPruner/data/encoded'           
         encoded_edge_traces_dir = '/home/mohammad/projects/CallGraphPruner/data/encoded-edge'    
+        # trace_path = os.path.join(traces_dir, program_name)
 
-        tc = TraceEncoder(wala_hash_map_path, program_name, edge_traces_dir, trace_path, encoded_edge_traces_dir)
-        tc.extract_edge_traces()
+        tc = TraceEncoder(wala_hash_map_path, traces_dir, encoded_traces_dir, encoded_edge_traces_dir)
         tc.process_files()
+        # tc.extract_edge_traces()
 
 
     if args.feature:
         # extracting features from the traces
-        prog_name_folder = program_name.split('.')[0]
         encoded_edge_traces_dir = f'/home/mohammad/projects/CallGraphPruner/data/encoded-edge/{prog_name_folder}/edges'    
         output_file = f"/home/mohammad/projects/CallGraphPruner/data/encoded-edge/{prog_name_folder}/features.csv"
         
