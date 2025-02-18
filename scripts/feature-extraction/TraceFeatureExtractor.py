@@ -1,31 +1,27 @@
-import os, json, re, argparse
+import os, json, re, argparse, tempfile
 import numpy as np
 import networkx as nx
 from collections import Counter
 from sklearn.preprocessing import StandardScaler
 
 class TraceFeatureExtractor:
-    def __init__(self, trace_folder):
-        self.trace_folder = trace_folder
-        self.feature_vectors = []
+    def __init__(self, encoded_edge_traces_dir):
+        self.encoded_edge_traces_dir = encoded_edge_traces_dir
     
-    def load_traces(self):
-        """Loads traces from files and converts them into lists of (int, int) pairs."""
-        traces = {}
-        for filename in os.listdir(self.trace_folder):
-            if filename.endswith(".encoded"):
-                filepath = os.path.join(self.trace_folder, filename)
-                with open(filepath, 'r') as f:
-                    lines = [tuple(map(int, line.strip().split(','))) for line in f]
-                    traces[filename] = lines
-        return traces
+    def load_trace(self, edge_trace_filepath):
+        """Loads trace from file and converts it into lists of (int, int) pairs."""
+        if edge_trace_filepath.endswith(".log"):
+            with open(edge_trace_filepath, 'r') as f:
+                lines = [tuple(map(int, line.strip().split(','))) for line in f]
+        return lines
     
-    def extract_features(self, traces):
-        """Extracts features from traces and stores them as feature vectors."""
-        for filename, trace in traces.items():
-            graph = self.build_graph(trace)
-            feature_vector = self.compute_features(graph, trace)
-            self.feature_vectors.append((filename, feature_vector))
+    def extract_features(self, trace):
+        """Extracts features from trace and stores them as feature vectors."""
+        
+        graph = self.build_graph(trace)
+        feature_vector = self.compute_features(graph, trace)
+        # self.feature_vectors.append((filename, feature_vector))
+        return feature_vector
         
     def build_graph(self, trace):
         """Constructs a directed graph from the trace data."""
@@ -55,13 +51,39 @@ class TraceFeatureExtractor:
         
         return [num_nodes, num_edges, avg_degree, density, avg_pagerank] + most_common_counts + [unique_functions, entropy]
     
-    def save_features(self, output_file):
+    def save_program_features(self, output_dir, all_program_features):
         """Saves extracted feature vectors to a CSV file."""
-        with open(output_file, 'w') as f:
-            f.write("filename,num_nodes,num_edges,avg_degree,density,avg_pagerank,mc1,mc2,mc3,mc4,mc5,unique_funcs,entropy\n")
-            for filename, vector in self.feature_vectors:
-                f.write(f"{filename},{','.join(map(str, vector))}\n")
+        output_file = os.path.join(output_dir, 'features.csv')
 
+        with open(output_file, 'w', encoding='utf-8') as f:
+            f.write("edge_name,num_nodes,num_edges,avg_degree,density,avg_pagerank,mc1,mc2,mc3,mc4,mc5,unique_funcs,entropy\n")
+            for edge_name, vector in all_program_features:
+                f.write(f"{edge_name},{','.join(map(str, vector))}\n")
+
+    def process_programs(self):
+        """
+        Process each program in the encoded_edge_traces directory.
+        - For each program, find the edges folder.
+        - Extract features from each edge trace file.
+        - Save the features to 'features.csv' in the program's folder.
+        """
+        for program in os.listdir(self.encoded_edge_traces_dir):
+            program_dir = os.path.join(self.encoded_edge_traces_dir, program)
+            edges_dir = os.path.join(program_dir, 'edges')
+
+            if not os.path.isdir(edges_dir):
+                continue  # Skip if edges_dir does not exist
+
+            all_program_features = []
+
+            for edge_trace_filename in os.listdir(edges_dir):
+                edge_trace_filepath = os.path.join(edges_dir, edge_trace_filename)
+                trace = self.load_trace(edge_trace_filepath)
+                edge_features = self.extract_features(trace)
+
+                all_program_features.append((edge_trace_filename, edge_features))
+
+            self.save_program_features(program_dir, all_program_features)
 
 class TraceEncoder:
     '''extracts the the traces of each edge and encode the names of the functions using a map'''
@@ -96,58 +118,140 @@ class TraceEncoder:
         }
 
         return edge
-
+    
 
     def extract_edge_trace(self, filename, encoded_edges_dir):
         '''extract the edges of the trace'''
-        count = 0   
-        invoke_traces = {}
-        current_invokes = {}
+        count = 0
         static_edges = []
-        file_path = os.path.join(self.encoded_traces_dir, filename)
+        # Instead of storing invocation trace lines in a list,
+        # we maintain a mapping of instruction -> temporary file (opened in text mode)
+        current_invokes = {}
+        # (The original invoke_traces dict wasn’t used, so we omit it.)
 
+        file_path = os.path.join(self.encoded_traces_dir, filename)
         with open(file_path, 'r') as f:
             for line in f:
+                # mimic the original strip() call (removes leading/trailing whitespace)
                 line = line.strip()
-                
+
+                # --- Process "visitinvoke:" events ---
                 if "AgentLogger|visitinvoke:" in line:
                     match = re.search(r'AgentLogger\|visitinvoke: (.+)', line)
                     if match:
                         instruction = match.group(1)
-                        current_invokes[instruction] = []
-                        invoke_traces[instruction] = []
-                    
-                if "AgentLogger|addEdge:" in line:
-                    match = re.search(r'addEdge: (Node: < .*? > Context: Everywhere) (.*?) (Node: < .*? > Context: Everywhere)', line)
-                    if match:
-                        src = match.group(1)  # Captures the source node
-                        instruction = match.group(2)  # Captures the instruction
-                        target = match.group(3)  # Captures the target node
-                        
+                        # (Re)initialize the invocation trace by using a temporary file.
+                        # If an entry already exists for this instruction, close it and replace.
                         if instruction in current_invokes:
-                            current_invokes[instruction].append(line)
-                            
-                            count += 1
+                            current_invokes[instruction].close()
+                        # Open a new temporary file in text read/write mode.
+                        # (It exists only during processing.)
+                        temp_file = tempfile.TemporaryFile(mode='w+t')
+                        current_invokes[instruction] = temp_file
 
+                # --- Process "addEdge:" events ---
+                if "AgentLogger|addEdge:" in line:
+                    match = re.search(
+                        r'addEdge: (Node: < .*? > Context: Everywhere) (.*?) (Node: < .*? > Context: Everywhere)',
+                        line
+                    )
+                    if match:
+                        src = match.group(1)
+                        instruction = match.group(2)
+                        target = match.group(3)
+
+                        if instruction in current_invokes:
+                            temp_file = current_invokes[instruction]
+                            # Record the current file position (i.e. the end of the current trace)
+                            pos_before = temp_file.tell()
+                            # Temporarily write the addEdge line to the trace
+                            temp_file.write(line + "\n")
+                            temp_file.flush()
+                            pos_after = temp_file.tell()
+                            # Read the full content (which now includes the addEdge line)
+                            temp_file.seek(0)
+                            trace_content = temp_file.read()
+                            # Write the trace snapshot to a new edge file
+                            count += 1
                             edge_filename = f"{count}.log"
                             edge_filepath = os.path.join(encoded_edges_dir, edge_filename)
-                            with open(edge_filepath, 'w') as f:
-                                f.write("\n".join(current_invokes[instruction]) + "\n\n")
+                            with open(edge_filepath, 'w') as edge_file:
+                                edge_file.write(trace_content + "\n\n")
+                            # Update the mapping (edge file, src, instruction, target)
+                            edge_entry = self.update_scg_mapping(edge_filepath, src, instruction, target)
+                            static_edges.append(edge_entry)
+                            # "Pop" the addEdge line by truncating the temporary file back to pos_before
+                            temp_file.truncate(pos_before)
+                            # Move the file pointer back to the end so further writes continue properly
+                            temp_file.seek(0, os.SEEK_END)
 
-                            edge = self.update_scg_mapping(edge_filepath, src, instruction, target)
-                            static_edges.append(edge)
+                # --- Append the current line to every active invocation trace ---
+                for instr, temp_file in current_invokes.items():
+                    temp_file.write(line + "\n")
+        # End reading the input trace
 
-                            current_invokes[instruction].pop()
-                            
-                            # current_invokes[instruction] = []  # Reset for the next edge
+        # Close all temporary files (they’re no longer needed)
+        for temp_file in current_invokes.values():
+            temp_file.close()
+
+        # Save the collected edge mappings to the mapping file
+        map_dir = os.path.join(self.encoded_edge_traces_dir, filename.split('.')[0])
+        os.makedirs(map_dir, exist_ok=True)
+        map_path = os.path.join(map_dir, 'edge_map.json')
+        with open(map_path, "w", encoding="utf-8") as map_file:
+            json.dump(static_edges, map_file, indent=4)
+
+
+    # def extract_edge_trace(self, filename, encoded_edges_dir):
+    #     '''extract the edges of the trace'''
+    #     count = 0   
+    #     invoke_traces = {}
+    #     current_invokes = {}
+    #     static_edges = []
+    #     file_path = os.path.join(self.encoded_traces_dir, filename)
+
+    #     with open(file_path, 'r') as f:
+    #         for line in f:
+    #             line = line.strip()
                 
-                for inst in current_invokes:
-                    current_invokes[inst].append(line)
+    #             if "AgentLogger|visitinvoke:" in line:
+    #                 match = re.search(r'AgentLogger\|visitinvoke: (.+)', line)
+    #                 if match:
+    #                     instruction = match.group(1)
+    #                     current_invokes[instruction] = []
+    #                     invoke_traces[instruction] = []
+                    
+    #             if "AgentLogger|addEdge:" in line:
+    #                 match = re.search(r'addEdge: (Node: < .*? > Context: Everywhere) (.*?) (Node: < .*? > Context: Everywhere)', line)
+    #                 if match:
+    #                     src = match.group(1)  # Captures the source node
+    #                     instruction = match.group(2)  # Captures the instruction
+    #                     target = match.group(3)  # Captures the target node
+                        
+    #                     if instruction in current_invokes:
+    #                         current_invokes[instruction].append(line)
+                            
+    #                         count += 1
 
-        # save the edges to the mapping file
-        map_path = os.path.join(self.encoded_edge_traces_dir, filename.split('.')[0], 'edge_map.json')
-        with open(map_path, "w", encoding="utf-8") as fin:
-            json.dump(static_edges, fin, indent=4)
+    #                         edge_filename = f"{count}.log"
+    #                         edge_filepath = os.path.join(encoded_edges_dir, edge_filename)
+    #                         with open(edge_filepath, 'w') as f:
+    #                             f.write("\n".join(current_invokes[instruction]) + "\n\n")
+
+    #                         edge = self.update_scg_mapping(edge_filepath, src, instruction, target)
+    #                         static_edges.append(edge)
+
+    #                         current_invokes[instruction].pop()
+                            
+    #                         # current_invokes[instruction] = []  # Reset for the next edge
+                
+    #             for inst in current_invokes:
+    #                 current_invokes[inst].append(line)
+
+    #     # save the edges to the mapping file
+    #     map_path = os.path.join(self.encoded_edge_traces_dir, filename.split('.')[0], 'edge_map.json')
+    #     with open(map_path, "w", encoding="utf-8") as fin:
+    #         json.dump(static_edges, fin, indent=4)
 
     def extract_edge_traces(self):
 
@@ -250,16 +354,13 @@ if __name__ == "__main__":
     # parse arguments
     args = parse_cmd_arguments()
 
-
-    # program_name = args.program
+    encoded_edge_traces_dir = '/home/mohammad/projects/CallGraphPruner/data/encoded-edge'
 
     if args.trace:
         # extracting traces of indivudaul edges and encoding them.
         wala_hash_map_path = '/home/mohammad/projects/CallGraphPruner/scripts/WALA_hash_map.json'
         traces_dir = '/home/mohammad/projects/CallGraphPruner/data/cgs' 
         encoded_traces_dir = '/home/mohammad/projects/CallGraphPruner/data/encoded'           
-        encoded_edge_traces_dir = '/home/mohammad/projects/CallGraphPruner/data/encoded-edge'    
-        # trace_path = os.path.join(traces_dir, program_name)
 
         tc = TraceEncoder(wala_hash_map_path, traces_dir, encoded_traces_dir, encoded_edge_traces_dir)
         # tc.process_files()
@@ -268,11 +369,7 @@ if __name__ == "__main__":
 
     if args.feature:
         # extracting features from the traces
-        encoded_edge_traces_dir = f'/home/mohammad/projects/CallGraphPruner/data/encoded-edge/{prog_name_folder}/edges'    
-        output_file = f"/home/mohammad/projects/CallGraphPruner/data/encoded-edge/{prog_name_folder}/features.csv"
+        encoded_edge_traces_dir = f'/home/mohammad/projects/CallGraphPruner/data/encoded-edge/'    
         
         extractor = TraceFeatureExtractor(encoded_edge_traces_dir)
-        traces = extractor.load_traces()
-        extractor.extract_features(traces)
-        extractor.save_features(output_file)
-        print("Feature extraction complete! Features saved to", output_file)
+        extractor.process_programs()
