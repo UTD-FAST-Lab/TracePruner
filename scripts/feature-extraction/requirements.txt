@@ -1,3 +1,5 @@
 numpy 
 networkx 
 scikit-learn
+tensorflow
+gensim
