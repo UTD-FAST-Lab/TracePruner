@@ -27,25 +27,9 @@ public class IntegratedMethodVisitor extends MethodVisitor {
 
     // jcg driver
 
-    // private static final String START_SOURCE_CLASS = "WalaJCGAdapter$";
-    // private static final String START_SOURCE_METHOD = "serializeCG";
-    // private static final String START_SOURCE_DESC = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)J";
-    // private static final String START_TARGET_CLASS = "com/ibm/wala/ipa/callgraph/impl/Util";
-    // private static final String START_TARGET_METHOD = "makeZeroCFABuilder";
-    // private static final String START_TARGET_DESC = "(Lcom/ibm/wala/classLoader/Language;Lcom/ibm/wala/ipa/callgraph/AnalysisOptions;Lcom/ibm/wala/ipa/callgraph/IAnalysisCacheView;Lcom/ibm/wala/ipa/cha/IClassHierarchy;Lcom/ibm/wala/ipa/callgraph/AnalysisScope;)Lcom/ibm/wala/ipa/callgraph/propagation/SSAPropagationCallGraphBuilder;";
-
-    // private static final String END_SOURCE_CLASS = "WalaJCGAdapter$";
-    // private static final String END_SOURCE_METHOD = "serializeCG";
-    // private static final String END_SOURCE_DESC = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)J";
-    // private static final String END_TARGET_CLASS = "com/ibm/wala/ipa/cha/ClassHierarchy";
-    // private static final String END_TARGET_METHOD = "resolveMethod";
-    // private static final String END_TARGET_DESC = "(Lcom/ibm/wala/types/MethodReference;)Lcom/ibm/wala/classLoader/IMethod;";
-
-    // cgPruner driver
-
-    private static final String START_SOURCE_CLASS = "com/example/WalaCallgraph";
-    private static final String START_SOURCE_METHOD = "main";
-    private static final String START_SOURCE_DESC = "([Ljava/lang/String;)V";
+    private static final String START_SOURCE_CLASS = "WalaJCGAdapter$";
+    private static final String START_SOURCE_METHOD = "serializeCG";
+    private static final String START_SOURCE_DESC = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)J";
     private static final String START_TARGET_CLASS = "com/ibm/wala/ipa/callgraph/impl/Util";
     private static final String START_TARGET_METHOD = "makeZeroCFABuilder";
     private static final String START_TARGET_DESC = "(Lcom/ibm/wala/classLoader/Language;Lcom/ibm/wala/ipa/callgraph/AnalysisOptions;Lcom/ibm/wala/ipa/callgraph/IAnalysisCacheView;Lcom/ibm/wala/ipa/cha/IClassHierarchy;Lcom/ibm/wala/ipa/callgraph/AnalysisScope;)Lcom/ibm/wala/ipa/callgraph/propagation/SSAPropagationCallGraphBuilder;";
@@ -57,9 +41,25 @@ public class IntegratedMethodVisitor extends MethodVisitor {
     private static final String END_TARGET_METHOD = "resolveMethod";
     private static final String END_TARGET_DESC = "(Lcom/ibm/wala/types/MethodReference;)Lcom/ibm/wala/classLoader/IMethod;";
 
+    // cgPruner driver
+
+    // private static final String START_SOURCE_CLASS = "com/example/WalaCallgraph";
+    // private static final String START_SOURCE_METHOD = "main";
+    // private static final String START_SOURCE_DESC = "([Ljava/lang/String;)V";
+    // private static final String START_TARGET_CLASS = "com/ibm/wala/ipa/callgraph/impl/Util";
+    // private static final String START_TARGET_METHOD = "makeZeroCFABuilder";
+    // private static final String START_TARGET_DESC = "(Lcom/ibm/wala/classLoader/Language;Lcom/ibm/wala/ipa/callgraph/AnalysisOptions;Lcom/ibm/wala/ipa/callgraph/IAnalysisCacheView;Lcom/ibm/wala/ipa/cha/IClassHierarchy;Lcom/ibm/wala/ipa/callgraph/AnalysisScope;)Lcom/ibm/wala/ipa/callgraph/propagation/SSAPropagationCallGraphBuilder;";
+
+    // private static final String END_SOURCE_CLASS = "WalaJCGAdapter$";
+    // private static final String END_SOURCE_METHOD = "serializeCG";
+    // private static final String END_SOURCE_DESC = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)J";
+    // private static final String END_TARGET_CLASS = "com/ibm/wala/ipa/cha/ClassHierarchy";
+    // private static final String END_TARGET_METHOD = "resolveMethod";
+    // private static final String END_TARGET_DESC = "(Lcom/ibm/wala/types/MethodReference;)Lcom/ibm/wala/classLoader/IMethod;";
+
 
     // Flag to control recording
-    private static boolean recording = false;
+    // private static boolean recording = false;
 
 
 
@@ -77,7 +77,8 @@ public class IntegratedMethodVisitor extends MethodVisitor {
 
     @Override
     public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
-        // Print call graph information
+
+        // start recording from a certain point to a certian point
         if (className.equals(START_SOURCE_CLASS) && methodName.equals(START_SOURCE_METHOD) && desc.equals(START_SOURCE_DESC)
             && owner.equals(START_TARGET_CLASS) && name.equals(START_TARGET_METHOD) && descriptor.equals(START_TARGET_DESC)) {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/RecordingControl", "startRecording", "()V", false);
@@ -86,8 +87,32 @@ public class IntegratedMethodVisitor extends MethodVisitor {
             && owner.equals(END_TARGET_CLASS) && name.equals(END_TARGET_METHOD) && descriptor.equals(END_TARGET_DESC)) {
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/RecordingControl", "stopRecording", "()V", false);
         }
-        // CallGraphBuilder.makeCallGraph
 
+
+        
+
+
+        // Print the start and end of an edge trace
+        if (name.equals("visitInvokeInternal")) {
+            mv.visitLdcInsn(name);
+            mv.visitVarInsn(Opcodes.ALOAD, 1);  // Load `instruction` (assumed to be the first argument)
+            mv.visitInsn(Opcodes.ACONST_NULL);  // Push `null`
+            mv.visitInsn(Opcodes.ACONST_NULL);  // Push `null`
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logBoundaries",
+                "(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V",false);
+        } else if (name.equals("processResolvedCall")){
+            mv.visitLdcInsn(name);
+            mv.visitVarInsn(Opcodes.ALOAD, 2);  // Load `instruction` 
+            mv.visitVarInsn(Opcodes.ALOAD, 1);  // Load `src node` 
+            mv.visitVarInsn(Opcodes.ALOAD, 3);  // Load 'Target node'
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logBoundaries",
+                "(Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V",false);
+        }
+
+        
+
+
+    
         if (agentLevel == IntegratedLoggerAgent.AgentLevel.FULL || agentLevel == IntegratedLoggerAgent.AgentLevel.CG){
 
             if (owner.contains("wala")){
@@ -96,6 +121,7 @@ public class IntegratedMethodVisitor extends MethodVisitor {
 
                 Label skipLabel = new Label();
                 mv.visitJumpInsn(Opcodes.IFEQ, skipLabel); // Skip logging if not recording
+                // mv.visitInsn(Opcodes.POP);
 
                 // Load the individual parameters onto the stack
                 mv.visitLdcInsn(className); // className
@@ -105,78 +131,56 @@ public class IntegratedMethodVisitor extends MethodVisitor {
                 mv.visitLdcInsn(name);       // method name being called
                 mv.visitLdcInsn(descriptor); // method descriptor being called
 
-                // Conditionally load `instruction` or `null`
-                if (name.equals("visitInvokeInternal")) {
-                    mv.visitVarInsn(Opcodes.ALOAD, 1);  // Load `instruction` (assumed to be the first argument)
-                    mv.visitInsn(Opcodes.ACONST_NULL);  // Push `null`
-                    mv.visitInsn(Opcodes.ACONST_NULL);  // Push `null`
-                } else if (name.equals("processResolvedCall")){
-                    mv.visitVarInsn(Opcodes.ALOAD, 2);  // Load `instruction` 
-                    mv.visitVarInsn(Opcodes.ALOAD, 1);  // Load `src node` 
-                    mv.visitVarInsn(Opcodes.ALOAD, 3);  // Load 'Target node'
-                } else {
-                    mv.visitInsn(Opcodes.ACONST_NULL);  // Push `null`
-                    mv.visitInsn(Opcodes.ACONST_NULL);  // Push `null`
-                    mv.visitInsn(Opcodes.ACONST_NULL);  // Push `null`
-                }
-
 
                 // Call the static logging method with the parameters
                 mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logCGEdge",
-                                "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V",
+                                "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
                                 false);
 
-
                 mv.visitLabel(skipLabel);
-
-                
             }
         }
 
+        
+
         super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
-
-
     }
 
-    // @Override
-    // public void visitInsn(int opcode) {
-    //     // Check if this is the "end" method and inject runtime stop recording
-    //     // if (className.equals("com/ibm/wala/ipa/callgraph/CallGraphBuilder") && methodName.equals("makeCallGraph") && desc.equals("(Lcom/ibm/wala/ipa/callgraph/AnalysisOptions;Lcom/ibm/wala/ipa/callgraph/IAnalysisCacheView;)Lcom/ibm/wala/ipa/callgraph/CallGraph;")) {
-    //     if (className.equals("com/ibm/wala/ipa/callgraph/CallGraphBuilder") && methodName.equals("makeCallGraph")) {
-    //         mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/RecordingControl", "stopRecording", "()V", false);
-    //     }
-    //     super.visitInsn(opcode);
-    // }
 
     @Override
     public void visitJumpInsn(int opcode, Label label) {
 
         
         if (agentLevel == IntegratedLoggerAgent.AgentLevel.FULL || agentLevel == IntegratedLoggerAgent.AgentLevel.BRANCH){
-            if (opcode == Opcodes.IFEQ || opcode == Opcodes.IFNE || opcode == Opcodes.IFLT || opcode == Opcodes.IFGE ||
-                    opcode == Opcodes.IFGT || opcode == Opcodes.IFLE || opcode == Opcodes.IF_ICMPEQ || opcode == Opcodes.IF_ICMPNE ||
-                    opcode == Opcodes.IF_ICMPLT || opcode == Opcodes.IF_ICMPGE || opcode == Opcodes.IF_ICMPGT || opcode == Opcodes.IF_ICMPLE ||
-                    opcode == Opcodes.IF_ACMPEQ || opcode == Opcodes.IF_ACMPNE || opcode == Opcodes.IFNULL || opcode == Opcodes.IFNONNULL) {
 
-                mv.visitLdcInsn(className);      // Push className onto the stack
-                mv.visitLdcInsn(methodName);     // Push methodName onto the stack
-                mv.visitLdcInsn(desc);           // Push desc onto the stack
-                mv.visitLdcInsn(ifStatementCounter); // Push ifStatementCounter onto the stack
+            if (className.contains("wala")){
 
-                // Increment the ifStatementCounter for the next statement
-                ifStatementCounter++;
+                if (opcode == Opcodes.IFEQ || opcode == Opcodes.IFNE || opcode == Opcodes.IFLT || opcode == Opcodes.IFGE ||
+                        opcode == Opcodes.IFGT || opcode == Opcodes.IFLE || opcode == Opcodes.IF_ICMPEQ || opcode == Opcodes.IF_ICMPNE ||
+                        opcode == Opcodes.IF_ICMPLT || opcode == Opcodes.IF_ICMPGE || opcode == Opcodes.IF_ICMPGT || opcode == Opcodes.IF_ICMPLE ||
+                        opcode == Opcodes.IF_ACMPEQ || opcode == Opcodes.IF_ACMPNE || opcode == Opcodes.IFNULL || opcode == Opcodes.IFNONNULL) {
 
-                // Call the custom logging method with the new parameters
-                mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logBranch",
-                                "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
-                                false);
+                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/RecordingControl", "isRecording", "()Z", false);
 
+                    Label skipLabel = new Label();
+                    mv.visitJumpInsn(Opcodes.IFEQ, skipLabel); // Skip logging if not recording
 
-                // mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-                // String ifStatementId = className.replace('/', '.') + "." + methodName + " " + desc + ":IF#" + ifStatementCounter;
-                // ifStatementCounter++;
-                // mv.visitLdcInsn("AgentLogger|BRANCH: " + ifStatementId);
-                // mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
+                    mv.visitLdcInsn(className);      // Push className onto the stack
+                    mv.visitLdcInsn(methodName);     // Push methodName onto the stack
+                    mv.visitLdcInsn(desc);           // Push desc onto the stack
+                    mv.visitLdcInsn(ifStatementCounter); // Push ifStatementCounter onto the stack
+
+                    // Increment the ifStatementCounter for the next statement
+                    ifStatementCounter++;
+
+                    // Call the custom logging method with the new parameters
+                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logBranch",
+                                    "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
+                                    false);
+
+                    mv.visitLabel(skipLabel);
+
+                }
             }
         }
         
@@ -191,99 +195,68 @@ public class IntegratedMethodVisitor extends MethodVisitor {
         super.visitLocalVariable(name, descriptor, signature, start, end, index);
     }
 
-    // Intercept STORE instructions (local variable writes)
+    // // Intercept STORE instructions (local variable writes)
     @Override
     public void visitVarInsn(int opcode, int varIndex) {
-    // Call the original instruction first
         super.visitVarInsn(opcode, varIndex);
+
 
         if (agentLevel == IntegratedLoggerAgent.AgentLevel.FULL || agentLevel == IntegratedLoggerAgent.AgentLevel.VAR){
 
-            if (opcode >= Opcodes.ISTORE && opcode <= Opcodes.ASTORE) {
+            if (className.contains("wala")){
 
-                // Get the variable name for logging
-                String varName = localVarNames.getOrDefault(varIndex, ":VAR#" + varIndex);
+                if (opcode >= Opcodes.ISTORE && opcode <= Opcodes.ASTORE) {
 
-                // Push parameters onto the stack in order for the method call
-                mv.visitLdcInsn(className);  // Push className
-                mv.visitLdcInsn(methodName); // Push methodName
-                mv.visitLdcInsn(desc);       // Push desc
-                mv.visitLdcInsn(varName);    // Push varName
+                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/RecordingControl", "isRecording", "()Z", false);
+                    Label skipLabel = new Label();
+                    mv.visitJumpInsn(Opcodes.IFEQ, skipLabel); // Skip logging if not recording
 
-                // Load the variable value onto the stack and call the corresponding append method
-                switch (opcode) {
-                    case Opcodes.ISTORE:
-                        mv.visitVarInsn(Opcodes.ILOAD, varIndex);
-                        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logVariable",
-                                        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V", false);
-                        break;
-                    case Opcodes.FSTORE:
-                        mv.visitVarInsn(Opcodes.FLOAD, varIndex);
-                        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logVariable",
-                                        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;F)V", false);
-                        break;
-                    case Opcodes.DSTORE:
-                        mv.visitVarInsn(Opcodes.DLOAD, varIndex);
-                        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logVariable",
-                                        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;D)V", false);
-                        break;
-                    case Opcodes.LSTORE:
-                        mv.visitVarInsn(Opcodes.LLOAD, varIndex);
-                        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logVariable",
-                                        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;J)V", false);
-                        break;
-                    case Opcodes.ASTORE:
-                        mv.visitVarInsn(Opcodes.ALOAD, varIndex);
-                        mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logVariable",
-                                        "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;)V", false);
-                        break;
+                    // Get the variable name for logging
+                    String varName = localVarNames.getOrDefault(varIndex, ":VAR#" + varIndex);
+
+                    // Push parameters onto the stack in order for the method call
+                    mv.visitLdcInsn(className);  // Push className
+                    mv.visitLdcInsn(methodName); // Push methodName
+                    mv.visitLdcInsn(desc);       // Push desc
+                    mv.visitLdcInsn(varName);    // Push varName
+
+
+
+                    // Load the variable value onto the stack and call the corresponding append method
+                    switch (opcode) {
+                        case Opcodes.ISTORE:
+                            mv.visitVarInsn(Opcodes.ILOAD, varIndex);
+                            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logVariable",
+                                            "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V", false);
+                            break;
+                        case Opcodes.FSTORE:
+                            mv.visitVarInsn(Opcodes.FLOAD, varIndex);
+                            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logVariable",
+                                            "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;F)V", false);
+                            break;
+                        case Opcodes.DSTORE:
+                            mv.visitVarInsn(Opcodes.DLOAD, varIndex);
+                            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logVariable",
+                                            "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;D)V", false);
+                            break;
+                        case Opcodes.LSTORE:
+                            mv.visitVarInsn(Opcodes.LLOAD, varIndex);
+                            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logVariable",
+                                            "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;J)V", false);
+                            break;
+                        case Opcodes.ASTORE:
+                            mv.visitVarInsn(Opcodes.ALOAD, varIndex);
+                            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logVariable",
+                                            "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/Object;)V", false);
+                            break;
+                    }
+
+
+                    mv.visitLabel(skipLabel);
                 }
-
-
-                // Get the variable name for logging
-            //     String varName = localVarNames.getOrDefault(varIndex, ":VAR#" + varIndex);
-
-            //     // Load System.out
-            //     mv.visitFieldInsn(Opcodes.GETSTATIC, "java/lang/System", "out", "Ljava/io/PrintStream;");
-
-            //     // Create StringBuilder
-            //     mv.visitTypeInsn(Opcodes.NEW, "java/lang/StringBuilder");
-            //     mv.visitInsn(Opcodes.DUP);
-            //     mv.visitMethodInsn(Opcodes.INVOKESPECIAL, "java/lang/StringBuilder", "<init>", "()V", false);
-
-            //     // Append "Variable <varName> = "
-            //     mv.visitLdcInsn("AgentLogger|VARIABLE: " + className.replace('/', '.') + "." + methodName + " " + desc + varName + " = ");
-            //     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/String;)Ljava/lang/StringBuilder;", false);
-
-            //     // Load the variable value and append it
-            //     switch (opcode) {
-            //         case Opcodes.ISTORE:
-            //             mv.visitVarInsn(Opcodes.ILOAD, varIndex);
-            //             mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(I)Ljava/lang/StringBuilder;", false);
-            //             break;
-            //         case Opcodes.FSTORE:
-            //             mv.visitVarInsn(Opcodes.FLOAD, varIndex);
-            //             mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(F)Ljava/lang/StringBuilder;", false);
-            //             break;
-            //         case Opcodes.DSTORE:
-            //             mv.visitVarInsn(Opcodes.DLOAD, varIndex);
-            //             mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(D)Ljava/lang/StringBuilder;", false);
-            //             break;
-            //         case Opcodes.LSTORE:
-            //             mv.visitVarInsn(Opcodes.LLOAD, varIndex);
-            //             mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(J)Ljava/lang/StringBuilder;", false);
-            //             break;
-            //         case Opcodes.ASTORE:
-            //             mv.visitVarInsn(Opcodes.ALOAD, varIndex);
-            //             mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "append", "(Ljava/lang/Object;)Ljava/lang/StringBuilder;", false);
-            //             break;
-            //     }
-
-            //     // Convert StringBuilder to String and print
-            //     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/lang/StringBuilder", "toString", "()Ljava/lang/String;", false);
-            //     mv.visitMethodInsn(Opcodes.INVOKEVIRTUAL, "java/io/PrintStream", "println", "(Ljava/lang/String;)V", false);
             }
         }
+
     }
 
 }

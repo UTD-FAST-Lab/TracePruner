@@ -3104,7 +3104,16 @@
         "com.ibm.wala.analysis.reflection.ReflectiveInvocationInterpreter.<clinit> ()V": 3102,
         "com.ibm.wala.analysis.reflection.ReflectiveInvocationInterpreter.<init> ()V": 3103,
         "com.ibm.wala.analysis.reflection.JavaLangClassContextInterpreter.<init> ()V": 3104,
-        "com.ibm.wala.analysis.reflection.GetMethodContextInterpreter.<init> ()V": 3105
+        "com.ibm.wala.analysis.reflection.GetMethodContextInterpreter.<init> ()V": 3105,
+        "com.ibm.wala.ipa.callgraph.propagation.SSAPropagationCallGraphBuilder$ConstraintVisitor.getInstanceKeyForMultiNewArray (Lcom/ibm/wala/classLoader/NewSiteReference;I)Lcom/ibm/wala/ipa/callgraph/propagation/InstanceKey;": 3106,
+        "com.ibm.wala.ipa.callgraph.propagation.SSAPropagationCallGraphBuilder.getInstanceKeyForMultiNewArray (Lcom/ibm/wala/ipa/callgraph/CGNode;Lcom/ibm/wala/classLoader/NewSiteReference;I)Lcom/ibm/wala/ipa/callgraph/propagation/InstanceKey;": 3107,
+        "com.ibm.wala.ipa.callgraph.propagation.PropagationCallGraphBuilder.getInstanceKeyForMultiNewArray (Lcom/ibm/wala/ipa/callgraph/CGNode;Lcom/ibm/wala/classLoader/NewSiteReference;I)Lcom/ibm/wala/ipa/callgraph/propagation/InstanceKey;": 3108,
+        "com.ibm.wala.ipa.callgraph.propagation.InstanceKeyFactory.getInstanceKeyForMultiNewArray (Lcom/ibm/wala/ipa/callgraph/CGNode;Lcom/ibm/wala/classLoader/NewSiteReference;I)Lcom/ibm/wala/ipa/callgraph/propagation/InstanceKey;": 3109,
+        "com.ibm.wala.ipa.callgraph.propagation.cfa.ZeroXInstanceKeys.getInstanceKeyForMultiNewArray (Lcom/ibm/wala/ipa/callgraph/CGNode;Lcom/ibm/wala/classLoader/NewSiteReference;I)Lcom/ibm/wala/ipa/callgraph/propagation/InstanceKey;": 3110,
+        "com.ibm.wala.ipa.callgraph.propagation.ClassBasedInstanceKeys.getInstanceKeyForMultiNewArray (Lcom/ibm/wala/ipa/callgraph/CGNode;Lcom/ibm/wala/classLoader/NewSiteReference;I)Lcom/ibm/wala/ipa/callgraph/propagation/InstanceKey;": 3111,
+        "com.ibm.wala.analysis.reflection.JavaTypeContext.equals (Ljava/lang/Object;)Z": 3112,
+        "com.ibm.wala.analysis.typeInference.TypeAbstraction.equals (Ljava/lang/Object;)Z": 3113,
+        "com.ibm.wala.analysis.typeInference.PointType.equals (Ljava/lang/Object;)Z": 3114
     },
     "id_to_string": {
         "1": "WalaJCGAdapter$.serializeCG (Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)J",
@@ -6211,6 +6220,15 @@
         "3102": "com.ibm.wala.analysis.reflection.ReflectiveInvocationInterpreter.<clinit> ()V",
         "3103": "com.ibm.wala.analysis.reflection.ReflectiveInvocationInterpreter.<init> ()V",
         "3104": "com.ibm.wala.analysis.reflection.JavaLangClassContextInterpreter.<init> ()V",
-        "3105": "com.ibm.wala.analysis.reflection.GetMethodContextInterpreter.<init> ()V"
+        "3105": "com.ibm.wala.analysis.reflection.GetMethodContextInterpreter.<init> ()V",
+        "3106": "com.ibm.wala.ipa.callgraph.propagation.SSAPropagationCallGraphBuilder$ConstraintVisitor.getInstanceKeyForMultiNewArray (Lcom/ibm/wala/classLoader/NewSiteReference;I)Lcom/ibm/wala/ipa/callgraph/propagation/InstanceKey;",
+        "3107": "com.ibm.wala.ipa.callgraph.propagation.SSAPropagationCallGraphBuilder.getInstanceKeyForMultiNewArray (Lcom/ibm/wala/ipa/callgraph/CGNode;Lcom/ibm/wala/classLoader/NewSiteReference;I)Lcom/ibm/wala/ipa/callgraph/propagation/InstanceKey;",
+        "3108": "com.ibm.wala.ipa.callgraph.propagation.PropagationCallGraphBuilder.getInstanceKeyForMultiNewArray (Lcom/ibm/wala/ipa/callgraph/CGNode;Lcom/ibm/wala/classLoader/NewSiteReference;I)Lcom/ibm/wala/ipa/callgraph/propagation/InstanceKey;",
+        "3109": "com.ibm.wala.ipa.callgraph.propagation.InstanceKeyFactory.getInstanceKeyForMultiNewArray (Lcom/ibm/wala/ipa/callgraph/CGNode;Lcom/ibm/wala/classLoader/NewSiteReference;I)Lcom/ibm/wala/ipa/callgraph/propagation/InstanceKey;",
+        "3110": "com.ibm.wala.ipa.callgraph.propagation.cfa.ZeroXInstanceKeys.getInstanceKeyForMultiNewArray (Lcom/ibm/wala/ipa/callgraph/CGNode;Lcom/ibm/wala/classLoader/NewSiteReference;I)Lcom/ibm/wala/ipa/callgraph/propagation/InstanceKey;",
+        "3111": "com.ibm.wala.ipa.callgraph.propagation.ClassBasedInstanceKeys.getInstanceKeyForMultiNewArray (Lcom/ibm/wala/ipa/callgraph/CGNode;Lcom/ibm/wala/classLoader/NewSiteReference;I)Lcom/ibm/wala/ipa/callgraph/propagation/InstanceKey;",
+        "3112": "com.ibm.wala.analysis.reflection.JavaTypeContext.equals (Ljava/lang/Object;)Z",
+        "3113": "com.ibm.wala.analysis.typeInference.TypeAbstraction.equals (Ljava/lang/Object;)Z",
+        "3114": "com.ibm.wala.analysis.typeInference.PointType.equals (Ljava/lang/Object;)Z"
     }
 }

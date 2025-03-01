@@ -15,81 +15,6 @@ class TraceEdgeExtractor:
         self.encoded_edge_traces_dir = encoded_edge_traces_dir
 
 
-    # def build_index(self, filename):
-    #     """
-    #     Build an index from the input file.
-    #     """
-    #     index = {}
-    #     count = 0
-    #     segments = []
-
-
-    #     input_file = os.path.join(self.encoded_traces_dir, filename)
-    #     with open(input_file, 'r') as f:
-    #         for line_no, line in enumerate(f, start=1):
-    #             line = line.strip()
-
-    #             if line.startswith("AgentLogger|visitinvoke:"):
-    #                 match = re.search(r'AgentLogger\|visitinvoke: (.+)', line)
-    #                 if match:
-    #                     instruction = match.group(1)
-    #                     index[instruction] =  line_no + 1
-                            
-
-    #             elif line.startswith("AgentLogger|addEdge:"):
-    #                 match = re.search(
-    #                     r'addEdge: (Node: < .*? > Context: Everywhere) (.*?) (Node: < .*? > Context: Everywhere)',
-    #                     line
-    #                 )
-    #                 if match:
-    #                     src = match.group(1)
-    #                     instruction = match.group(2)
-    #                     target = match.group(3)
-
-    #                     if instruction in index.keys():
-    #                         count += 1
-    #                         data = {
-    #                             "startline": index[instruction],
-    #                             "endline": line_no - 1,
-    #                             "edge_name": count,
-    #                             "src": src,
-    #                             "target": target
-    #                         }
-    #                         segments.append(data)
-
-    #     # Remove instructions that do not have any endlines
-    #     # index = {key: value for key, value in index.items() if value["endlines"]}
-
-    #     program_dir = os.path.join(self.encoded_edge_traces_dir, filename.split('.')[0])
-    #     segment_outputfile = os.path.join(program_dir, 'segments.json')
-    #     with open(segment_outputfile, 'w') as f:
-    #         json.dump(segments, f)
-
-    #     return segments
-    
-
-    # def extract_edges(self, segments, filename, output_dir):
-    #     """Read input file once, store in buffer, and slice for each segment."""
-    #     os.makedirs(output_dir, exist_ok=True)  # Ensure output directory exists
-
-    #     # Read the entire file into a buffer (list of lines)
-    #     input_file = os.path.join(self.encoded_traces_dir, filename)
-    #     with open(input_file, 'r') as f:
-    #         buffer = f.readlines()
-
-    #     for segment in segments:
-    #         start, end, edge_name = segment["startline"], segment["endline"], segment["edge_name"]
-            
-    #         # Extract the relevant slice from the buffer
-    #         lines = buffer[start - 1 : end]  # Convert 1-based index to 0-based
-            
-    #         # Define output file path
-    #         output_path = os.path.join(output_dir, f"{edge_name}.log")
-            
-    #         # Write extracted lines to a file
-    #         with open(output_path, 'w') as out_file:
-    #             out_file.writelines(lines)
-
     def build_index(self, filename):
         """
         Build an index from the input file.
@@ -386,7 +311,7 @@ if __name__ == "__main__":
     tc = TraceEdgeExtractor(wala_hash_map_path, traces_dir, encoded_traces_dir, encoded_edge_traces_dir)
 
     # encode the trace
-    # tc.process_files()
+    tc.process_files()
 
     # extract the edge traces 
     tc.extract_edge_traces()

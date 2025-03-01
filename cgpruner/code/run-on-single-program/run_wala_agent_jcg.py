@@ -28,6 +28,13 @@ agents = (
         '/home/mohammad/projects/CallGraphPruner/agents/integrated-edge-seperate-j8/target/integrated-edge-seperate-j8-1.0-SNAPSHOT-jar-with-dependencies.jar' 
 )
 
+agentLevel = (
+    'branch',
+    'cg',
+    'var'
+)
+
+
 
 def get_mainclass(tc):
     
@@ -40,8 +47,9 @@ def get_mainclass(tc):
 
 def run_wala(tc, mainclass):
 
-    command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agents[4]}=logLevel=method,agentLevel=cg -jar {JCG_JAR} 0-CFA {tc} {mainclass} '
-    command += f' > /home/mohammad/projects/CallGraphPruner/data/cgs/{tc}.txt'
+    command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agents[4]}=logLevel=method,agentLevel={agentLevel[2]} -jar {JCG_JAR} 0-CFA {tc} {mainclass} '
+    # command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agents[2]} -jar {JCG_JAR} 0-CFA {tc} {mainclass} '
+    command += f' > /home/mohammad/projects/CallGraphPruner/data/traces/variables/{tc}.txt'
 
     os.system(command)
 

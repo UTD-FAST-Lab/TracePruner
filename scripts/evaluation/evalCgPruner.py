@@ -25,7 +25,7 @@ def main(features_csv_path):
     features_df = load_features_dataset(features_csv_path)
 
     # Remove duplicates based on the join keys (if that's desired)
-    features_df = features_df.drop_duplicates(subset=['program_name', 'method', 'target'])
+    features_df = features_df.drop_duplicates(subset=['program_name', 'method', 'target'], keep='last')
 
     # Prepare X and y; drop non-feature columns from features_df
     X = features_df.drop(columns=['wiretap', 'method', 'offset', 'target',
@@ -79,7 +79,7 @@ def main(features_csv_path):
     plt.ylabel("Accuracy")
     plt.legend(loc="best")
     plt.grid()
-    plt.savefig("learning_curve.png", dpi=300)  # Saves the plot to a file
+    plt.savefig("cgp-2.png", dpi=300)  # Saves the plot to a file
     plt.close()  # Closes the figure
     
     # Train a random (dummy) classifier for comparison

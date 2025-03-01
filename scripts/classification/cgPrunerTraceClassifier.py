@@ -27,7 +27,7 @@ class TraceClassifier:
         df_cgpruner_filtered = df_cgpruner.drop(columns=columns_to_exclude, errors='ignore')
 
         # Merge on 'program_name', 'method', and 'target'
-        df_features_unique = df_features.drop_duplicates(subset=['program_name', 'method', 'target'])
+        df_features_unique = df_features.drop_duplicates(subset=['program_name', 'method', 'target'], keep='last')
         df_cgpruner_unique = df_cgpruner_filtered.drop_duplicates(subset=['program_name', 'method', 'target'])
         df_merged = df_features_unique.merge(df_cgpruner_unique, on=['program_name', 'method', 'target'], how='left')
 
@@ -107,7 +107,7 @@ class TraceClassifier:
         plt.ylabel("Accuracy")
         plt.legend(loc="best")
         plt.grid()
-        plt.savefig("learning_curve.png", dpi=300)  # Saves the plot to a file
+        plt.savefig("w2v-cgp-2.png", dpi=300)  # Saves the plot to a file
         plt.close()  # Closes the figure
     
 if __name__ == "__main__":

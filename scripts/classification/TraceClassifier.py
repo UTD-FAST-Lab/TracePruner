@@ -18,7 +18,7 @@ class TraceClassifier:
     def load_data(self):
         """Loads feature vectors and labels from a CSV file."""
         df = pd.read_csv(self.feature_file)
-        df = df.drop_duplicates(subset=['program_name', 'method', 'target'])
+        df = df.drop_duplicates(subset=['program_name', 'method', 'target'], keep='last')
 
         X = df.drop(columns=["program_name", "label", 'edge_name', 'method', 'target'], errors='ignore').values  # Feature matrix
         y = df["label"].values if "label" in df.columns else None  # Labels (if available)
@@ -86,6 +86,7 @@ class TraceClassifier:
         train_scores_mean = np.mean(train_scores, axis=1)
         valid_scores_mean = np.mean(valid_scores, axis=1)
 
+
         plt.figure(figsize=(8, 6))
         plt.plot(train_sizes, train_scores_mean, 'o-', color='r', label='Training Score')
         plt.plot(train_sizes, valid_scores_mean, 'o-', color='g', label='Cross-Validation Score')
@@ -94,7 +95,7 @@ class TraceClassifier:
         plt.ylabel("Accuracy")
         plt.legend(loc="best")
         plt.grid()
-        plt.savefig("learning_curve2.png", dpi=300)  # Saves the plot to a file
+        plt.savefig("w2v-2.png", dpi=300)  # Saves the plot to a file
         plt.close()  # Closes the figure
     
 if __name__ == "__main__":
