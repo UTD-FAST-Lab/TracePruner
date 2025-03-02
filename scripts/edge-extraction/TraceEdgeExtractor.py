@@ -7,12 +7,13 @@ class TraceEdgeExtractor:
     '''extracts the the traces of each edge and encode the names of the functions using a map'''
 
 
-    def __init__(self, HASH_MAP_FILE, traces_dir, encoded_traces_dir, encoded_edge_traces_dir):
+    def __init__(self, HASH_MAP_FILE, traces_dir, encoded_traces_dir, encoded_edge_traces_dir, trace_type):
         
         self.HASH_MAP_FILE = HASH_MAP_FILE
         self.traces_dir = traces_dir
         self.encoded_traces_dir = encoded_traces_dir
         self.encoded_edge_traces_dir = encoded_edge_traces_dir
+        self.trace_type = trace_type
 
 
     def build_index(self, filename):
@@ -258,26 +259,52 @@ class TraceEdgeExtractor:
                 line = line.strip()
                 if line.startswith("AgentLogger|visitinvoke: ") or line.startswith("AgentLogger|addEdge: "):
                     fw.write(f'{line}\n')
+                    continue
 
-                elif line.startswith("AgentLogger|CG_edge: "):
-                    # Remove the prefix before splitting
-                    line = line[len("AgentLogger|CG_edge: "):]
+                if self.trace_type == 'cgs':
 
-                    # Split by "->" with optional spaces
-                    parts = re.split(r"\s*->\s*", line)
-                    if len(parts) == 2:
-                        left, right = parts
-                        
-                        # Assign new IDs if needed
-                        for s in [left, right]:
-                            if s not in unique_strings:
+                    if line.startswith("AgentLogger|CG_edge: "):
+                        # Remove the prefix before splitting
+                        line = line[len("AgentLogger|CG_edge: "):]
+
+                        # Split by "->" with optional spaces
+                        parts = re.split(r"\s*->\s*", line)
+                        if len(parts) == 2:
+                            left, right = parts
+                            
+                            # Assign new IDs if needed
+                            for s in [left, right]:
+                                if s not in unique_strings:
+                                    new_id = len(string_to_id) + 1
+                                    string_to_id[s] = new_id
+                                    id_to_string[new_id] = s
+                                    unique_strings.add(s)
+
+                            # Save encoded results
+                            fw.write(f"{string_to_id[left]},{string_to_id[right]}\n")
+
+                elif self.trace_type == 'branches':
+       
+                    if line.startswith("AgentLogger|BRANCH: "):
+                        # Remove the prefix before matching
+                        line = line[len("AgentLogger|BRANCH: "):]
+
+                        # Use a regex to capture the method signature and the IF branch ID
+                        m = re.match(r"^(.*):IF#(\d+)$", line)
+                        if m:
+                            method, branch_id = m.group(1), m.group(2)
+                            
+                            # Assign new IDs if needed
+                            if method not in unique_strings:
                                 new_id = len(string_to_id) + 1
-                                string_to_id[s] = new_id
-                                id_to_string[new_id] = s
-                                unique_strings.add(s)
+                                string_to_id[method] = new_id
+                                id_to_string[new_id] = method
+                                unique_strings.add(method)
 
-                        # Save encoded results
-                        fw.write(f"{string_to_id[left]},{string_to_id[right]}\n")
+                            # Save encoded results
+                            fw.write(f"{string_to_id[method]},{branch_id}\n")
+
+
 
     
     def decode_edges(self, encoded_edges, id_to_string):
@@ -301,14 +328,17 @@ class TraceEdgeExtractor:
 
 if __name__ == "__main__":
 
+    trace_types = ('cgs', 'branches', 'variables')
+    trace_type = trace_types[1]
 
-    encoded_edge_traces_dir = '/home/mohammad/projects/CallGraphPruner/data/encoded-edge'  
-    # encoded_edge_traces_dir = '/home/mohammad/projects/CallGraphPruner/scripts/edge-extraction/output'  
     wala_hash_map_path = '/home/mohammad/projects/CallGraphPruner/scripts/WALA_hash_map.json'
-    traces_dir = '/home/mohammad/projects/CallGraphPruner/data/cgs' 
-    encoded_traces_dir = '/home/mohammad/projects/CallGraphPruner/data/encoded'           
 
-    tc = TraceEdgeExtractor(wala_hash_map_path, traces_dir, encoded_traces_dir, encoded_edge_traces_dir)
+
+    traces_dir = f'/home/mohammad/projects/CallGraphPruner/data/traces/{trace_type}' 
+    encoded_traces_dir = f'/home/mohammad/projects/CallGraphPruner/data/encoded/{trace_type}'           
+    encoded_edge_traces_dir = f'/home/mohammad/projects/CallGraphPruner/data/encoded-edge/{trace_type}'  
+
+    tc = TraceEdgeExtractor(wala_hash_map_path, traces_dir, encoded_traces_dir, encoded_edge_traces_dir, trace_type)
 
     # encode the trace
     tc.process_files()

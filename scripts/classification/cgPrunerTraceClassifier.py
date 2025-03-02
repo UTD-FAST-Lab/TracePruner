@@ -11,10 +11,11 @@ import matplotlib.pyplot as plt
 import os
 
 class TraceClassifier:
-    def __init__(self, feature_file, cgpruner_file):
+    def __init__(self, feature_file, cgpruner_file, results_dir):
         self.feature_file = feature_file
         self.cgpruner_file = cgpruner_file
         self.model = None
+        self.results_dir = results_dir
     
     def load_data(self):
         """Loads feature vectors and labels from a CSV file, merging with cgpruner data."""
@@ -107,19 +108,21 @@ class TraceClassifier:
         plt.ylabel("Accuracy")
         plt.legend(loc="best")
         plt.grid()
-        plt.savefig("w2v-cgp-2.png", dpi=300)  # Saves the plot to a file
+        plt.savefig(os.path.join(self.results_dir, "w2v-cgp.png"), dpi=300)  # Saves the plot to a file
         plt.close()  # Closes the figure
     
 if __name__ == "__main__":
 
-    dataset_dir = '/home/mohammad/projects/CallGraphPruner/data/datasets'
+    dataset_dir = '/home/mohammad/projects/CallGraphPruner/data/datasets/branches'
 
     # feature_file = os.path.join(dataset_dir, 'combined_lstm_dataset_v0.csv')  # Ensure this contains a 'label' column
     # feature_file = os.path.join(dataset_dir, 'combined_mixed_dataset_v0.csv')  # Ensure this contains a 'label' column
     feature_file = os.path.join(dataset_dir, 'combined_w2v_dataset_v0.csv')  # Ensure this contains a 'label' column
     cgpruner_file = os.path.join(dataset_dir, 'combined_w2v_dataset_v0_cgpruner.csv')
 
-    classifier = TraceClassifier(feature_file, cgpruner_file)
+    results_dir = '/home/mohammad/projects/CallGraphPruner/data/results/branches' 
+
+    classifier = TraceClassifier(feature_file, cgpruner_file, results_dir)
     
     X, y = classifier.load_data()
     X_train, X_test, y_train, y_test = classifier.preprocess_data(X, y)

@@ -213,10 +213,10 @@ if __name__ == '__main__':
     NJR1_DATASET_FOLDER = f'{data_folder}/dataset-high-precision-callgraphs/full_callgraphs_set'
     PROGRAM_FILES = '/home/mohammad/projects/CallGraphPruner/scripts/trace-generation/programs.txt'
 
-    encoded_edge_traces_dir = '/home/mohammad/projects/CallGraphPruner/data/encoded-edge'
+    encoded_edge_traces_dir = '/home/mohammad/projects/CallGraphPruner/data/encoded-edge/branches'
 
 
-    dataset_path = '/home/mohammad/projects/CallGraphPruner/data/datasets'
+    dataset_path = '/home/mohammad/projects/CallGraphPruner/data/datasets/branches'
     output_file = os.path.join(dataset_path, 'combined_w2v_dataset_v0.csv')
 
     # Create a DatasetGeneration instance and generate the dataset.

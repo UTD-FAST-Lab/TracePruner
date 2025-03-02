@@ -47,7 +47,7 @@ class TraceFeatureExtractor:
     def train_word2vec(self):
         """Trains a Word2Vec model using a subset of traces."""
         print("🧠 Training Word2Vec model on a subset of traces...")
-        all_sequences = self.load_all_traces(max_programs=2)
+        all_sequences = self.load_all_traces(max_programs=4)
         self.model = Word2Vec(
             sentences=all_sequences,
             vector_size=self.vector_size,
@@ -96,7 +96,7 @@ class TraceFeatureExtractor:
             executor.map(self.process_program, programs)
 
 if __name__ == "__main__":
-    encoded_edge_traces_dir = '/home/mohammad/projects/CallGraphPruner/data/encoded-edge'
+    encoded_edge_traces_dir = '/home/mohammad/projects/CallGraphPruner/data/encoded-edge/branches'
     extractor = TraceFeatureExtractor(encoded_edge_traces_dir)
     extractor.process_all_programs()
     print("✅ Feature extraction complete!")
