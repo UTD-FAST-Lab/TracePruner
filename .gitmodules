@@ -1,3 +1,6 @@
 [submodule "cgpruner/javaq"]
 	path = cgpruner/javaq
 	url = https://github.com/ucla-pls/javaq.git
+[submodule "PLELog/PLELog"]
+	path = PLELog/PLELog
+	url = https://github.com/LeonYang95/PLELog.git
