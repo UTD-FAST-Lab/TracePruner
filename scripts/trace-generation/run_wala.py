@@ -42,8 +42,8 @@ def run_wala(program):
     mainclass = get_mainclass(program)
     jar_file = get_jar_file(program)
 
-    command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agent}=logLevel=method,agentLevel={agentLevel[1]} -jar {WALA_DRIVER} -classpath {jar_file} -mainclass {mainclass} -reflection false -analysis 0cfa -resolveinterfaces true'	
-    command += f' > /home/mohammad/projects/CallGraphPruner/data/traces/branches/{program}.txt'
+    command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agent}=logLevel=method,agentLevel={agentLevel[2]} -jar {WALA_DRIVER} -classpath {jar_file} -mainclass {mainclass} -reflection false -analysis 0cfa -resolveinterfaces true'	
+    command += f' > /home/mohammad/projects/CallGraphPruner/data/traces/variables/{program}.txt'
 
     os.system(command)
 
