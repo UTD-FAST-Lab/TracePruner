@@ -149,42 +149,80 @@ public class IntegratedMethodVisitor extends MethodVisitor {
 
     @Override
     public void visitJumpInsn(int opcode, Label label) {
-
-        
-        if (agentLevel == IntegratedLoggerAgent.AgentLevel.FULL || agentLevel == IntegratedLoggerAgent.AgentLevel.BRANCH){
-
-            if (className.contains("wala")){
-
+        if (agentLevel == IntegratedLoggerAgent.AgentLevel.FULL || agentLevel == IntegratedLoggerAgent.AgentLevel.BRANCH) {
+            if (className.contains("wala")) {
+                // For all conditional jumps
                 if (opcode == Opcodes.IFEQ || opcode == Opcodes.IFNE || opcode == Opcodes.IFLT || opcode == Opcodes.IFGE ||
                         opcode == Opcodes.IFGT || opcode == Opcodes.IFLE || opcode == Opcodes.IF_ICMPEQ || opcode == Opcodes.IF_ICMPNE ||
                         opcode == Opcodes.IF_ICMPLT || opcode == Opcodes.IF_ICMPGE || opcode == Opcodes.IF_ICMPGT || opcode == Opcodes.IF_ICMPLE ||
                         opcode == Opcodes.IF_ACMPEQ || opcode == Opcodes.IF_ACMPNE || opcode == Opcodes.IFNULL || opcode == Opcodes.IFNONNULL) {
 
+                    // Create labels for our instrumentation
+                    Label logicStart = new Label();
+                    Label end = label; // Original jump target
+
+                    // Duplicate the stack value since we'll need it twice
+                    // (once for our inverted jump, once for the original condition)
+                    if (opcode >= Opcodes.IF_ICMPEQ && opcode <= Opcodes.IF_ACMPNE) {
+                        // For comparing two values
+                        mv.visitInsn(Opcodes.DUP2);
+                    } else {
+                        // For comparing single value
+                        mv.visitInsn(Opcodes.DUP);
+                    }
+
+                    // Insert inverted jump
+                    int invertedOpcode = getInvertedOpcode(opcode);
+                    mv.visitJumpInsn(invertedOpcode, end);
+
+                    // Start of the "then" block
+                    mv.visitLabel(logicStart);
+
+                    // Check if recording is enabled
                     mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/RecordingControl", "isRecording", "()Z", false);
+                    Label skipLogging = new Label();
+                    mv.visitJumpInsn(Opcodes.IFEQ, skipLogging);
 
-                    Label skipLabel = new Label();
-                    mv.visitJumpInsn(Opcodes.IFEQ, skipLabel); // Skip logging if not recording
-
-                    mv.visitLdcInsn(className);      // Push className onto the stack
-                    mv.visitLdcInsn(methodName);     // Push methodName onto the stack
-                    mv.visitLdcInsn(desc);           // Push desc onto the stack
-                    mv.visitLdcInsn(ifStatementCounter); // Push ifStatementCounter onto the stack
-
-                    // Increment the ifStatementCounter for the next statement
-                    ifStatementCounter++;
-
-                    // Call the custom logging method with the new parameters
+                    // Log the branch execution
+                    mv.visitLdcInsn(className);
+                    mv.visitLdcInsn(methodName);
+                    mv.visitLdcInsn(desc);
+                    mv.visitLdcInsn(ifStatementCounter);
                     mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logBranch",
-                                    "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
-                                    false);
+                            "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V", false);
 
-                    mv.visitLabel(skipLabel);
+                    mv.visitLabel(skipLogging);
 
+                    // Increment counter for next branch
+                    ifStatementCounter++;
+                    return;
                 }
             }
         }
-        
         super.visitJumpInsn(opcode, label);
+    }
+
+    // Helper method to get inverted jump opcode
+    private int getInvertedOpcode(int opcode) {
+        switch (opcode) {
+            case Opcodes.IFEQ: return Opcodes.IFNE;
+            case Opcodes.IFNE: return Opcodes.IFEQ;
+            case Opcodes.IFLT: return Opcodes.IFGE;
+            case Opcodes.IFGE: return Opcodes.IFLT;
+            case Opcodes.IFGT: return Opcodes.IFLE;
+            case Opcodes.IFLE: return Opcodes.IFGT;
+            case Opcodes.IF_ICMPEQ: return Opcodes.IF_ICMPNE;
+            case Opcodes.IF_ICMPNE: return Opcodes.IF_ICMPEQ;
+            case Opcodes.IF_ICMPLT: return Opcodes.IF_ICMPGE;
+            case Opcodes.IF_ICMPGE: return Opcodes.IF_ICMPLT;
+            case Opcodes.IF_ICMPGT: return Opcodes.IF_ICMPLE;
+            case Opcodes.IF_ICMPLE: return Opcodes.IF_ICMPGT;
+            case Opcodes.IF_ACMPEQ: return Opcodes.IF_ACMPNE;
+            case Opcodes.IF_ACMPNE: return Opcodes.IF_ACMPEQ;
+            case Opcodes.IFNULL: return Opcodes.IFNONNULL;
+            case Opcodes.IFNONNULL: return Opcodes.IFNULL;
+            default: return opcode;
+        }
     }
 
 
