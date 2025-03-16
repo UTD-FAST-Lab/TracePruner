@@ -27,25 +27,9 @@ public class IntegratedMethodVisitor extends MethodVisitor {
 
     // jcg driver
 
-    // private static final String START_SOURCE_CLASS = "WalaJCGAdapter$";
-    // private static final String START_SOURCE_METHOD = "serializeCG";
-    // private static final String START_SOURCE_DESC = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)J";
-    // private static final String START_TARGET_CLASS = "com/ibm/wala/ipa/callgraph/impl/Util";
-    // private static final String START_TARGET_METHOD = "makeZeroCFABuilder";
-    // private static final String START_TARGET_DESC = "(Lcom/ibm/wala/classLoader/Language;Lcom/ibm/wala/ipa/callgraph/AnalysisOptions;Lcom/ibm/wala/ipa/callgraph/IAnalysisCacheView;Lcom/ibm/wala/ipa/cha/IClassHierarchy;Lcom/ibm/wala/ipa/callgraph/AnalysisScope;)Lcom/ibm/wala/ipa/callgraph/propagation/SSAPropagationCallGraphBuilder;";
-
-    // private static final String END_SOURCE_CLASS = "WalaJCGAdapter$";
-    // private static final String END_SOURCE_METHOD = "serializeCG";
-    // private static final String END_SOURCE_DESC = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)J";
-    // private static final String END_TARGET_CLASS = "com/ibm/wala/ipa/cha/ClassHierarchy";
-    // private static final String END_TARGET_METHOD = "resolveMethod";
-    // private static final String END_TARGET_DESC = "(Lcom/ibm/wala/types/MethodReference;)Lcom/ibm/wala/classLoader/IMethod;";
-
-    // cgPruner driver
-
-    private static final String START_SOURCE_CLASS = "com/example/WalaCallgraph";
-    private static final String START_SOURCE_METHOD = "main";
-    private static final String START_SOURCE_DESC = "([Ljava/lang/String;)V";
+    private static final String START_SOURCE_CLASS = "WalaJCGAdapter$";
+    private static final String START_SOURCE_METHOD = "serializeCG";
+    private static final String START_SOURCE_DESC = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)J";
     private static final String START_TARGET_CLASS = "com/ibm/wala/ipa/callgraph/impl/Util";
     private static final String START_TARGET_METHOD = "makeZeroCFABuilder";
     private static final String START_TARGET_DESC = "(Lcom/ibm/wala/classLoader/Language;Lcom/ibm/wala/ipa/callgraph/AnalysisOptions;Lcom/ibm/wala/ipa/callgraph/IAnalysisCacheView;Lcom/ibm/wala/ipa/cha/IClassHierarchy;Lcom/ibm/wala/ipa/callgraph/AnalysisScope;)Lcom/ibm/wala/ipa/callgraph/propagation/SSAPropagationCallGraphBuilder;";
@@ -56,6 +40,22 @@ public class IntegratedMethodVisitor extends MethodVisitor {
     private static final String END_TARGET_CLASS = "com/ibm/wala/ipa/cha/ClassHierarchy";
     private static final String END_TARGET_METHOD = "resolveMethod";
     private static final String END_TARGET_DESC = "(Lcom/ibm/wala/types/MethodReference;)Lcom/ibm/wala/classLoader/IMethod;";
+
+    // cgPruner driver
+
+    // private static final String START_SOURCE_CLASS = "com/example/WalaCallgraph";
+    // private static final String START_SOURCE_METHOD = "main";
+    // private static final String START_SOURCE_DESC = "([Ljava/lang/String;)V";
+    // private static final String START_TARGET_CLASS = "com/ibm/wala/ipa/callgraph/impl/Util";
+    // private static final String START_TARGET_METHOD = "makeZeroCFABuilder";
+    // private static final String START_TARGET_DESC = "(Lcom/ibm/wala/classLoader/Language;Lcom/ibm/wala/ipa/callgraph/AnalysisOptions;Lcom/ibm/wala/ipa/callgraph/IAnalysisCacheView;Lcom/ibm/wala/ipa/cha/IClassHierarchy;Lcom/ibm/wala/ipa/callgraph/AnalysisScope;)Lcom/ibm/wala/ipa/callgraph/propagation/SSAPropagationCallGraphBuilder;";
+
+    // private static final String END_SOURCE_CLASS = "WalaJCGAdapter$";
+    // private static final String END_SOURCE_METHOD = "serializeCG";
+    // private static final String END_SOURCE_DESC = "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[Ljava/lang/String;Ljava/lang/String;ZLjava/lang/String;)J";
+    // private static final String END_TARGET_CLASS = "com/ibm/wala/ipa/cha/ClassHierarchy";
+    // private static final String END_TARGET_METHOD = "resolveMethod";
+    // private static final String END_TARGET_DESC = "(Lcom/ibm/wala/types/MethodReference;)Lcom/ibm/wala/classLoader/IMethod;";
 
 
     // Flag to control recording
@@ -141,51 +141,74 @@ public class IntegratedMethodVisitor extends MethodVisitor {
             }
         }
 
-        
-
         super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
     }
 
 
     @Override
     public void visitJumpInsn(int opcode, Label label) {
-
-        
-        if (agentLevel == IntegratedLoggerAgent.AgentLevel.FULL || agentLevel == IntegratedLoggerAgent.AgentLevel.BRANCH){
-
-            if (className.contains("wala")){
-
+        if (agentLevel == IntegratedLoggerAgent.AgentLevel.FULL || agentLevel == IntegratedLoggerAgent.AgentLevel.BRANCH) {
+            if (className.contains("wala")) {
                 if (opcode == Opcodes.IFEQ || opcode == Opcodes.IFNE || opcode == Opcodes.IFLT || opcode == Opcodes.IFGE ||
-                        opcode == Opcodes.IFGT || opcode == Opcodes.IFLE || opcode == Opcodes.IF_ICMPEQ || opcode == Opcodes.IF_ICMPNE ||
-                        opcode == Opcodes.IF_ICMPLT || opcode == Opcodes.IF_ICMPGE || opcode == Opcodes.IF_ICMPGT || opcode == Opcodes.IF_ICMPLE ||
-                        opcode == Opcodes.IF_ACMPEQ || opcode == Opcodes.IF_ACMPNE || opcode == Opcodes.IFNULL || opcode == Opcodes.IFNONNULL) {
-
+                    opcode == Opcodes.IFGT || opcode == Opcodes.IFLE || opcode == Opcodes.IF_ICMPEQ || opcode == Opcodes.IF_ICMPNE ||
+                    opcode == Opcodes.IF_ICMPLT || opcode == Opcodes.IF_ICMPGE || opcode == Opcodes.IF_ICMPGT || opcode == Opcodes.IF_ICMPLE ||
+                    opcode == Opcodes.IF_ACMPEQ || opcode == Opcodes.IF_ACMPNE || opcode == Opcodes.IFNULL || opcode == Opcodes.IFNONNULL) {
+                    // First, check if recording is enabled
                     mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/RecordingControl", "isRecording", "()Z", false);
-
-                    Label skipLabel = new Label();
-                    mv.visitJumpInsn(Opcodes.IFEQ, skipLabel); // Skip logging if not recording
-
-                    mv.visitLdcInsn(className);      // Push className onto the stack
-                    mv.visitLdcInsn(methodName);     // Push methodName onto the stack
-                    mv.visitLdcInsn(desc);           // Push desc onto the stack
-                    mv.visitLdcInsn(ifStatementCounter); // Push ifStatementCounter onto the stack
-
-                    // Increment the ifStatementCounter for the next statement
-                    ifStatementCounter++;
-
-                    // Call the custom logging method with the new parameters
+                    
+                    // Create a label to skip instrumentation if not recording
+                    Label skipInstrumentationLabel = new Label();
+                    mv.visitJumpInsn(Opcodes.IFEQ, skipInstrumentationLabel);
+                    
+                    
+                    // Clone of the original jump to a merge point
+                    Label originalJumpTarget = new Label();
+                    mv.visitJumpInsn(opcode, originalJumpTarget);
+                    
+                    // "Else" branch logging
+                    mv.visitLdcInsn(className);
+                    mv.visitLdcInsn(methodName);
+                    mv.visitLdcInsn(desc);
+                    mv.visitLdcInsn(ifStatementCounter);
+                    mv.visitInsn(Opcodes.ICONST_0);  // Push false (0) for "else" branch
                     mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logBranch",
-                                    "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V",
-                                    false);
-
-                    mv.visitLabel(skipLabel);
-
+                            "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IZ)V", false);
+                    
+                    // Jump to the end of instrumentation
+                    Label endInstrumentationLabel = new Label();
+                    mv.visitJumpInsn(Opcodes.GOTO, endInstrumentationLabel);
+                    
+                    // "If" branch logging
+                    mv.visitLabel(originalJumpTarget);
+                    mv.visitLdcInsn(className);
+                    mv.visitLdcInsn(methodName);
+                    mv.visitLdcInsn(desc);
+                    mv.visitLdcInsn(ifStatementCounter);
+                    mv.visitInsn(Opcodes.ICONST_1);  // Push true (1) for "if" branch
+                    mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/AgentLogger", "logBranch",
+                            "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;IZ)V", false);
+                    
+                    // Jump to the original target
+                    mv.visitJumpInsn(Opcodes.GOTO, label);
+                    
+                    // Skip instrumentation if not recording
+                    mv.visitLabel(skipInstrumentationLabel);
+                    
+                    // Original jump instruction - this is needed when recording is disabled
+                    mv.visitJumpInsn(opcode, label);
+                    
+                    // End of instrumentation
+                    mv.visitLabel(endInstrumentationLabel);
+                    
+                    ifStatementCounter++;
+                    return;
                 }
             }
         }
         
         super.visitJumpInsn(opcode, label);
     }
+
 
 
      // Capture local variable names (only available if compiled with debug info)

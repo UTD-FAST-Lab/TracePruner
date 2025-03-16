@@ -47,9 +47,9 @@ def get_mainclass(tc):
 
 def run_wala(tc, mainclass):
 
-    command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agents[4]}=logLevel=method,agentLevel={agentLevel[2]} -jar {JCG_JAR} 0-CFA {tc} {mainclass} '
+    command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agents[4]}=logLevel=method,agentLevel={agentLevel[0]} -jar {JCG_JAR} 0-CFA {tc} {mainclass} '
     # command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agents[2]} -jar {JCG_JAR} 0-CFA {tc} {mainclass} '
-    command += f' > /home/mohammad/projects/CallGraphPruner/data/traces/variables/{tc}.txt'
+    command += f' > /home/mohammad/projects/CallGraphPruner/data/traces/branches/updated_branch/{tc}.txt'
 
     os.system(command)
 
@@ -59,7 +59,7 @@ def main():
     tc_names = [os.path.splitext(f)[0] for f in os.listdir(TESTCASES_PATH) if f.endswith('.jar') and os.path.isfile(os.path.join(TESTCASES_PATH, f))]
 
     for tc in tc_names:
-        if 'VC4' in tc:
+        if 'VC4' in tc and "N" not in tc:
             mainclass = get_mainclass(tc)
             run_wala(tc, mainclass)
 

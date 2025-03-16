@@ -10,9 +10,12 @@ public class AgentLogger {
         System.out.println(message);
     }
 
-    public static void logBranch(String className, String methodName, String desc, int ifCounter) {
+    public static void logBranch(String className, String methodName, String desc, int ifCounter, boolean isIFBranch) {
         String ifStatementId = className.replace('/', '.') + "." + methodName + " " + desc + ":IF#" + ifCounter;
-        System.out.println("AgentLogger|BRANCH: " + ifStatementId);
+        if (isIFBranch)
+            System.out.println("AgentLogger|IF_BRANCH: " + ifStatementId);
+        else
+            System.out.println("AgentLogger|ELSE_BRANCH: " + ifStatementId);
     }
 
     // public static void logVariable(String className, String methodName, String desc, String varName, int varValue) {
