@@ -11,22 +11,14 @@ public class AgentLogger {
     }
 
     public static void logBranch(String className, String methodName, String desc, int ifCounter, boolean isIFBranch) {
-        String ifStatementId = className.replace('/', '.') + "." + methodName + " " + desc + ":IF#" + ifCounter;
+        String ifStatementId = className.replace('/', '.') + "." + methodName + " " + desc;
         if (isIFBranch)
-            System.out.println("AgentLogger|IF_BRANCH: " + ifStatementId);
+            ifStatementId +=  ":IF#" + ifCounter;
         else
-            System.out.println("AgentLogger|ELSE_BRANCH: " + ifStatementId);
+            ifStatementId +=  ":ELSE#" + ifCounter;
+        
+        System.out.println("AgentLogger|BRANCH: " + ifStatementId);
     }
-
-    // public static void logVariable(String className, String methodName, String desc, String varName, int varValue) {
-    //     String message = "AgentLogger|VARIABLE: " + className.replace('/', '.') + "." + methodName + " " + desc + varName + " = " + varValue;
-    //     System.out.println(message);
-    // }
-
-    // public static void logVariable(String className, String methodName, String desc, String varName, Object varValue) {
-    //     String message = "AgentLogger|VARIABLE: " + className.replace('/', '.') + "." + methodName + " " + desc + varName + " = " +  Objects.toString(varValue, "null");
-    //     System.out.println(message);
-    // }
 
 
 // A thread-local flag to prevent reentrant logging.

@@ -5,7 +5,7 @@ import os
 import argparse
 import csv
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import threading
+import threading, subprocess
 
 
 
@@ -37,15 +37,37 @@ def get_jar_file(program):
 
 def run_wala(program):
 	
-    print(program)
-	 
-    mainclass = get_mainclass(program)
-    jar_file = get_jar_file(program)
+	print(program)
+		
+	mainclass = get_mainclass(program)
+	jar_file = get_jar_file(program)
 
-    command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agent}=logLevel=method,agentLevel={agentLevel[2]} -jar {WALA_DRIVER} -classpath {jar_file} -mainclass {mainclass} -reflection false -analysis 0cfa -resolveinterfaces true'	
-    command += f' > /home/mohammad/projects/CallGraphPruner/data/traces/variables/{program}.txt'
+	# command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agent}=logLevel=method,agentLevel={agentLevel[1]} -jar {WALA_DRIVER} -classpath {jar_file} -mainclass {mainclass} -reflection false -analysis 0cfa -resolveinterfaces true'	
+	# command += f' > /home/mohammad/projects/CallGraphPruner/data/traces/branches/{program}.txt'
 
-    os.system(command)
+	# Construct the command string
+	command = [
+		'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java',
+		f'-javaagent:{agent}=logLevel=method,agentLevel={agentLevel[1]}',
+		'-jar', WALA_DRIVER,
+		'-classpath', jar_file,
+		'-mainclass', mainclass,
+		'-reflection', 'false',
+		'-analysis', '0cfa',
+		'-resolveinterfaces', 'true'
+	]
+
+	# Specify the output file for logs
+	output_file = f'/home/mohammad/projects/CallGraphPruner/data/traces/branches/{program}.txt'
+
+	# Open the file to capture everything
+	with open(output_file, 'w') as f:
+		# Use Popen to capture stdout and stderr from the command
+		process = subprocess.Popen(command, stdout=f, stderr=f, text=True)
+		process.communicate()
+
+
+	# os.system(command)
 
 
 def run_wala_in_parallel(num_threads, programs):
