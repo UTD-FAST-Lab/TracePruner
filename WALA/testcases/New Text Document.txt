@@ -1,0 +1,514 @@
+Add constraints from node Node: synthetic < Primordial, Lcom/ibm/wala/FakeRootClass, fakeRootMethod()V > Context: Everywhere
+synthetic < Primordial, Lcom/ibm/wala/FakeRootClass, fakeRootMethod()V >
+CFG:
+BB0[0..0]
+    -> BB1
+    -> BB6
+BB1[1..1]
+    -> BB2
+    -> BB6
+BB2[2..2]
+    -> BB3
+    -> BB6
+BB3[3..3]
+    -> BB4
+    -> BB6
+BB4[4..4]
+    -> BB5
+    -> BB6
+BB5[5..5]
+    -> BB6
+BB6[-1..-2]
+Instructions:
+BB0
+0   invokestatic < Primordial, Lcom/ibm/wala/FakeRootClass, fakeWorldClinit()V > @0 exception:v2
+BB1
+1   v3 = new <Application,[Ljava/lang/String>@1v4:#1 
+BB2
+2   v5 = new <Primordial,Ljava/lang/String>@2
+BB3
+3   arraystore v3[v6:#0] = v5
+BB4
+4   invokespecial < Primordial, Ljava/lang/Object, <init>()V > v3 @4 exception:v7
+BB5
+5   invokestatic < Application, Lvc/Class, main([Ljava/lang/String;)V > v3 @5 exception:v8
+BB6
+
+visitInvoke: invokestatic < Primordial, Lcom/ibm/wala/FakeRootClass, fakeWorldClinit()V > @0 exception:2
+visitNew: 3 = new <Application,[Ljava/lang/String>@14  i:[<Primordial,[Ljava/lang/String>] 0
+visitNew call clinit: <Primordial,[Ljava/lang/String>
+process class initializer for <Primordial,Ljava/lang/Object>
+processResolvedCall: Node: synthetic < Primordial, Lcom/ibm/wala/FakeRootClass, fakeWorldClinit()V > Context: Everywhere ,invokestatic < Primordial, Ljava/lang/Object, <clinit>()V > @0 exception:2 , Node: < Primordial, Ljava/lang/Object, <clinit>()V > Context: Everywhere
+addTarget: Node: synthetic < Primordial, Lcom/ibm/wala/FakeRootClass, fakeWorldClinit()V > Context: Everywhere ,invokestatic < Primordial, Ljava/lang/Object, <clinit>()V > @0 exception:2 , Node: < Primordial, Ljava/lang/Object, <clinit>()V > Context: Everywhere
+visitNew: 5 = new <Primordial,Ljava/lang/String>@2 i:[<Primordial,Ljava/lang/String>] 1
+visitNew call clinit: <Primordial,Ljava/lang/String>
+process class initializer for <Primordial,Ljava/lang/String>
+processResolvedCall: Node: synthetic < Primordial, Lcom/ibm/wala/FakeRootClass, fakeWorldClinit()V > Context: Everywhere ,invokestatic < Primordial, Ljava/lang/String, <clinit>()V > @1 exception:3 , Node: < Primordial, Ljava/lang/String, <clinit>()V > Context: Everywhere
+addTarget: Node: synthetic < Primordial, Lcom/ibm/wala/FakeRootClass, fakeWorldClinit()V > Context: Everywhere ,invokestatic < Primordial, Ljava/lang/String, <clinit>()V > @1 exception:3 , Node: < Primordial, Ljava/lang/String, <clinit>()V > Context: Everywhere
+visitInvoke: invokespecial < Primordial, Ljava/lang/Object, <init>()V > 3 @4 exception:7
+processResolvedCall: Node: synthetic < Primordial, Lcom/ibm/wala/FakeRootClass, fakeRootMethod()V > Context: Everywhere ,invokespecial < Primordial, Ljava/lang/Object, <init>()V > 3 @4 exception:7 , Node: < Primordial, Ljava/lang/Object, <init>()V > Context: Everywhere
+addTarget: Node: synthetic < Primordial, Lcom/ibm/wala/FakeRootClass, fakeRootMethod()V > Context: Everywhere ,invokespecial < Primordial, Ljava/lang/Object, <init>()V > 3 @4 exception:7 , Node: < Primordial, Ljava/lang/Object, <init>()V > Context: Everywhere
+visitInvoke class init Node: < Primordial, Ljava/lang/Object, <init>()V > Context: Everywhere
+visitInvoke: invokestatic < Application, Lvc/Class, main([Ljava/lang/String;)V > 3 @5 exception:8
+processResolvedCall: Node: synthetic < Primordial, Lcom/ibm/wala/FakeRootClass, fakeRootMethod()V > Context: Everywhere ,invokestatic < Application, Lvc/Class, main([Ljava/lang/String;)V > 3 @5 exception:8 , Node: < Application, Lvc/Class, main([Ljava/lang/String;)V > Context: Everywhere
+addTarget: Node: synthetic < Primordial, Lcom/ibm/wala/FakeRootClass, fakeRootMethod()V > Context: Everywhere ,invokestatic < Application, Lvc/Class, main([Ljava/lang/String;)V > 3 @5 exception:8 , Node: < Application, Lvc/Class, main([Ljava/lang/String;)V > Context: Everywhere
+visitInvoke class init Node: < Application, Lvc/Class, main([Ljava/lang/String;)V > Context: Everywhere
+process class initializer for <Application,Lvc/Class>
+processResolvedCall: Node: synthetic < Primordial, Lcom/ibm/wala/FakeRootClass, fakeWorldClinit()V > Context: Everywhere ,invokestatic < Application, Lvc/Class, <clinit>()V > @2 exception:4 , Node: < Application, Lvc/Class, <clinit>()V > Context: Everywhere
+addTarget: Node: synthetic < Primordial, Lcom/ibm/wala/FakeRootClass, fakeWorldClinit()V > Context: Everywhere ,invokestatic < Application, Lvc/Class, <clinit>()V > @2 exception:4 , Node: < Application, Lvc/Class, <clinit>()V > Context: Everywhere
+getIncomingPEIs BB[SSA:-1..-2]6 - com.ibm.wala.FakeRootClass.fakeRootMethod()V
+pred: BB[SSA:0..0]0 - com.ibm.wala.FakeRootClass.fakeRootMethod()V
+pred: BB[SSA:1..1]1 - com.ibm.wala.FakeRootClass.fakeRootMethod()V
+PEI: 3 = new <Application,[Ljava/lang/String>@14  index 1 PC 1
+pred: BB[SSA:2..2]2 - com.ibm.wala.FakeRootClass.fakeRootMethod()V
+PEI: 5 = new <Primordial,Ljava/lang/String>@2 index 2 PC 2
+pred: BB[SSA:3..3]3 - com.ibm.wala.FakeRootClass.fakeRootMethod()V
+PEI: arraystore 3[6] = 5 index 3 PC 3
+pred: BB[SSA:4..4]4 - com.ibm.wala.FakeRootClass.fakeRootMethod()V
+PEI: invokespecial < Primordial, Ljava/lang/Object, <init>()V > 3 @4 exception:7 index 4 PC 4
+pred: BB[SSA:5..5]5 - com.ibm.wala.FakeRootClass.fakeRootMethod()V
+PEI: invokestatic < Application, Lvc/Class, main([Ljava/lang/String;)V > 3 @5 exception:8 index 5 PC 5
+Add exception def constraints for node Node: synthetic < Primordial, Lcom/ibm/wala/FakeRootClass, fakeRootMethod()V > Context: Everywhere
+peiLoc: PC@1
+Add exceptions from pei 3 = new <Application,[Ljava/lang/String>@14
+peiLoc: PC@2
+Add exceptions from pei 5 = new <Primordial,Ljava/lang/String>@2
+peiLoc: PC@3
+Add exceptions from pei arraystore 3[6] = 5
+peiLoc: PC@4
+Add exceptions from pei invokespecial < Primordial, Ljava/lang/Object, <init>()V > 3 @4 exception:7
+peiLoc: PC@5
+Add exceptions from pei invokestatic < Application, Lvc/Class, main([Ljava/lang/String;)V > 3 @5 exception:8       
+
+
+Add constraints from node Node: < Primordial, Ljava/lang/Object, <clinit>()V > Context: Everywhere
+< Primordial, Ljava/lang/Object, <clinit>()V >
+CFG:
+BB0[-1..-2]
+    -> BB1
+BB1[0..0]
+    -> BB2
+    -> BB3
+BB2[1..1]
+    -> BB3
+BB3[-1..-2]
+Instructions:
+BB0
+BB1
+0   invokestatic < Primordial, Ljava/lang/Object, registerNatives()V > @0 exception:v2(line 41)
+BB2
+1   return                                   (line 42)
+BB3
+
+visitInvoke: invokestatic < Primordial, Ljava/lang/Object, registerNatives()V > @0 exception:2
+processResolvedCall: Node: < Primordial, Ljava/lang/Object, <clinit>()V > Context: Everywhere ,invokestatic < Primordial, Ljava/lang/Object, registerNatives()V > @0 exception:2 , Node: < Primordial, Ljava/lang/Object, registerNatives()V > Context: Everywhere
+addTarget: Node: < Primordial, Ljava/lang/Object, <clinit>()V > Context: Everywhere ,invokestatic < Primordial, Ljava/lang/Object, registerNatives()V > @0 exception:2 , Node: < Primordial, Ljava/lang/Object, registerNatives()V > Context: Everywhere
+visitInvoke class init Node: < Primordial, Ljava/lang/Object, registerNatives()V > Context: Everywhere
+getIncomingPEIs BB[SSA:-1..-2]3 - java.lang.Object.<clinit>()V
+pred: BB[SSA:0..0]1 - java.lang.Object.<clinit>()V
+PEI: invokestatic < Primordial, Ljava/lang/Object, registerNatives()V > @0 exception:2 index 0 PC 0
+pred: BB[SSA:1..1]2 - java.lang.Object.<clinit>()V
+Add exception def constraints for node Node: < Primordial, Ljava/lang/Object, <clinit>()V > Context: Everywhere
+peiLoc: PC@0
+Add exceptions from pei invokestatic < Primordial, Ljava/lang/Object, registerNatives()V > @0 exception:2
+
+
+Add constraints from node Node: < Primordial, Ljava/lang/String, <clinit>()V > Context: Everywhere
+< Primordial, Ljava/lang/String, <clinit>()V >
+CFG:
+BB0[-1..-2]
+    -> BB1
+BB1[0..1]
+    -> BB2
+    -> BB5
+BB2[2..3]
+    -> BB3
+    -> BB5
+BB3[4..6]
+    -> BB4
+    -> BB5
+BB4[7..8]
+    -> BB5
+BB5[-1..-2]
+Instructions:
+BB0
+BB1
+1   v3 = new <Primordial,[Ljava/io/ObjectStreamField>@1v2:#0 (line 129)
+BB2
+2   putstatic < Primordial, Ljava/lang/String, serialPersistentFields, <Primordial,[Ljava/io/ObjectStreamField> > = v3(line 129)
+3   v4 = new <Primordial,Ljava/lang/String$CaseInsensitiveComparator>@7(line 1184)
+BB3
+6   invokespecial < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>(Ljava/lang/String$1;)V > v4,v5:#null @12 exception:v6(line 1184)
+BB4
+7   putstatic < Primordial, Ljava/lang/String, CASE_INSENSITIVE_ORDER, <Primordial,Ljava/util/Comparator> > = v4(line 1184)
+8   return                                   (line 1184)
+BB5
+
+visitNew: 3 = new <Primordial,[Ljava/io/ObjectStreamField>@12  i:[<Primordial,[Ljava/io/ObjectStreamField>] 8      
+visitNew call clinit: <Primordial,[Ljava/io/ObjectStreamField>
+visitPut < Primordial, Ljava/lang/String, serialPersistentFields, <Primordial,[Ljava/io/ObjectStreamField> >       
+visitPut class init <Primordial,Ljava/lang/String> < Primordial, Ljava/lang/String, serialPersistentFields, <Primordial,[Ljava/io/ObjectStreamField> >
+visitNew: 4 = new <Primordial,Ljava/lang/String$CaseInsensitiveComparator>@7 i:[<Primordial,Ljava/lang/String$CaseInsensitiveComparator>] 9
+visitNew call clinit: <Primordial,Ljava/lang/String$CaseInsensitiveComparator>
+visitInvoke: invokespecial < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>(Ljava/lang/String$1;)V > 4,5 @12 exception:6
+processResolvedCall: Node: < Primordial, Ljava/lang/String, <clinit>()V > Context: Everywhere ,invokespecial < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>(Ljava/lang/String$1;)V > 4,5 @12 exception:6 , Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>(Ljava/lang/String$1;)V > Context: Everywhere       
+addTarget: Node: < Primordial, Ljava/lang/String, <clinit>()V > Context: Everywhere ,invokespecial < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>(Ljava/lang/String$1;)V > 4,5 @12 exception:6 , Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>(Ljava/lang/String$1;)V > Context: Everywhere
+visitInvoke class init Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>(Ljava/lang/String$1;)V > Context: Everywhere
+visitPut < Primordial, Ljava/lang/String, CASE_INSENSITIVE_ORDER, <Primordial,Ljava/util/Comparator> >
+visitPut class init <Primordial,Ljava/lang/String> < Primordial, Ljava/lang/String, CASE_INSENSITIVE_ORDER, <Primordial,Ljava/util/Comparator> >
+getIncomingPEIs BB[SSA:-1..-2]5 - java.lang.String.<clinit>()V
+pred: BB[SSA:0..1]1 - java.lang.String.<clinit>()V
+PEI: 3 = new <Primordial,[Ljava/io/ObjectStreamField>@12  index 1 PC 1
+pred: BB[SSA:2..3]2 - java.lang.String.<clinit>()V
+PEI: 4 = new <Primordial,Ljava/lang/String$CaseInsensitiveComparator>@7 index 3 PC 7
+pred: BB[SSA:4..6]3 - java.lang.String.<clinit>()V
+PEI: invokespecial < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>(Ljava/lang/String$1;)V > 4,5 @12 exception:6 index 6 PC 12
+pred: BB[SSA:7..8]4 - java.lang.String.<clinit>()V
+Add exception def constraints for node Node: < Primordial, Ljava/lang/String, <clinit>()V > Context: Everywhere    
+peiLoc: PC@1
+Add exceptions from pei 3 = new <Primordial,[Ljava/io/ObjectStreamField>@12
+peiLoc: PC@7
+Add exceptions from pei 4 = new <Primordial,Ljava/lang/String$CaseInsensitiveComparator>@7
+peiLoc: PC@12
+Add exceptions from pei invokespecial < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>(Ljava/lang/String$1;)V > 4,5 @12 exception:6
+
+
+Add constraints from node Node: < Primordial, Ljava/lang/Object, <init>()V > Context: Everywhere
+< Primordial, Ljava/lang/Object, <init>()V >
+CFG:
+BB0[-1..-2]
+    -> BB1
+BB1[0..0]
+    -> BB2
+BB2[-1..-2]
+Instructions:
+BB0
+BB1
+0   return                                   (line 37)
+BB2
+
+getIncomingPEIs BB[SSA:-1..-2]2 - java.lang.Object.<init>()V
+pred: BB[SSA:0..0]1 - java.lang.Object.<init>()V
+Add exception def constraints for node Node: < Primordial, Ljava/lang/Object, <init>()V > Context: Everywhere      
+
+
+Add constraints from node Node: < Application, Lvc/Class, main([Ljava/lang/String;)V > Context: Everywhere
+< Application, Lvc/Class, main([Ljava/lang/String;)V >
+CFG:
+BB0[-1..-2]
+    -> BB1
+BB1[0..2]
+    -> BB2
+    -> BB4
+BB2[3..5]
+    -> BB3
+    -> BB4
+BB3[6..6]
+    -> BB4
+BB4[-1..-2]
+Instructions:
+BB0
+BB1
+0   v3 = getstatic < Application, Lvc/Class, types, <Application,[Lvc/Interface> >(line 17)
+2   v5 = arrayload v3[v4:#0]                 (line 17)
+BB2
+5   invokeinterface < Application, Lvc/Interface, method()V > v5 @7 exception:v6(line 18)
+BB3
+6   return                                   (line 19)
+BB4
+
+visitGet < Application, Lvc/Class, types, <Application,[Lvc/Interface> >
+getstatic call class init <Application,Lvc/Class>
+visitInvoke: invokeinterface < Application, Lvc/Interface, method()V > 5 @7 exception:6
+Add side effect, dispatch to invokeinterface < Application, Lvc/Interface, method()V > 5 @7 exception:6 for { 0 }  
+getIncomingPEIs BB[SSA:-1..-2]4 - vc.Class.main([Ljava/lang/String;)V
+pred: BB[SSA:0..2]1 - vc.Class.main([Ljava/lang/String;)V
+PEI: 5 = arrayload 3[4] index 2 PC 4
+pred: BB[SSA:3..5]2 - vc.Class.main([Ljava/lang/String;)V
+PEI: invokeinterface < Application, Lvc/Interface, method()V > 5 @7 exception:6 index 5 PC 7
+pred: BB[SSA:6..6]3 - vc.Class.main([Ljava/lang/String;)V
+Add exception def constraints for node Node: < Application, Lvc/Class, main([Ljava/lang/String;)V > Context: Everywhere
+peiLoc: PC@4
+Add exceptions from pei 5 = arrayload 3[4]
+peiLoc: PC@7
+Add exceptions from pei invokeinterface < Application, Lvc/Interface, method()V > 5 @7 exception:6
+
+
+Add constraints from node Node: < Application, Lvc/Class, <clinit>()V > Context: Everywhere
+< Application, Lvc/Class, <clinit>()V >
+CFG:
+BB0[-1..-2]
+    -> BB1
+BB1[0..1]
+    -> BB2
+    -> BB9
+BB2[2..4]
+    -> BB3
+    -> BB9
+BB3[5..6]
+    -> BB4
+    -> BB9
+BB4[7..7]
+    -> BB5
+    -> BB9
+BB5[8..10]
+    -> BB6
+    -> BB9
+BB6[11..12]
+    -> BB7
+    -> BB9
+BB7[13..13]
+    -> BB8
+    -> BB9
+BB8[14..15]
+    -> BB9
+BB9[-1..-2]
+Instructions:
+BB0
+BB1
+1   v3 = new <Application,[Lvc/Interface>@1v2:#2 (line 11)
+BB2
+4   v5 = new <Application,Lvc/Class>@6       (line 11)
+BB3
+6   invokespecial < Application, Lvc/Class, <init>()V > v5 @10 exception:v6(line 11)
+BB4
+7   arraystore v3[v4:#0] = v5                (line 11)
+BB5
+10   v8 = new <Application,Lvc/ClassImpl>@16 (line 11)
+BB6
+12   invokespecial < Application, Lvc/ClassImpl, <init>()V > v8 @20 exception:v9(line 11)
+BB7
+13   arraystore v3[v7:#1] = v8               (line 11)
+BB8
+14   putstatic < Application, Lvc/Class, types, <Application,[Lvc/Interface> > = v3(line 11)
+15   return                                  (line 11)
+BB9
+
+visitNew: 3 = new <Application,[Lvc/Interface>@12  i:[<Application,[Lvc/Interface>] 10
+visitNew call clinit: <Application,[Lvc/Interface>
+visitNew: 5 = new <Application,Lvc/Class>@6 i:[<Application,Lvc/Class>] 11
+visitNew call clinit: <Application,Lvc/Class>
+visitInvoke: invokespecial < Application, Lvc/Class, <init>()V > 5 @10 exception:6
+processResolvedCall: Node: < Application, Lvc/Class, <clinit>()V > Context: Everywhere ,invokespecial < Application, Lvc/Class, <init>()V > 5 @10 exception:6 , Node: < Application, Lvc/Class, <init>()V > Context: Everywhere       
+addTarget: Node: < Application, Lvc/Class, <clinit>()V > Context: Everywhere ,invokespecial < Application, Lvc/Class, <init>()V > 5 @10 exception:6 , Node: < Application, Lvc/Class, <init>()V > Context: Everywhere
+visitInvoke class init Node: < Application, Lvc/Class, <init>()V > Context: Everywhere
+visitNew: 8 = new <Application,Lvc/ClassImpl>@16 i:[<Application,Lvc/ClassImpl>] 12
+visitNew call clinit: <Application,Lvc/ClassImpl>
+visitInvoke: invokespecial < Application, Lvc/ClassImpl, <init>()V > 8 @20 exception:9
+processResolvedCall: Node: < Application, Lvc/Class, <clinit>()V > Context: Everywhere ,invokespecial < Application, Lvc/ClassImpl, <init>()V > 8 @20 exception:9 , Node: < Application, Lvc/ClassImpl, <init>()V > Context: Everywhere
+addTarget: Node: < Application, Lvc/Class, <clinit>()V > Context: Everywhere ,invokespecial < Application, Lvc/ClassImpl, <init>()V > 8 @20 exception:9 , Node: < Application, Lvc/ClassImpl, <init>()V > Context: Everywhere
+visitInvoke class init Node: < Application, Lvc/ClassImpl, <init>()V > Context: Everywhere
+visitPut < Application, Lvc/Class, types, <Application,[Lvc/Interface> >
+visitPut class init <Application,Lvc/Class> < Application, Lvc/Class, types, <Application,[Lvc/Interface> >        
+getIncomingPEIs BB[SSA:-1..-2]9 - vc.Class.<clinit>()V
+pred: BB[SSA:0..1]1 - vc.Class.<clinit>()V
+PEI: 3 = new <Application,[Lvc/Interface>@12  index 1 PC 1
+pred: BB[SSA:2..4]2 - vc.Class.<clinit>()V
+PEI: 5 = new <Application,Lvc/Class>@6 index 4 PC 6
+pred: BB[SSA:5..6]3 - vc.Class.<clinit>()V
+PEI: invokespecial < Application, Lvc/Class, <init>()V > 5 @10 exception:6 index 6 PC 10
+pred: BB[SSA:7..7]4 - vc.Class.<clinit>()V
+PEI: arraystore 3[4] = 5 index 7 PC 13
+pred: BB[SSA:8..10]5 - vc.Class.<clinit>()V
+PEI: 8 = new <Application,Lvc/ClassImpl>@16 index 10 PC 16
+pred: BB[SSA:11..12]6 - vc.Class.<clinit>()V
+PEI: invokespecial < Application, Lvc/ClassImpl, <init>()V > 8 @20 exception:9 index 12 PC 20
+pred: BB[SSA:13..13]7 - vc.Class.<clinit>()V
+PEI: arraystore 3[7] = 8 index 13 PC 23
+pred: BB[SSA:14..15]8 - vc.Class.<clinit>()V
+Add exception def constraints for node Node: < Application, Lvc/Class, <clinit>()V > Context: Everywhere
+peiLoc: PC@1
+Add exceptions from pei 3 = new <Application,[Lvc/Interface>@12
+peiLoc: PC@6
+Add exceptions from pei 5 = new <Application,Lvc/Class>@6
+peiLoc: PC@10
+Add exceptions from pei invokespecial < Application, Lvc/Class, <init>()V > 5 @10 exception:6
+peiLoc: PC@13
+Add exceptions from pei arraystore 3[4] = 5
+peiLoc: PC@16
+Add exceptions from pei 8 = new <Application,Lvc/ClassImpl>@16
+peiLoc: PC@20
+Add exceptions from pei invokespecial < Application, Lvc/ClassImpl, <init>()V > 8 @20 exception:9
+peiLoc: PC@23
+Add exceptions from pei arraystore 3[7] = 8
+
+
+Add constraints from node Node: < Primordial, Ljava/lang/Object, registerNatives()V > Context: Everywhere
+
+   No statements
+
+
+
+Add constraints from node Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>(Ljava/lang/String$1;)V > Context: Everywhere
+< Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>(Ljava/lang/String$1;)V >
+CFG:
+BB0[-1..-2]
+    -> BB1
+BB1[0..1]
+    -> BB2
+    -> BB3
+BB2[2..2]
+    -> BB3
+BB3[-1..-2]
+Instructions:
+BB0
+BB1
+1   invokespecial < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>()V > v1 @1 exception:v4(line 1186)
+BB2
+2   return                                   (line 1186)
+BB3
+
+visitInvoke: invokespecial < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>()V > 1 @1 exception:4 
+Add side effect, dispatch to invokespecial < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>()V > 1 @1 exception:4 for { 0 }
+processResolvedCall: Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>(Ljava/lang/String$1;)V > Context: Everywhere ,invokespecial < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>()V > 1 @1 exception:4 , Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>()V > Context: Everywhere      
+addTarget: Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>(Ljava/lang/String$1;)V > Context: Everywhere ,invokespecial < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>()V > 1 @1 exception:4 , Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>()V > Context: Everywhere
+getIncomingPEIs BB[SSA:-1..-2]3 - java.lang.String$CaseInsensitiveComparator.<init>(Ljava/lang/String$1;)V
+pred: BB[SSA:0..1]1 - java.lang.String$CaseInsensitiveComparator.<init>(Ljava/lang/String$1;)V
+PEI: invokespecial < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>()V > 1 @1 exception:4 index 1 PC 1
+pred: BB[SSA:2..2]2 - java.lang.String$CaseInsensitiveComparator.<init>(Ljava/lang/String$1;)V
+Add exception def constraints for node Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>(Ljava/lang/String$1;)V > Context: Everywhere
+peiLoc: PC@1
+Add exceptions from pei invokespecial < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>()V > 1 @1 exception:4
+
+
+Add constraints from node Node: < Application, Lvc/Class, <init>()V > Context: Everywhere
+< Application, Lvc/Class, <init>()V >
+CFG:
+BB0[-1..-2]
+    -> BB1
+BB1[0..1]
+    -> BB2
+    -> BB3
+BB2[2..2]
+    -> BB3
+BB3[-1..-2]
+Instructions:
+BB0
+BB1
+1   invokespecial < Application, Ljava/lang/Object, <init>()V > v1 @1 exception:v3(line 9)
+BB2
+2   return                                   (line 9)
+BB3
+
+visitInvoke: invokespecial < Application, Ljava/lang/Object, <init>()V > 1 @1 exception:3
+Add side effect, dispatch to invokespecial < Application, Ljava/lang/Object, <init>()V > 1 @1 exception:3 for { 0 }
+processResolvedCall: Node: < Application, Lvc/Class, <init>()V > Context: Everywhere ,invokespecial < Application, Ljava/lang/Object, <init>()V > 1 @1 exception:3 , Node: < Primordial, Ljava/lang/Object, <init>()V > Context: Everywhere
+addTarget: Node: < Application, Lvc/Class, <init>()V > Context: Everywhere ,invokespecial < Application, Ljava/lang/Object, <init>()V > 1 @1 exception:3 , Node: < Primordial, Ljava/lang/Object, <init>()V > Context: Everywhere     
+getIncomingPEIs BB[SSA:-1..-2]3 - vc.Class.<init>()V
+pred: BB[SSA:0..1]1 - vc.Class.<init>()V
+PEI: invokespecial < Application, Ljava/lang/Object, <init>()V > 1 @1 exception:3 index 1 PC 1
+pred: BB[SSA:2..2]2 - vc.Class.<init>()V
+Add exception def constraints for node Node: < Application, Lvc/Class, <init>()V > Context: Everywhere
+peiLoc: PC@1
+Add exceptions from pei invokespecial < Application, Ljava/lang/Object, <init>()V > 1 @1 exception:3
+
+
+Add constraints from node Node: < Application, Lvc/ClassImpl, <init>()V > Context: Everywhere
+< Application, Lvc/ClassImpl, <init>()V >
+CFG:
+BB0[-1..-2]
+    -> BB1
+BB1[0..1]
+    -> BB2
+    -> BB3
+BB2[2..2]
+    -> BB3
+BB3[-1..-2]
+Instructions:
+BB0
+BB1
+1   invokespecial < Application, Ljava/lang/Object, <init>()V > v1 @1 exception:v3(line 22)
+BB2
+2   return                                   (line 22)
+BB3
+
+visitInvoke: invokespecial < Application, Ljava/lang/Object, <init>()V > 1 @1 exception:3
+Add side effect, dispatch to invokespecial < Application, Ljava/lang/Object, <init>()V > 1 @1 exception:3 for { 0 }
+processResolvedCall: Node: < Application, Lvc/ClassImpl, <init>()V > Context: Everywhere ,invokespecial < Application, Ljava/lang/Object, <init>()V > 1 @1 exception:3 , Node: < Primordial, Ljava/lang/Object, <init>()V > Context: Everywhere
+addTarget: Node: < Application, Lvc/ClassImpl, <init>()V > Context: Everywhere ,invokespecial < Application, Ljava/lang/Object, <init>()V > 1 @1 exception:3 , Node: < Primordial, Ljava/lang/Object, <init>()V > Context: Everywhere 
+getIncomingPEIs BB[SSA:-1..-2]3 - vc.ClassImpl.<init>()V
+pred: BB[SSA:0..1]1 - vc.ClassImpl.<init>()V
+PEI: invokespecial < Application, Ljava/lang/Object, <init>()V > 1 @1 exception:3 index 1 PC 1
+pred: BB[SSA:2..2]2 - vc.ClassImpl.<init>()V
+Add exception def constraints for node Node: < Application, Lvc/ClassImpl, <init>()V > Context: Everywhere
+peiLoc: PC@1
+Add exceptions from pei invokespecial < Application, Ljava/lang/Object, <init>()V > 1 @1 exception:3
+
+
+Add constraints from node Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>()V > Context: Everywhere
+< Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>()V >
+CFG:
+BB0[-1..-2]
+    -> BB1
+BB1[0..1]
+    -> BB2
+    -> BB3
+BB2[2..2]
+    -> BB3
+BB3[-1..-2]
+Instructions:
+BB0
+BB1
+1   invokespecial < Primordial, Ljava/lang/Object, <init>()V > v1 @1 exception:v3(line 1186)
+BB2
+2   return                                   (line 1186)
+BB3
+
+visitInvoke: invokespecial < Primordial, Ljava/lang/Object, <init>()V > 1 @1 exception:3
+Add side effect, dispatch to invokespecial < Primordial, Ljava/lang/Object, <init>()V > 1 @1 exception:3 for { 0 } 
+processResolvedCall: Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>()V > Context: Everywhere ,invokespecial < Primordial, Ljava/lang/Object, <init>()V > 1 @1 exception:3 , Node: < Primordial, Ljava/lang/Object, <init>()V > Context: Everywhere
+addTarget: Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>()V > Context: Everywhere ,invokespecial < Primordial, Ljava/lang/Object, <init>()V > 1 @1 exception:3 , Node: < Primordial, Ljava/lang/Object, <init>()V > Context: Everywhere
+getIncomingPEIs BB[SSA:-1..-2]3 - java.lang.String$CaseInsensitiveComparator.<init>()V
+pred: BB[SSA:0..1]1 - java.lang.String$CaseInsensitiveComparator.<init>()V
+PEI: invokespecial < Primordial, Ljava/lang/Object, <init>()V > 1 @1 exception:3 index 1 PC 1
+pred: BB[SSA:2..2]2 - java.lang.String$CaseInsensitiveComparator.<init>()V
+Add exception def constraints for node Node: < Primordial, Ljava/lang/String$CaseInsensitiveComparator, <init>()V > Context: Everywhere
+peiLoc: PC@1
+Add exceptions from pei invokespecial < Primordial, Ljava/lang/Object, <init>()V > 1 @1 exception:3
+processResolvedCall: Node: < Application, Lvc/Class, main([Ljava/lang/String;)V > Context: Everywhere ,invokeinterface < Application, Lvc/Interface, method()V > 5 @7 exception:6 , Node: < Application, Lvc/Class, method()V > Context: Everywhere
+addTarget: Node: < Application, Lvc/Class, main([Ljava/lang/String;)V > Context: Everywhere ,invokeinterface < Application, Lvc/Interface, method()V > 5 @7 exception:6 , Node: < Application, Lvc/Class, method()V > Context: Everywhere
+processResolvedCall: Node: < Application, Lvc/Class, main([Ljava/lang/String;)V > Context: Everywhere ,invokeinterface < Application, Lvc/Interface, method()V > 5 @7 exception:6 , Node: < Application, Lvc/ClassImpl, method()V > Context: Everywhere
+addTarget: Node: < Application, Lvc/Class, main([Ljava/lang/String;)V > Context: Everywhere ,invokeinterface < Application, Lvc/Interface, method()V > 5 @7 exception:6 , Node: < Application, Lvc/ClassImpl, method()V > Context: Everywhere
+
+
+Add constraints from node Node: < Application, Lvc/Class, method()V > Context: Everywhere
+< Application, Lvc/Class, method()V >
+CFG:
+BB0[-1..-2]
+    -> BB1
+BB1[0..0]
+    -> BB2
+BB2[-1..-2]
+Instructions:
+BB0
+BB1
+0   return                                   (line 13)
+BB2
+
+getIncomingPEIs BB[SSA:-1..-2]2 - vc.Class.method()V
+pred: BB[SSA:0..0]1 - vc.Class.method()V
+Add exception def constraints for node Node: < Application, Lvc/Class, method()V > Context: Everywhere
+
+
+Add constraints from node Node: < Application, Lvc/ClassImpl, method()V > Context: Everywhere
+< Application, Lvc/ClassImpl, method()V >
+CFG:
+BB0[-1..-2]
+    -> BB1
+BB1[0..0]
+    -> BB2
+BB2[-1..-2]
+Instructions:
+BB0
+BB1
+0   return                                   (line 23)
+BB2
+
+getIncomingPEIs BB[SSA:-1..-2]2 - vc.ClassImpl.method()V
+pred: BB[SSA:0..0]1 - vc.ClassImpl.method()V
+Add exception def constraints for node Node: < Application, Lvc/ClassImpl, method()V > Context: Everywhere
+Call graph stats:
+  Nodes: 14
+  Edges: 16
+  Methods: 14
+  Bytecode Bytes: 87
