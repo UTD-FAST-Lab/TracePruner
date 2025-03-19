@@ -18,5 +18,6 @@ ENV CONDA_DEFAULT_ENV=myenv
 ENV PATH="/opt/conda/envs/myenv/bin:$PATH"
 
 # Keep the container running interactively
-CMD ["bash", "-c", "python approaches/PLELog.py --dataset BGL"]
+# CMD ["bash", "-c", "python approaches/PLELog.py --dataset BGL"]
+CMD ["/bin/bash"]
 

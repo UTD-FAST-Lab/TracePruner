@@ -55,7 +55,18 @@
   <repositories>
     <repository>
         <id>wala-local-repo</id>
-        <url>file://home/mohammad/projects/CallGraphPruner/scripts/trace-generation/wala-jars/repository</url>
+        <url>file:///home/mohammad/projects/CallGraphPruner/scripts/trace-generation/wala-jars/repository</url>
+    </repository>
+
+    <repository>
+        <id>central</id>
+        <url>https://repo.maven.apache.org/maven2</url>
+        <releases>
+            <enabled>false</enabled>
+        </releases>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
     </repository>
   </repositories>
   
@@ -76,27 +87,5 @@
         <version>1.5.9</version>
     </dependency>
 </dependencies>
-
-<!-- 
-  <dependencies>
-    <dependency>
-        <groupId>com.ibm.wala</groupId>
-        <artifactId>com.ibm.wala.core</artifactId>
-        <version>1.5.9</version>
-    </dependency>
-    <dependency>
-        <groupId>com.ibm.wala</groupId>
-        <artifactId>com.ibm.wala.util</artifactId>
-        <version>1.5.9</version>
-    </dependency>
-    <dependency>
-        <groupId>com.ibm.wala</groupId>
-        <artifactId>com.ibm.wala.shrike</artifactId>
-        <version>1.5.9</version>
-    </dependency>
-  </dependencies> -->
-
-
-
 
 </project>

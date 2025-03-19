@@ -1641,7 +1641,7 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
     if (DEBUG) {
       System.err.println("addTarget: " + caller + " ," + instruction + " , " + target);
     }
-    System.err.println("addTarget: " + caller + " ," + instruction + " , " + target);
+    // System.err.println("addTarget: " + caller + " ," + instruction + " , " + target);
     caller.addTarget(instruction.getCallSite(), target);
 
     if (callGraph.getFakeRootNode().equals(caller)) {
@@ -1852,7 +1852,8 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
       assert dispatchIndices.length >= rhs.length : "bad operator at " + call;
       // byte res = cpa(rhs);
       // System.err.println("evaluate: " + Arrays.toString(rhs));
-      System.err.println("\n=== EVALUATE CALLED FOR DISPATCH AT " + call + " ===");
+
+      // System.err.println("\n=== EVALUATE CALLED FOR DISPATCH AT " + call + " ===");
 
       if (DEBUG) {
     
@@ -1913,7 +1914,7 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
 
 
       // For points-to map
-      StringBuilder pointsToLog = new StringBuilder("[POINTS-TO MAP]\n");
+      StringBuilder pointsToLog = new StringBuilder("AgentLogger|POINT-TO-MAP-INFO: ");
       for (Iterator<PointerKey> it = system.iteratePointerKeys(); it.hasNext(); ) {
           PointerKey pointerKey = it.next();
           if (!system.pointsToMap.isImplicit(pointerKey)) {  
@@ -1934,7 +1935,7 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
                                   first[0] = false;
                               });
                               line.append("]");
-                              pointsToLog.append(line).append("\n");
+                              pointsToLog.append(line).append(" , ");
                           }
                       }
                   }
@@ -1947,11 +1948,11 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
 
       // For call graph
       ExplicitCallGraph cg = getCallGraph();
-      StringBuilder cgLog = new StringBuilder("[CALL GRAPH]\n");
+      StringBuilder cgLog = new StringBuilder("AgentLogger|CALL-GRAPH-INFO: ");
       cgLog.append("TotalNodes=").append(cg.getNumberOfNodes())
           .append("|CallSite=").append(call.getCallSite())
           .append("|Method=").append(node.getMethod().getSignature())
-          .append("\n");
+          .append(" ; ");
 
       if (cg.getPossibleTargets(node, call.getCallSite()) != null) {
           StringBuilder targets = new StringBuilder("Targets=[");
@@ -1962,16 +1963,18 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
               first = false;
           }
           targets.append("]");
-          cgLog.append(targets).append("\n");
+          cgLog.append(targets);
       }
 
       System.out.println(cgLog);
 
 
       // For parameters
-      StringBuilder paramLog = new StringBuilder("[PARAMETERS]\n");
+      StringBuilder paramLog = new StringBuilder("AgentLogger|PARAMETERS-INFO: ");
+      boolean empty = true;
       for (int i = 0; i < rhs.length; i++) {
           if (rhs[i] != null && rhs[i].getValue() != null && !rhs[i].getValue().isEmpty()) {
+              empty = false;
               StringBuilder line = new StringBuilder("Param").append(i).append("=[");
               final boolean[] first = {true};
               rhs[i].getValue().foreach(instanceId -> {
@@ -1981,16 +1984,19 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
                   first[0] = false;
               });
               line.append("]");
-              paramLog.append(line).append("\n");
+              paramLog.append(line).append(" , ");
           }
       }
 
+      if (empty)
+        paramLog.append("null");
       System.out.println(paramLog);
+      
 
 
      
       
-      System.err.println("\n=== END OF EVALUATE INFO ===\n");
+      // System.err.println("\n=== END OF EVALUATE INFO ===\n");
 
 
       return cpa(rhs);

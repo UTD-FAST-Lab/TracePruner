@@ -108,7 +108,7 @@ class Simple_template_TF_IDF():
 
         Statistics_Template_Logger.info(
             'Found %d tokens in %d log templates' % (len(all_tokens), len(processed_id2templates)))
-
+        
         # Calculate IDF score.
         total_templates = len(processed_id2templates)
         token2idf = {}
@@ -126,6 +126,7 @@ class Simple_template_TF_IDF():
                 continue
             for token in template_tokens:
                 simple_words = like_camel_to_tokens(token)
+                # print(simple_words)
                 tf = token_counter[token] / N
                 if token in token2idf.keys():
                     idf = token2idf[token]
