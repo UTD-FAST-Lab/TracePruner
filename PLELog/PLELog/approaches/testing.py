@@ -125,11 +125,19 @@ if __name__ == '__main__':
     # print(embddings)
 
     # Ensure valid n_components
-    n_components = min(50, embddings.shape[0])
-    print(f"Start FastICA, target dimension: {n_components}")
 
-    # Apply FastICA
-    transformer = FastICA(n_components=50)
-    train_reprs = transformer.fit_transform(embddings)
+    reduction = False
+    if reduction:
+        n_components = min(50, embddings.shape[0])
+        print(f"Start FastICA, target dimension: {n_components}")
 
-    print("Reduced:", train_reprs)
+        # Apply FastICA
+        transformer = FastICA(n_components=50)
+        train_reprs = transformer.fit_transform(embddings)
+
+        print("Reduced:", train_reprs)
+
+
+    
+
+    
