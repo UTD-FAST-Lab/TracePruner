@@ -24,39 +24,62 @@ def load_hash_map(path):
         with open(path, "r", encoding="utf-8") as f:
             data = json.load(f)
         return data["string_to_id"], {int(k): v for k, v in data["id_to_string"].items()}
+    print("not exist: ", path)
     return {}, {}
 
 
-def gen_id2embd():
+def save_hash_map(id2log_path, string_to_id, id_to_string):
+        """Save hash map to a JSON file."""
+        with open(id2log_path, "w", encoding="utf-8") as f:
+            json.dump({"string_to_id": string_to_id, "id_to_string": id_to_string}, f, indent=4)
+
+
+def gen_id2embd(id2log_path, template):
     '''loads the id2log dictionary and for each id generate the embedding and write to a file'''
-    id2log_path = ''
     string_to_id, id_to_string = load_hash_map(id2log_path)
 
     id2embd = template.present(id_to_string)
 
-    return id2embd, string_to_id
+    return id2embd, string_to_id, id_to_string
     
 
-def parse_trace(trace, string_to_id):
+def parse_trace(id2log_path, trace, string_to_id, id_to_string):
     '''encodes each trace(edge) to its method ids e.g., 1,1 1,4 5,3 3,6 + the var info logs and write to a file'''
     
+    unique_strings = set(string_to_id.keys())  # Get current unique strings
+    changed = False
+
     path = ''
     encoded_trace = {}
-    with open(path, 'w') as file:
-        for line_num, line in trace.items():
-            if line.startswith("AgentLogger|CG_edge: "):
-                # Remove the prefix before splitting
-                line = line[len("AgentLogger|CG_edge: "):]
+    # with open(path, 'w') as file:
+    for line_num, line in trace.items():
+        if line.startswith("AgentLogger|CG_edge: "):
+            # Remove the prefix before splitting
+            line = line[len("AgentLogger|CG_edge: "):]
 
-                # Split by "->" with optional spaces
-                parts = re.split(r"\s*->\s*", line)
-                if len(parts) == 2:
-                    left, right = parts
-                    encoded_trace[line_num] = f"{string_to_id[left]},{string_to_id[right]}"
-                    file.write(f"{string_to_id[left]},{string_to_id[right]}\n")
-            else:
-                file.write(line)
-                encoded_trace[line_num] = line
+            # Split by "->" with optional spaces
+            parts = re.split(r"\s*->\s*", line)
+            if len(parts) == 2:
+                left, right = parts
+
+                # Assign new IDs if needed
+                for s in [left, right]:
+                    if s not in unique_strings:
+                        changed = True
+                        new_id = len(string_to_id) + 1
+                        string_to_id[s] = new_id
+                        id_to_string[new_id] = s
+                        unique_strings.add(s)
+
+                encoded_trace[line_num] = f"{string_to_id[left]},{string_to_id[right]}"
+                # file.write(f"{string_to_id[left]},{string_to_id[right]}\n")
+        else:
+            # file.write(line)
+            encoded_trace[line_num] = line
+
+    if changed:
+        save_hash_map(id2log_path, string_to_id, id_to_string)
+
 
     return encoded_trace
 
@@ -74,12 +97,17 @@ def embedd_trace(id2embd, encoded_trace):
     normal_embed_logs = []
     imp_raw_logs = {}
 
-    for line_num, line in encoded_trace:
+    for line_num, line in encoded_trace.items():
+
         if '-INFO' in line:
             imp_raw_logs[line_num] = line
 
+        elif 'visitInvoke: ' in line or 'addEdge: ' in line or 'AgentLogger' in line:
+            continue
         else:
             src, trg = line.split(',')
+            src = int(src)
+            trg = int(trg)
             src_embd = id2embd[src]
             trg_embd = id2embd[trg]
 
@@ -87,7 +115,7 @@ def embedd_trace(id2embd, encoded_trace):
             normal_embed_logs.append(aggregated_log)
 
     imp_embed_logs = template.present(imp_raw_logs)
-    imp_embed_logs = imp_embed_logs.values()
+    imp_embed_logs = list(imp_embed_logs.values())
 
     n_imp = len(imp_embed_logs)
     n_total = len(normal_embed_logs) + len(imp_embed_logs)
@@ -99,18 +127,21 @@ def embedd_trace(id2embd, encoded_trace):
         w_imp = 1 + (n_total / n_imp)  # Adaptive weight for important sentences
     w_non_imp = 1.0  # Default weight for non-important sentences
 
-    total_weight = sum(w_non_imp * len(normal_embed_logs) + w_imp * len(imp_embed_logs))
+    total_weight = w_non_imp * len(normal_embed_logs) + w_imp * len(imp_embed_logs)
+
     
     for i in range(len(imp_embed_logs)):
         imp_embed_logs[i] = np.array(imp_embed_logs[i]) * (w_imp/total_weight)
     
     for i in range(len(normal_embed_logs)):
         normal_embed_logs[i] = np.array(normal_embed_logs[i]) * (w_non_imp/total_weight)
-
     
-    aggregated_embed_logs = normal_embed_logs.append(imp_embed_logs)
+    aggregated_embed_logs = []
+    aggregated_embed_logs.extend(normal_embed_logs)
+    aggregated_embed_logs.extend(imp_embed_logs)
 
-    final_embedding = sum(log for log in aggregated_embed_logs)
+
+    final_embedding = np.sum(aggregated_embed_logs, axis=0)
 
     return final_embedding
 
@@ -270,18 +301,28 @@ def evaluate_cluster(labeled_train, normal_ids):
 if __name__ == '__main__':
 
     template =  Simple_template_TF_IDF()
+
     programs_path = "/app/data/edge-traces/cgs"
+    id2log_path = '/app/data/WALA_hash_map.json'
+
     instances = []
-    reduction = False
+    reduction = True
+
+
+    # embed wala's method names
+    id2embd, string_to_id, id_to_string = gen_id2embd(id2log_path, template)
 
     
+
+    # n_normal = 0
+    # n_anormal = 0
+
+    # done= False
 
     for p_id, program in enumerate(os.listdir(programs_path)):
         program_path = os.path.join(programs_path, program)
         labels_df = load_label(program_path)
         edges_path = os.path.join(programs_path, program, "edges")
-        n_normal = 0
-        n_anormal = 0
         for edge in os.listdir(edges_path):
             edge_path = os.path.join(edges_path, edge)
             edge_id = edge.split('.')[0]
@@ -289,33 +330,49 @@ if __name__ == '__main__':
             if len(label) <= 0:
                 continue
             label = label[0]
-            if str(label) == '1':
-                n_normal += 1
-            elif str(label) == "0":
-                n_anormal += 1
+            
+            # if str(label) == '1':
+            #     n_normal += 1
+            # elif str(label) == "0":
+            #     n_anormal += 1
 
-            seq = load_trace(edge_path)
+            trace = load_trace(edge_path)
             print('trace loaded ....')
 
-            embd = embedding_trace(seq)
+            encoded_trace = parse_trace(id2log_path, trace, string_to_id, id_to_string)
+            print("trace encoded ...")
+
+            final_embedding = embedd_trace(id2embd, encoded_trace)
+
+    #         embd = embedding_trace(seq)
             print('embedding done ...')
 
-            # new instance
-            inst = create_instance(p_id, edge, seq, embd, label)
+    #         # new instance
+            inst = create_instance(p_id, edge, trace, final_embedding, label)
 
             print("instance created ...")
 
             instances.append(inst)
 
-            if n_normal > 2 and n_anormal > 2:
-                break
+
+        #     if n_normal > 2 and n_anormal >2:
+        #         done = True
+        #         break
+        # if done:
+        #     break
 
     
     train, dev, test = split_631(instances)
+    print("done splitting ... ")
 
     if reduction:
-        reduction(train)
+        feature_reduction(train)
 
     labeled_train = probability_labeling(train)
+
+    for inst in labeled_train:
+        print(inst.predicted)
+        print(inst.label)
+        print(inst.confidence)
 
 
