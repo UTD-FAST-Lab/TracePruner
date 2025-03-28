@@ -45,7 +45,7 @@ class Simple_template_TF_IDF():
                 if word in self._word2vec.keys():
                     return_list.append(self._word2vec[word])
                 else:
-                    print(word, end=' ')
+                    # print(word, end=' ')  #TODO: fix these words
                     num_oov += 1
             return np.asarray(return_list, dtype=np.float).sum(axis=0) / len(words)
         else:

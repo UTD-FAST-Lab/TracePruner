@@ -1,8 +1,21 @@
 import sys
+
 sys.path.extend([".", ".."])
-from representations.templates.statistics import Simple_template_TF_IDF
-import numpy as np
+from CONSTANTS import *
 from sklearn.decomposition import FastICA
+from representations.templates.statistics import Simple_template_TF_IDF, Template_TF_IDF_without_clean
+from representations.sequences.statistics import Sequential_TF
+from preprocessing.datacutter.SimpleCutting import cut_by_613
+from preprocessing.AutoLabeling import Probabilistic_Labeling
+from preprocessing.Preprocess import Preprocessor
+from module.Optimizer import Optimizer
+from module.Common import data_iter, generate_tinsts_binary_label, batch_variable_inst
+from models.gru import AttGRUModel
+from utils.Vocab import Vocab
+
+from entities.instances import Instance
+
+import pandas as pd
 
 
 sequences = []
@@ -29,40 +42,53 @@ seq = {
 }
 
 seq1 = {
-    1:'AgentLogger|BRANCH: com.ibm.wala.classLoader.ShrikeBTMethod.isStatic ()Z:ELSE#0',
-    2:'AgentLogger|BRANCH: com.ibm.wala.classLoader.ShrikeBTMethod.getParameterType (I)Lcom/ibm/wala/types/TypeReference;:IF#0',
-    18: 'AgentLogger|PARAMETERS-INFO: null',
-    3:'AgentLogger|BRANCH: com.ibm.wala.classLoader.ShrikeBTMethod.getReference ()Lcom/ibm/wala/types/MethodReference;:IF#0',
-    4:'AgentLogger|BRANCH: com.ibm.wala.types.MethodReference.getParameterType (I)Lcom/ibm/wala/types/TypeReference;:ELSE#0',
-    5:'AgentLogger|BRANCH: com.ibm.wala.types.MethodReference.getParameterType (I)Lcom/ibm/wala/types/TypeReference;:IF#1',
-    6:'AgentLogger|BRANCH: com.ibm.wala.ipa.cha.ClassHierarchy.lookupClass (Lcom/ibm/wala/types/TypeReference;)Lcom/ibm/wala/classLoader/IClass;:IF#0',
-    7:'AgentLogger|BRANCH: com.ibm.wala.ipa.cha.ClassHierarchy.lookupClassRecursive (Lcom/ibm/wala/types/TypeReference;)Lcom/ibm/wala/classLoader/IClass;:ELSE#0',
     8:'AgentLogger|CG_edge: com.ibm.wala.ssa.SSABuilder$SymbolicPropagator.emitInstruction (Lcom/ibm/wala/ssa/SSAInstruction;)V -> com.ibm.wala.ssa.SSABuilder$SymbolicPropagator.getCurrentInstructionIndex ()I',
     9:'AgentLogger|CG_edge: com.ibm.wala.ssa.SSABuilder$SymbolicPropagator.emitInstruction (Lcom/ibm/wala/ssa/SSAInstruction;)V -> com.ibm.wala.ssa.SSAInstruction.getNumberOfDefs ()I',
     10:'AgentLogger|CG_edge: com.ibm.wala.analysis.stackMachine.AbstractIntStackMachine$BasicStackFlowProvider.flow (Lcom/ibm/wala/analysis/stackMachine/AbstractIntStackMachine$MachineState;Lcom/ibm/wala/cfg/ShrikeCFG$BasicBlock;)Lcom/ibm/wala/analysis/stackMachine/AbstractIntStackMachine$MachineState; -> com.ibm.wala.cfg.ShrikeCFG$BasicBlock.getLastInstructionIndex ()I',
     11:'AgentLogger|CG_edge: com.ibm.wala.cfg.ShrikeCFG$BasicBlock.getLastInstructionIndex ()I -> com.ibm.wala.cfg.ShrikeCFG.entry ()Lcom/ibm/wala/cfg/IBasicBlock;',
-    15:'AgentLogger|CALL-GRAPH-INFO: TotalNodes=15|CallSite=invokevirtual < Application, Ljava/lang/StringBuilder, append(Ljava/lang/Object;)Ljava/lang/StringBuilder; >@38|Method=Test.main([Ljava/lang/String;)V ; Targets=[]',
-    16:'AgentLogger|PARAMETERS-INFO: Param0=[Ljava/lang/StringBuilder] ,',
-    12:'AgentLogger|CG_edge: com.ibm.wala.cfg.AbstractCFG.entry ()Lcom/ibm/wala/cfg/IBasicBlock; -> com.ibm.wala.cfg.AbstractCFG.getNode (I)Lcom/ibm/wala/cfg/IBasicBlock;',
     13:'AgentLogger|CG_edge: com.ibm.wala.cfg.AbstractCFG.getNode (I)Lcom/ibm/wala/cfg/IBasicBlock; -> com.ibm.wala.util.graph.impl.DelegatingNumberedNodeManager.getNode (I)Lcom/ibm/wala/util/graph/INodeWithNumber;',
-    14:'AgentLogger|CG_edge: com.ibm.wala.cfg.ShrikeCFG$BasicBlock.getLastInstructionIndex ()I -> com.ibm.wala.cfg.ShrikeCFG.exit ()Lcom/ibm/wala/cfg/IBasicBlock;',
-    14:'AgentLogger|CG_edge: com.ibm.wala.cfg.ShrikeCFG$BasicBlock.getLastInstructionIndex ()I -> com.ibm.wala.cfg.ShrikeCFG.exit ()Lcom/ibm/wala/cfg/IBasicBlock;',
-    14:'AgentLogger|CG_edge: com.ibm.wala.cfg.ShrikeCFG$BasicBlock.getLastInstructionIndex ()I -> com.ibm.wala.cfg.ShrikeCFG.exit ()Lcom/ibm/wala/cfg/IBasicBlock;',
-    14:'AgentLogger|CG_edge: com.ibm.wala.cfg.ShrikeCFG$BasicBlock.getLastInstructionIndex ()I -> com.ibm.wala.cfg.ShrikeCFG.exit ()Lcom/ibm/wala/cfg/IBasicBlock;',
-    17:'AgentLogger|POINT-TO-MAP-INFO: [Node: < Application, LTest, main([Ljava/lang/String;)V > Context: Everywhere, v1] -> [[Ljava/lang/String] , [Node: < Application, LDeck, <init>()V > Context: Everywhere, v1] -> [LDeck] , [Node: < Application, LDeck, shuffle()LDeck; > Context: Everywhere, v1] -> [LDeck] , [Node: < Application, LHand, <init>(LDeck;)V > Context: Everywhere, v1] -> [LHand] , [Node: < Application, LHand, <init>(LDeck;)V > Context: Everywhere, v2] -> [LDeck] , [Node: < Application, Lcom/google/common/collect/Lists, newArrayList([Ljava/lang/Object;)Ljava/util/ArrayList; > Context: Everywhere, v1] -> [[Ljava/lang/Integer] , [Node: < Application, LHand, draw(LDeck;Ljava/util/List;)LHand; > Context: Everywhere, v1] -> [LHand] , [Node: < Application, LHand, draw(LDeck;Ljava/util/List;)LHand; > Context: Everywhere, v2] -> [LDeck] , [Node: < Application, LDeck, draw()LCard; > Context: Everywhere, v1] -> [LDeck] , [Node: < Application, LDistribution, generate(Ljava/util/Collection;LDeck;)LDistribution; > Context: Everywhere, v2] -> [LDeck] , [Node: < Application, LCard, <init>(LCard$Rank;LCard$Suit;)V > Context: Everywhere, v1] -> [LCard] , [Node: < Application, LHand, <init>(LCard;LCard;LCard;LCard;)V > Context: Everywhere, v1] -> [LHand] , ',
+    12:'AgentLogger|CG_edge: com.ibm.wala.cfg.AbstractCFG.entry ()Lcom/ibm/wala/cfg/IBasicBlock; -> com.ibm.wala.cfg.AbstractCFG.getNode (I)Lcom/ibm/wala/cfg/IBasicBlock;',
 }
+# seq1 = {
+#     1:'AgentLogger|BRANCH: com.ibm.wala.classLoader.ShrikeBTMethod.isStatic ()Z:ELSE#0',
+#     2:'AgentLogger|BRANCH: com.ibm.wala.classLoader.ShrikeBTMethod.getParameterType (I)Lcom/ibm/wala/types/TypeReference;:IF#0',
+#     18: 'AgentLogger|PARAMETERS-INFO: null',
+#     3:'AgentLogger|BRANCH: com.ibm.wala.classLoader.ShrikeBTMethod.getReference ()Lcom/ibm/wala/types/MethodReference;:IF#0',
+#     4:'AgentLogger|BRANCH: com.ibm.wala.types.MethodReference.getParameterType (I)Lcom/ibm/wala/types/TypeReference;:ELSE#0',
+#     5:'AgentLogger|BRANCH: com.ibm.wala.types.MethodReference.getParameterType (I)Lcom/ibm/wala/types/TypeReference;:IF#1',
+#     6:'AgentLogger|BRANCH: com.ibm.wala.ipa.cha.ClassHierarchy.lookupClass (Lcom/ibm/wala/types/TypeReference;)Lcom/ibm/wala/classLoader/IClass;:IF#0',
+#     7:'AgentLogger|BRANCH: com.ibm.wala.ipa.cha.ClassHierarchy.lookupClassRecursive (Lcom/ibm/wala/types/TypeReference;)Lcom/ibm/wala/classLoader/IClass;:ELSE#0',
+#     8:'AgentLogger|CG_edge: com.ibm.wala.ssa.SSABuilder$SymbolicPropagator.emitInstruction (Lcom/ibm/wala/ssa/SSAInstruction;)V -> com.ibm.wala.ssa.SSABuilder$SymbolicPropagator.getCurrentInstructionIndex ()I',
+#     9:'AgentLogger|CG_edge: com.ibm.wala.ssa.SSABuilder$SymbolicPropagator.emitInstruction (Lcom/ibm/wala/ssa/SSAInstruction;)V -> com.ibm.wala.ssa.SSAInstruction.getNumberOfDefs ()I',
+#     10:'AgentLogger|CG_edge: com.ibm.wala.analysis.stackMachine.AbstractIntStackMachine$BasicStackFlowProvider.flow (Lcom/ibm/wala/analysis/stackMachine/AbstractIntStackMachine$MachineState;Lcom/ibm/wala/cfg/ShrikeCFG$BasicBlock;)Lcom/ibm/wala/analysis/stackMachine/AbstractIntStackMachine$MachineState; -> com.ibm.wala.cfg.ShrikeCFG$BasicBlock.getLastInstructionIndex ()I',
+#     11:'AgentLogger|CG_edge: com.ibm.wala.cfg.ShrikeCFG$BasicBlock.getLastInstructionIndex ()I -> com.ibm.wala.cfg.ShrikeCFG.entry ()Lcom/ibm/wala/cfg/IBasicBlock;',
+#     15:'AgentLogger|CALL-GRAPH-INFO: TotalNodes=15|CallSite=invokevirtual < Application, Ljava/lang/StringBuilder, append(Ljava/lang/Object;)Ljava/lang/StringBuilder; >@38|Method=Test.main([Ljava/lang/String;)V ; Targets=[]',
+#     16:'AgentLogger|PARAMETERS-INFO: Param0=[Ljava/lang/StringBuilder] ,',
+#     12:'AgentLogger|CG_edge: com.ibm.wala.cfg.AbstractCFG.entry ()Lcom/ibm/wala/cfg/IBasicBlock; -> com.ibm.wala.cfg.AbstractCFG.getNode (I)Lcom/ibm/wala/cfg/IBasicBlock;',
+#     13:'AgentLogger|CG_edge: com.ibm.wala.cfg.AbstractCFG.getNode (I)Lcom/ibm/wala/cfg/IBasicBlock; -> com.ibm.wala.util.graph.impl.DelegatingNumberedNodeManager.getNode (I)Lcom/ibm/wala/util/graph/INodeWithNumber;',
+#     14:'AgentLogger|CG_edge: com.ibm.wala.cfg.ShrikeCFG$BasicBlock.getLastInstructionIndex ()I -> com.ibm.wala.cfg.ShrikeCFG.exit ()Lcom/ibm/wala/cfg/IBasicBlock;',
+#     14:'AgentLogger|CG_edge: com.ibm.wala.cfg.ShrikeCFG$BasicBlock.getLastInstructionIndex ()I -> com.ibm.wala.cfg.ShrikeCFG.exit ()Lcom/ibm/wala/cfg/IBasicBlock;',
+#     14:'AgentLogger|CG_edge: com.ibm.wala.cfg.ShrikeCFG$BasicBlock.getLastInstructionIndex ()I -> com.ibm.wala.cfg.ShrikeCFG.exit ()Lcom/ibm/wala/cfg/IBasicBlock;',
+#     14:'AgentLogger|CG_edge: com.ibm.wala.cfg.ShrikeCFG$BasicBlock.getLastInstructionIndex ()I -> com.ibm.wala.cfg.ShrikeCFG.exit ()Lcom/ibm/wala/cfg/IBasicBlock;',
+#     17:'AgentLogger|POINT-TO-MAP-INFO: [Node: < Application, LTest, main([Ljava/lang/String;)V > Context: Everywhere, v1] -> [[Ljava/lang/String] , [Node: < Application, LDeck, <init>()V > Context: Everywhere, v1] -> [LDeck] , [Node: < Application, LDeck, shuffle()LDeck; > Context: Everywhere, v1] -> [LDeck] , [Node: < Application, LHand, <init>(LDeck;)V > Context: Everywhere, v1] -> [LHand] , [Node: < Application, LHand, <init>(LDeck;)V > Context: Everywhere, v2] -> [LDeck] , [Node: < Application, Lcom/google/common/collect/Lists, newArrayList([Ljava/lang/Object;)Ljava/util/ArrayList; > Context: Everywhere, v1] -> [[Ljava/lang/Integer] , [Node: < Application, LHand, draw(LDeck;Ljava/util/List;)LHand; > Context: Everywhere, v1] -> [LHand] , [Node: < Application, LHand, draw(LDeck;Ljava/util/List;)LHand; > Context: Everywhere, v2] -> [LDeck] , [Node: < Application, LDeck, draw()LCard; > Context: Everywhere, v1] -> [LDeck] , [Node: < Application, LDistribution, generate(Ljava/util/Collection;LDeck;)LDistribution; > Context: Everywhere, v2] -> [LDeck] , [Node: < Application, LCard, <init>(LCard$Rank;LCard$Suit;)V > Context: Everywhere, v1] -> [LCard] , [Node: < Application, LHand, <init>(LCard;LCard;LCard;LCard;)V > Context: Everywhere, v1] -> [LHand] , ',
+# }
 
 
-sequences.append(seq)
+# sequences.append(seq)
 sequences.append(seq1)
 
-seq2label = {1: "true", 2:"false"}
+# seq2label = {1: "true", 2:"false"}
+
+
+
 
 
 
 
 
 if __name__ == '__main__':
+
+
 
     template =  Simple_template_TF_IDF()
 
@@ -72,6 +98,8 @@ if __name__ == '__main__':
     for indx, seq in enumerate(sequences):
 
         id_temps = template.present(seq)
+
+        print(id_temps)
 
         var_info_ids = []
         for id, log in seq.items():
@@ -100,44 +128,62 @@ if __name__ == '__main__':
 
         # Compute weighted sequence embedding
         final_embedding = sum(normalized_weights[id] * np.array(id_temps[id]) for id in id_temps)
-        print()
+        print(final_embedding)
         # print(final_embedding , seq2label[indx+1])  
 
         embddings.append(final_embedding)
     
 
-        # Convert list to np.array
-    embddings = np.asarray(embddings, dtype=np.float64)
-
-    print(embddings)
-
-    # Check for NaNs and Infs
-    if np.isnan(embddings).any() or np.isinf(embddings).any():
-        print("Warning: Found NaN or Inf in embeddings. Replacing...")
-        embddings = np.nan_to_num(embddings, nan=0.0, posinf=1.0, neginf=-1.0)
-
-    # Remove zero-variance columns
-    # variances = np.var(embddings, axis=0)
-    # if np.sum(variances == 0) > 0:
-    #     print("Warning: Removing zero-variance features...")
-    #     embddings = embddings[:, variances > 0]
+    #     # Convert list to np.array
+    # embddings = np.asarray(embddings, dtype=np.float64)
 
     # print(embddings)
 
-    # Ensure valid n_components
+    # # Check for NaNs and Infs
+    # if np.isnan(embddings).any() or np.isinf(embddings).any():
+    #     print("Warning: Found NaN or Inf in embeddings. Replacing...")
+    #     embddings = np.nan_to_num(embddings, nan=0.0, posinf=1.0, neginf=-1.0)
 
-    reduction = False
-    if reduction:
-        n_components = min(50, embddings.shape[0])
-        print(f"Start FastICA, target dimension: {n_components}")
+    # # Remove zero-variance columns
+    # # variances = np.var(embddings, axis=0)
+    # # if np.sum(variances == 0) > 0:
+    # #     print("Warning: Removing zero-variance features...")
+    # #     embddings = embddings[:, variances > 0]
 
-        # Apply FastICA
-        transformer = FastICA(n_components=50)
-        train_reprs = transformer.fit_transform(embddings)
+    # # print(embddings)
 
-        print("Reduced:", train_reprs)
+    # # Ensure valid n_components
 
+    # reduction = False
+    # if reduction:
+    #     n_components = min(50, embddings.shape[0])
+    #     print(f"Start FastICA, target dimension: {n_components}")
+
+    #     # Apply FastICA
+    #     transformer = FastICA(n_components=50)
+    #     train_reprs = transformer.fit_transform(embddings)
+
+    #     print("Reduced:", train_reprs)
 
     
+    # prob_label_res_file = os.path.join(
+    #                                    'results/PLELog/' + "testdata" + '_' +
+    #                                    '/prob_label_res/mcs-' + str(100) + '_ms-' + str(100))
+    # rand_state = os.path.join(
+    #                           'results/PLELog/' + "testdata" + '_' +
+    #                           '/prob_label_res/random_state')
+
+
+    # label_generator = Probabilistic_Labeling(min_samples=100, min_clust_size=100,
+    #                                          res_file=prob_label_res_file, rand_state_file=rand_state)    
 
     
+    # # Probabilistic labeling.
+    # # Sample normal instances.
+    # train_normal = [x for x, inst in enumerate(train) if inst.label == 'Normal']
+    # normal_ids = train_normal[:int(0.5 * len(train_normal))]
+    
+
+    # labeled_train = label_generator.auto_label(train, normal_ids)
+
+

@@ -19,7 +19,8 @@ class LabelExtraction:
         programs = os.listdir(self.edge_traces_dir)
         for program in programs:
             df = self.process_program(program)
-            self.save_df(df, program)
+            metrics = self.calculate_metrics(df)
+            self.save_df(df, metrics, program)
 
 
     def process_program(self, program_name):
@@ -42,7 +43,7 @@ class LabelExtraction:
         mapping_df["target"] = mapping_df["target"].apply(self.reformat_node_string)
 
         # Select only the required columns from njr_df before merging
-        njr_df = njr_df[["method", "target", "wala-cge-0cfa-noreflect-intf-direct", "wiretap"]]
+        njr_df = njr_df[["method", "target", "wala-cge-0cfa-noreflect-intf-direct","wiretap"]]
 
         # Rename 'method' in njr_df to 'src' for merging
         njr_df = njr_df.rename(columns={"method": "src"})
@@ -50,9 +51,13 @@ class LabelExtraction:
 
         # Merge NJR data with mapping data on 'src' and 'target'
         merged_df = njr_df.merge(mapping_df, on=["src", "target"], how="left")
+        # merged_df = njr_df.merge(mapping_df, on=["src", "target"], how="outer")
 
         # Add trace column: 1 if there is a matching entry in mapping_df (i.e., 'edge_name' exists), else 0
         merged_df["trace"] = merged_df["edge_name"].notna().astype(int)
+
+        merged_df["edge_name"] = merged_df["edge_name"].fillna(-1).astype(int).astype(str).replace("-1", "")
+
 
         # Fill missing values for 'direct' and 'wiretap' (default to 0)
         merged_df[["direct", "wiretap"]] = merged_df[["direct", "wiretap"]].fillna(0).astype(int)
@@ -61,7 +66,11 @@ class LabelExtraction:
         merged_df["program_name"] = program_name
 
         # Remove rows where all three columns (direct, wiretap, trace) are 0
-        merged_df = merged_df[~((merged_df["direct"] == 0) & (merged_df["wiretap"] == 0) & (merged_df["trace"] == 0))]
+        merged_df = merged_df[~((merged_df["wiretap"] == 0) & (merged_df["trace"] == 0))]
+        # merged_df = merged_df[~((merged_df["direct"] == 0) & (merged_df["wiretap"] == 0) & (merged_df["trace"] == 0))]
+
+        # Remove rows where src is "<boot>"
+        merged_df = merged_df[merged_df["src"] != "<boot>"]
 
         # Select and reorder the required columns
         result_df = merged_df[[ "trace", "direct", "wiretap","edge_name", "src", "target", "program_name"]]
@@ -130,11 +139,47 @@ class LabelExtraction:
         return None  # Return None if the format is incorrect
 
 
-    def save_df(self, df, program_name):
+    def calculate_metrics(self, result_df):
+        """
+        Calculate the number of True Positives (TP), False Negatives (FN), and False Positives (FP)
+        based on the 'wiretap' and 'trace' columns.
+        
+        Args:
+            result_df (pd.DataFrame): The DataFrame containing 'wiretap' and 'trace' columns.
+        
+        Returns:
+            dict: A dictionary with counts for TP, FN, and FP.
+        """
+       # Calculate TP, FN, FP
+        tp = len(result_df[(result_df["wiretap"] == 1) & (result_df["trace"] == 1)])
+        fn = len(result_df[(result_df["wiretap"] == 1) & (result_df["trace"] == 0)])
+        fp = len(result_df[(result_df["wiretap"] == 0) & (result_df["trace"] == 1)])
+        
+        # Calculate precision and recall
+        precision = round(tp / (tp + fp), 2) if (tp + fp) > 0 else 0.00
+        recall = round(tp / (tp + fn), 2) if (tp + fn) > 0 else 0.00
+        
+        # Store results in a DataFrame
+        metrics = {
+            "Metric": ["TP", "FP", "FN", "Precision", "Recall"],
+            "Count": [tp, fp, fn, precision, recall]
+        }
+        
+        metrics_df = pd.DataFrame(metrics)
+        return metrics_df   
+
+
+    def save_df(self, df, metrics_df, program_name):
         '''saves df in a csv file'''
 
-        path = os.path.join(self.edge_traces_dir, program_name, 'output.csv')
-        df.to_csv(path, index=False)
+        program_path = os.path.join(self.edge_traces_dir, program_name)
+        
+        csv_path = os.path.join(program_path, 'output.csv')
+        df.to_csv(csv_path, index=False)
+
+        metrics_path = os.path.join(program_path, 'metrics.csv')
+        metrics_df.to_csv(metrics_path, index=False)
+        
 
 
 if __name__ == '__main__':

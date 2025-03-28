@@ -11,6 +11,7 @@ RUN conda create -n myenv python=3.8 -y
 RUN /bin/bash -c "source activate myenv && conda install -c conda-forge hdbscan=0.8.29 -y && pip install torch overrides tqdm regex drain3"
 
 VOLUME ["/app/PLELog"]
+VOLUME ["/app/data"]
 
 
 # Set the default shell to use the Conda environment
