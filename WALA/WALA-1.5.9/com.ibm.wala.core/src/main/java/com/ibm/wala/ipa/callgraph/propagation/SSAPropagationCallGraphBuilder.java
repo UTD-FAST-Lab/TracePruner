@@ -1123,12 +1123,120 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
       visitInvokeInternal(instruction, new DefaultInvariantComputer());
     }
 
+    // printing pointer info
+    private void printPointerInfo(final SSAAbstractInvokeInstruction instruction) {
+      StringBuilder json = new StringBuilder();
+      json.append("AgentLogger|POINTER_INFO(visitInvoke): {");
+      
+      // Start with receiver info
+      json.append("\"receiver\":");
+      if (!instruction.getCallSite().isStatic()) {
+          int receiverVN = instruction.getUse(0);
+          PointerKey receiverKey = getBuilder().getPointerKeyForLocal(node, receiverVN);
+          
+          if (system.pointsToMap.isImplicit(receiverKey)) {
+              json.append("{\"type\":\"implicit\",\"points_to\":[");
+              InstanceKey[] invariantContents = getBuilder().getInvariantContents(
+                  symbolTable, du, node, receiverVN, getBuilder()
+              );
+              for (int i = 0; i < invariantContents.length; i++) {
+                  if (i > 0) json.append(",");
+                  json.append("\"").append(invariantContents[i].getConcreteType().getName()).append("\"");
+              }
+              json.append("]}");
+          } else {
+              PointsToSetVariable receiverPTS = system.pointsToMap.getPointsToSet(receiverKey);
+              if (receiverPTS != null && receiverPTS.getValue() != null) {
+                  json.append("{\"type\":\"explicit\",\"points_to\":[");
+                  final boolean[] first = {true};
+                  receiverPTS.getValue().foreach(instanceId -> {
+                      if (!first[0]) json.append(",");
+                      InstanceKey instance = system.getInstanceKey(instanceId);
+                      json.append("\"").append(instance.getConcreteType().getName()).append("\"");
+                      first[0] = false;
+                  });
+                  json.append("]}");
+              } else {
+                  json.append("null");
+              }
+          }
+      } else {
+          json.append("null");
+      }
+      
+      // Add parameters info
+      json.append(",\"parameters\":[");
+      int startIndex = instruction.getCallSite().isStatic() ? 0 : 1;
+      for (int i = startIndex; i < instruction.getNumberOfPositionalParameters(); i++) {
+          if (i > startIndex) json.append(",");
+          int paramVN = instruction.getUse(i);
+          PointerKey paramKey = getBuilder().getPointerKeyForLocal(node, paramVN);
+          
+          if (system.pointsToMap.isImplicit(paramKey)) {
+              json.append("{\"type\":\"implicit\",\"points_to\":[");
+              InstanceKey[] invariantContents = getBuilder().getInvariantContents(
+                  symbolTable, du, node, paramVN, getBuilder()
+              );
+              for (int j = 0; j < invariantContents.length; j++) {
+                  if (j > 0) json.append(",");
+                  json.append("\"").append(invariantContents[j].getConcreteType().getName()).append("\"");
+              }
+              json.append("]}");
+          } else {
+              PointsToSetVariable paramPTS = system.pointsToMap.getPointsToSet(paramKey);
+              if (paramPTS != null && paramPTS.getValue() != null) {
+                  json.append("{\"type\":\"explicit\",\"points_to\":[");
+                  final boolean[] first = {true};
+                  paramPTS.getValue().foreach(instanceId -> {
+                      if (!first[0]) json.append(",");
+                      InstanceKey instance = system.getInstanceKey(instanceId);
+                      json.append("\"").append(instance.getConcreteType().getName()).append("\"");
+                      first[0] = false;
+                  });
+                  json.append("]}");
+              } else {
+                  json.append("null");
+              }
+          }
+      }
+      json.append("]}");
+      
+      System.err.println(json.toString());
+    }
+  
+    private void printCallGraphInfo() {
+        StringBuilder json = new StringBuilder();
+        json.append("AgentLogger|CALL_GRAPH(visitInvoke): {");
+        
+        // Get total number of nodes
+        json.append("\"total_nodes\":").append(callGraph.getNumberOfNodes());
+        
+        // Get total number of edges
+        int totalEdges = 0;
+        for (CGNode n : callGraph) {
+            totalEdges += callGraph.getSuccNodeCount(n);
+        }
+        json.append(",\"total_edges\":").append(totalEdges);
+        
+        // Get number of out edges from current node
+        json.append(",\"current_node\":{");
+        json.append("\"method\":\"").append(node.getMethod().getSignature()).append("\"");
+        json.append(",\"out_edges\":").append(callGraph.getSuccNodeCount(node));
+        json.append(",\"in_edges\":").append(callGraph.getPredNodeCount(node));
+        json.append("}}");
+        
+        System.err.println(json.toString());
+    } 
+
     protected void visitInvokeInternal(
         final SSAAbstractInvokeInstruction instruction, InvariantComputer invs) {
       if (DEBUG) {
         System.err.println("visitInvoke: " + instruction);
       }
       // System.err.println("visitInvoke: " + instruction);
+
+      printPointerInfo(instruction);
+      printCallGraphInfo();
 
       PointerKey uniqueCatch = null;
       if (hasUniqueCatchBlock(instruction, ir)) {
@@ -1617,6 +1725,120 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
     }
   }
 
+
+
+  private void printPointerInfo(CGNode caller, SSAAbstractInvokeInstruction instruction) {
+    StringBuilder json = new StringBuilder();
+    json.append("AgentLogger|POINTER_INFO(addEdge): {");
+    
+    // Start with receiver info
+    json.append("\"receiver\":");
+    if (!instruction.getCallSite().isStatic()) {
+        int receiverVN = instruction.getUse(0);
+        PointerKey receiverKey = getPointerKeyForLocal(caller, receiverVN);
+        
+        if (system.pointsToMap.isImplicit(receiverKey)) {
+            json.append("{\"type\":\"implicit\",\"points_to\":[");
+            InstanceKey[] invariantContents = getInvariantContents(
+                caller.getIR().getSymbolTable(), 
+                getCFAContextInterpreter().getDU(caller), 
+                caller, 
+                receiverVN, 
+                this
+            );
+            for (int i = 0; i < invariantContents.length; i++) {
+                if (i > 0) json.append(",");
+                json.append("\"").append(invariantContents[i].getConcreteType().getName()).append("\"");
+            }
+            json.append("]}");
+        } else {
+            PointsToSetVariable receiverPTS = system.pointsToMap.getPointsToSet(receiverKey);
+            if (receiverPTS != null && receiverPTS.getValue() != null) {
+                json.append("{\"type\":\"explicit\",\"points_to\":[");
+                final boolean[] first = {true};
+                receiverPTS.getValue().foreach(instanceId -> {
+                    if (!first[0]) json.append(",");
+                    InstanceKey instance = system.getInstanceKey(instanceId);
+                    json.append("\"").append(instance.getConcreteType().getName()).append("\"");
+                    first[0] = false;
+                });
+                json.append("]}");
+            } else {
+                json.append("null");
+            }
+        }
+    } else {
+        json.append("null");
+    }
+    
+    // Add parameters info
+    json.append(",\"parameters\":[");
+    int startIndex = instruction.getCallSite().isStatic() ? 0 : 1;
+    for (int i = startIndex; i < instruction.getNumberOfPositionalParameters(); i++) {
+        if (i > startIndex) json.append(",");
+        int paramVN = instruction.getUse(i);
+        PointerKey paramKey = getPointerKeyForLocal(caller, paramVN);
+        
+        if (system.pointsToMap.isImplicit(paramKey)) {
+            json.append("{\"type\":\"implicit\",\"points_to\":[");
+            InstanceKey[] invariantContents = getInvariantContents(
+                caller.getIR().getSymbolTable(), 
+                getCFAContextInterpreter().getDU(caller), 
+                caller, 
+                paramVN, 
+                this
+            );
+            for (int j = 0; j < invariantContents.length; j++) {
+                if (j > 0) json.append(",");
+                json.append("\"").append(invariantContents[j].getConcreteType().getName()).append("\"");
+            }
+            json.append("]}");
+        } else {
+            PointsToSetVariable paramPTS = system.pointsToMap.getPointsToSet(paramKey);
+            if (paramPTS != null && paramPTS.getValue() != null) {
+                json.append("{\"type\":\"explicit\",\"points_to\":[");
+                final boolean[] first = {true};
+                paramPTS.getValue().foreach(instanceId -> {
+                    if (!first[0]) json.append(",");
+                    InstanceKey instance = system.getInstanceKey(instanceId);
+                    json.append("\"").append(instance.getConcreteType().getName()).append("\"");
+                    first[0] = false;
+                });
+                json.append("]}");
+            } else {
+                json.append("null");
+            }
+        }
+    }
+    json.append("]}");
+    
+    System.err.println(json.toString());
+  }
+
+  private void printCallGraphInfo(CGNode caller) {
+      StringBuilder json = new StringBuilder();
+      json.append("AgentLogger|CALL_GRAPH(addEdge): {");
+      
+      // Get total number of nodes
+      json.append("\"total_nodes\":").append(callGraph.getNumberOfNodes());
+      
+      // Get total number of edges
+      int totalEdges = 0;
+      for (CGNode n : callGraph) {
+          totalEdges += callGraph.getSuccNodeCount(n);
+      }
+      json.append(",\"total_edges\":").append(totalEdges);
+      
+      // Get number of out edges from current node
+      json.append(",\"current_node\":{");
+      json.append("\"method\":\"").append(caller.getMethod().getSignature()).append("\"");
+      json.append(",\"out_edges\":").append(callGraph.getSuccNodeCount(caller));
+      json.append(",\"in_edges\":").append(callGraph.getPredNodeCount(caller));
+      json.append("}}");
+      
+      System.err.println(json.toString());
+  }
+
   /**
    * Add constraints for a call site after we have computed a reachable target for the dispatch
    *
@@ -1641,6 +1863,10 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
     if (DEBUG) {
       System.err.println("addTarget: " + caller + " ," + instruction + " , " + target);
     }
+
+    printPointerInfo(caller, instruction);
+    printCallGraphInfo(caller);
+
     // System.err.println("addTarget: " + caller + " ," + instruction + " , " + target);
     caller.addTarget(instruction.getCallSite(), target);
 
