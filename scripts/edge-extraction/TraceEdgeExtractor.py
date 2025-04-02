@@ -234,7 +234,7 @@ class TraceEdgeExtractor:
 if __name__ == "__main__":
 
     trace_types = ('cgs', 'branches', 'variables')
-    trace_type = trace_types[0]
+    trace_type = trace_types[1]
 
     traces_dir = f'/home/mohammad/projects/CallGraphPruner/data/traces/{trace_type}'  
     edge_traces_dir = f'/home/mohammad/projects/CallGraphPruner/data/edge-traces/{trace_type}'  

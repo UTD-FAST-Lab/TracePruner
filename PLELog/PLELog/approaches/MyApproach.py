@@ -100,6 +100,7 @@ def embedd_trace(id2embd, encoded_trace):
     for line_num, line in encoded_trace.items():
 
         if '-INFO' in line:
+            # continue
             imp_raw_logs[line_num] = line
 
         elif 'visitInvoke: ' in line or 'addEdge: ' in line or 'AgentLogger' in line:
@@ -116,6 +117,7 @@ def embedd_trace(id2embd, encoded_trace):
 
     imp_embed_logs = template.present(imp_raw_logs)
     imp_embed_logs = list(imp_embed_logs.values())
+    # imp_embed_logs = list()
 
     n_imp = len(imp_embed_logs)
     n_total = len(normal_embed_logs) + len(imp_embed_logs)
@@ -208,7 +210,8 @@ def create_instance(p_id, edge_name, seq, embedding, label):
     elif str(label) == '0':
         label = "Anomalous"
 
-    new_instance = Instance(block_id=f'{p_id}_{edge_name}', log_sequence=seq.values(), label=label)
+    # new_instance = Instance(block_id=f'{p_id}_{edge_name}', log_sequence=seq.values(), label=label)
+    new_instance = Instance(block_id=f'{p_id}_{edge_name}', log_sequence=seq, label=label)
     new_instance.repr = embedding
     return new_instance
 
@@ -330,40 +333,29 @@ if __name__ == '__main__':
             if len(label) <= 0:
                 continue
             label = label[0]
-            
-            # if str(label) == '1':
-            #     n_normal += 1
-            # elif str(label) == "0":
-            #     n_anormal += 1
 
             trace = load_trace(edge_path)
-            print('trace loaded ....')
+            # print('trace loaded ....')
 
             encoded_trace = parse_trace(id2log_path, trace, string_to_id, id_to_string)
-            print("trace encoded ...")
+            # print("trace encoded ...")
 
             final_embedding = embedd_trace(id2embd, encoded_trace)
 
-    #         embd = embedding_trace(seq)
-            print('embedding done ...')
+            # print('embedding done ...')
 
     #         # new instance
-            inst = create_instance(p_id, edge, trace, final_embedding, label)
+            # inst = create_instance(p_id, edge, trace, final_embedding, label)
+            inst = create_instance(program, edge, None, final_embedding, label)
 
-            print("instance created ...")
+            # print("instance created ...")
 
             instances.append(inst)
 
 
-        #     if n_normal > 2 and n_anormal >2:
-        #         done = True
-        #         break
-        # if done:
-        #     break
-
     
     train, dev, test = split_631(instances)
-    print("done splitting ... ")
+    # print("done splitting ... ")
 
     if reduction:
         feature_reduction(train)
@@ -371,8 +363,10 @@ if __name__ == '__main__':
     labeled_train = probability_labeling(train)
 
     for inst in labeled_train:
+        print(inst.id)
         print(inst.predicted)
         print(inst.label)
         print(inst.confidence)
+        print("------------------------------------------")
 
 

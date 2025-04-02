@@ -48,7 +48,7 @@ def run_wala(program):
 	# Construct the command string
 	command = [
 		'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java',
-		f'-javaagent:{agent}=logLevel=method,agentLevel={agentLevel[0]}',
+		f'-javaagent:{agent}=logLevel=method,agentLevel={agentLevel[1]}',
 		'-jar', WALA_DRIVER,
 		'-classpath', jar_file,
 		'-mainclass', mainclass,
@@ -58,7 +58,7 @@ def run_wala(program):
 	]
 
 	# Specify the output file for logs
-	output_file = f'/home/mohammad/projects/CallGraphPruner/data/traces/cgs/{program}.txt'
+	output_file = f'/home/mohammad/projects/CallGraphPruner/data/traces/branches/{program}.txt'
 
 	# Open the file to capture everything
 	with open(output_file, 'w') as f:

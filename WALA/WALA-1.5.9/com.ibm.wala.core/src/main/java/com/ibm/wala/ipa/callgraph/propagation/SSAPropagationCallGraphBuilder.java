@@ -1128,7 +1128,7 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
       if (DEBUG) {
         System.err.println("visitInvoke: " + instruction);
       }
-      System.err.println("visitInvoke: " + instruction);
+      // System.err.println("visitInvoke: " + instruction);
 
       PointerKey uniqueCatch = null;
       if (hasUniqueCatchBlock(instruction, ir)) {
