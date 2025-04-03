@@ -197,10 +197,13 @@ def create_cg_graph(encoded_trace, brgraphs):
     G = nx.DiGraph()
     nodes = set()
     edges = defaultdict(int)
+    info_lines = []
+    start_node = None
+    end_node = None
 
     for line_num, line in encoded_trace.items():
         if '_INFO' in line:
-            continue
+            info_lines.apend(line)
 
         elif 'AgentLogger' in line:
             continue
@@ -209,18 +212,79 @@ def create_cg_graph(encoded_trace, brgraphs):
             src = int(src)
             trg = int(trg)
 
+            # Track the first src as start_node
+            if start_node is None:
+                start_node = src
+
+            # Always update end_node with the latest trg
+            end_node = trg
+
             nodes.add(src)
             nodes.add(trg)
 
             edges[(src,trg)] += 1
 
+    
+
 
     for node_id in nodes:
-        G.add_node(node_id, embedding=id2embd[node_id], brgraph=brgraphs.get(node_id))
+        if node_id == start_node:
+            # Extract the first two info lines (visitInvoke format)
+            pointer_info_line, cg_info_line = info_lines[:2]
+        elif node_id == end_node:
+            # Extract the last two info lines (addEdge format)
+            pointer_info_line, cg_info_line = info_lines[-2:]
+        else:
+            pointer_info_line, cg_info_line = None, None
+
+    # Process and parse pointer info
+    pointer_info = None
+    if pointer_info_line:
+        if "AgentLogger|POINTER_INFO(visitInvoke):" in pointer_info_line:
+            json_start = pointer_info_line.find("{")
+            if json_start != -1:
+                try:
+                    pointer_info = json.loads(pointer_info_line[json_start:])
+                except json.JSONDecodeError:
+                    print(f"Error parsing POINTER_INFO for node {node_id}: {pointer_info_line}")
+        elif "AgentLogger|POINTER_INFO(addEdge):" in pointer_info_line:
+            json_start = pointer_info_line.find("{")
+            if json_start != -1:
+                try:
+                    pointer_info = json.loads(pointer_info_line[json_start:])
+                except json.JSONDecodeError:
+                    print(f"Error parsing POINTER_INFO (addEdge) for node {node_id}: {pointer_info_line}")
+
+    # Process and parse call graph info
+    call_graph_info = None
+    if cg_info_line:
+        if "AgentLogger|CALL_GRAPH_INFO(visitInvoke):" in cg_info_line:
+            json_start = cg_info_line.find("{")
+            if json_start != -1:
+                try:
+                    call_graph_info = json.loads(cg_info_line[json_start:])
+                except json.JSONDecodeError:
+                    print(f"Error parsing CALL_GRAPH_INFO for node {node_id}: {cg_info_line}")
+        elif "AgentLogger|CALL_GRAPH_INFO(addEdge):" in cg_info_line:
+            json_start = cg_info_line.find("{")
+            if json_start != -1:
+                try:
+                    call_graph_info = json.loads(cg_info_line[json_start:])
+                except json.JSONDecodeError:
+                    print(f"Error parsing CALL_GRAPH_INFO (addEdge) for node {node_id}: {cg_info_line}")
+
+    # Store the extracted information
+    if pointer_info or call_graph_info:
+        var_info = {"pointer_info": pointer_info, "call_graph_info": call_graph_info}
+    else:
+        var_info = None  # No relevant info for non-start/non-end nodes
+
+    # Add node with attributes
+    G.add_node(node_id, embedding=id2embd[node_id], brgraph=brgraphs.get(node_id), info=var_info)
 
 
     for key, freq in edges.items():
-        G.add_edge(key[0], key[1], weight=freq, info=None)
+        G.add_edge(key[0], key[1], weight=freq)
 
     return G
 
