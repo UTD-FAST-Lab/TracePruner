@@ -1284,6 +1284,10 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
       
       if (params.isEmpty()) {
         for (CGNode n : getBuilder().getTargetsForCall(node, instruction, invariantParameters)) {
+
+          getBuilder().printPointerInfoAddEdge(node, instruction);
+          getBuilder().printCallGraphInfoAddEdge(node);
+
           getBuilder().processResolvedCall(node, instruction, n, invariantParameters, uniqueCatch);
           if (DEBUG) {
             System.err.println("visitInvoke class init " + n);
@@ -1308,6 +1312,10 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
 
         if (contentsAreInvariant(symbolTable, du, vns)) {
           for (CGNode n : getBuilder().getTargetsForCall(node, instruction, invariantParameters)) {
+
+            getBuilder().printPointerInfoAddEdge(node, instruction);
+            getBuilder().printCallGraphInfoAddEdge(node);
+
             getBuilder()
                 .processResolvedCall(node, instruction, n, invariantParameters, uniqueCatch);
             // side effect of invoke: may call class initializer
@@ -1711,6 +1719,10 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
             SSAAbstractInvokeInstruction s = fakeWorldClinitMethod.addInvocation(new int[0], site);
             PointerKey uniqueCatch =
                 getBuilder().getPointerKeyForExceptionalReturnValue(callGraph.getFakeRootNode());
+
+            getBuilder().printPointerInfoAddEdge(callGraph.getFakeWorldClinitNode(), s);
+            getBuilder().printCallGraphInfoAddEdge(callGraph.getFakeWorldClinitNode());
+
             getBuilder()
                 .processResolvedCall(
                     callGraph.getFakeWorldClinitNode(), s, target, null, uniqueCatch);
@@ -1727,7 +1739,7 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
 
 
 
-  private void printPointerInfo(CGNode caller, SSAAbstractInvokeInstruction instruction) {
+  private void printPointerInfoAddEdge(CGNode caller, SSAAbstractInvokeInstruction instruction) {
     StringBuilder json = new StringBuilder();
     json.append("AgentLogger|POINTER_INFO(addEdge): {");
     
@@ -1815,7 +1827,7 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
     System.err.println(json.toString());
   }
 
-  private void printCallGraphInfo(CGNode caller) {
+  private void printCallGraphInfoAddEdge(CGNode caller) {
       StringBuilder json = new StringBuilder();
       json.append("AgentLogger|CALL_GRAPH_INFO(addEdge): {");
       
@@ -1864,8 +1876,8 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
       System.err.println("addTarget: " + caller + " ," + instruction + " , " + target);
     }
 
-    printPointerInfo(caller, instruction);
-    printCallGraphInfo(caller);
+    // printPointerInfo(caller, instruction);
+    // printCallGraphInfo(caller);
 
     // System.err.println("addTarget: " + caller + " ," + instruction + " , " + target);
     caller.addTarget(instruction.getCallSite(), target);
@@ -2044,6 +2056,10 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
                         CGNode target = getTargetForCall(node, call.getCallSite(), recv, v);
                         if (target != null) {
                           changed.b = true;
+
+                          printPointerInfoAddEdge(node, call);
+                          printCallGraphInfoAddEdge(node);
+
                           processResolvedCall(node, call, target, constParams, uniqueCatch);
                           if (!haveAlreadyVisited(target)) {
                             markDiscovered(target);
@@ -2370,6 +2386,10 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
           } else {
             // process the newly discovered target for this call
             sideEffect.b = true;
+
+            printPointerInfoAddEdge(node, call);
+            printCallGraphInfoAddEdge(node);
+
             processResolvedCall(node, call, target, constParams, uniqueCatch);
             if (!haveAlreadyVisited(target)) {
               markDiscovered(target);

@@ -162,7 +162,7 @@ def create_br_graphs(encoded_trace):
         graph = nx.DiGraph()
         nodes = set()
         edges = defaultdict(int)
-        for i in len(lines) - 1:
+        for i in range(len(lines) - 1):
             
             src_branch_id, src_label = lines[i]
             src_branch_id = int(src_branch_id)
@@ -203,12 +203,16 @@ def create_cg_graph(encoded_trace, brgraphs):
 
     for line_num, line in encoded_trace.items():
         if '_INFO' in line:
-            info_lines.apend(line)
+            info_lines.append(line)
 
+        # elif 'AgentLogger' in line:
         elif 'AgentLogger' in line:
             continue
         else:
-            src, trg = line.split(',')
+            try:
+                src, trg = line.split(',')
+            except ValueError:
+                raise ValueError(line)
             src = int(src)
             trg = int(trg)
 
@@ -226,6 +230,8 @@ def create_cg_graph(encoded_trace, brgraphs):
 
     
 
+    print(len(nodes))
+    print(len(info_lines))
 
     for node_id in nodes:
         if node_id == start_node:
@@ -551,13 +557,17 @@ if __name__ == '__main__':
             cg_trace = load_trace(edge_path_cg)
             br_trace = load_trace(edge_path_br)
 
+            print("done loading the traces!")
+
             # encode the traces of cg and branch 
             cg_encoded_trace = parse_cg_trace(id2log_path, cg_trace, string_to_id, id_to_string)
             br_encoded_trace = parse_br_trace(id2log_path, br_trace, string_to_id, id_to_string)
 
-            # data representation
+            # # data representation
             brgraphs = create_br_graphs(br_encoded_trace)    #{node_id: graph}, eg., {1:graph, 2:graph}
             graph = create_cg_graph(cg_encoded_trace, brgraphs)
+
+            print(graph.number_of_nodes(), graph.number_of_edges())
 
             # final_embedding = embedd_trace(id2embd, encoded_trace)
 
@@ -570,6 +580,8 @@ if __name__ == '__main__':
             # print("instance created ...")
 
             # instances.append(inst)
+            break
+        break
 
 
     
