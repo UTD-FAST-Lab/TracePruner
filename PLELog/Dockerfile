@@ -8,7 +8,7 @@ WORKDIR /app/PLELog
 RUN conda create -n myenv python=3.8 -y 
 
 # Activate the environment and install hdbscan
-RUN /bin/bash -c "source activate myenv && conda install -c conda-forge hdbscan=0.8.29 -y && pip install torch overrides tqdm regex drain3"
+RUN /bin/bash -c "source activate myenv && conda install -c conda-forge hdbscan=0.8.29 -y && pip install torch overrides tqdm regex drain3 pandas"
 
 VOLUME ["/app/PLELog"]
 VOLUME ["/app/data"]

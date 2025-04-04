@@ -20,6 +20,8 @@ import json
 import networkx as nx
 from collections import defaultdict
 
+from graphs import embed_graphs_node2vec, embed_graphs_graph2vec
+
 
 
 def load_hash_map(path):
@@ -228,10 +230,6 @@ def create_cg_graph(encoded_trace, brgraphs):
 
             edges[(src,trg)] += 1
 
-    
-
-    print(len(nodes))
-    print(len(info_lines))
 
     for node_id in nodes:
         if node_id == start_node:
@@ -245,8 +243,10 @@ def create_cg_graph(encoded_trace, brgraphs):
 
         # Process and parse pointer info
         pointer_info = None
+        is_start = False
         if pointer_info_line:
             if "AgentLogger|POINTER_INFO(visitInvoke):" in pointer_info_line:
+                is_start = True
                 json_start = pointer_info_line.find("{")
                 if json_start != -1:
                     try:
@@ -281,7 +281,7 @@ def create_cg_graph(encoded_trace, brgraphs):
 
         # Store the extracted information
         if pointer_info or call_graph_info:
-            var_info = {"pointer_info": pointer_info, "call_graph_info": call_graph_info}
+            var_info = {"entrypoint": is_start, "pointer_info": pointer_info, "call_graph_info": call_graph_info}
         else:
             var_info = None  # No relevant info for non-start/non-end nodes
 
@@ -462,10 +462,10 @@ def probability_labeling(train):
     '''clustering algorithm'''
 
     prob_label_res_file = os.path.join(
-                                       'results/PLELog/' + "testdata" + '_' +
+                                       'results_g2v/PLELog/' + "testdata" + '_' +
                                        '/prob_label_res/mcs-' + str(100) + '_ms-' + str(100))
     rand_state = os.path.join(
-                              'results/PLELog/' + "testdata" + '_' +
+                              'results_g2v/PLELog/' + "testdata" + '_' +
                               '/prob_label_res/random_state')
 
 
@@ -514,6 +514,9 @@ def evaluate_cluster(labeled_train, normal_ids):
 
 
 
+
+
+
 if __name__ == '__main__':
 
     template =  Simple_template_TF_IDF()
@@ -535,7 +538,7 @@ if __name__ == '__main__':
     # n_anormal = 0
 
     # done= False
-
+    graphs = {} 
     for p_id, program in enumerate(os.listdir(programs_path)):
         program_path = os.path.join(programs_path, program)
         labels_df = load_label(program_path)
@@ -569,6 +572,8 @@ if __name__ == '__main__':
 
             print(graph.number_of_nodes(), graph.number_of_edges())
 
+            
+
             # final_embedding = embedd_trace(id2embd, encoded_trace)
 
             # print('embedding done ...')
@@ -580,24 +585,37 @@ if __name__ == '__main__':
             # print("instance created ...")
 
             # instances.append(inst)
-            break
-        break
+            graphs[(program, edge, label)] = graph
+        
+
+    
+    # g_embeddings_node2vec = embed_graphs_node2vec(graphs)
+    # print(g_embeddings_node2vec[0])
+    g_embeddings_graph2vec = embed_graphs_graph2vec(list(graphs.values()))
+    print(g_embeddings_graph2vec[0])
+
+
+    for i in range(len(g_embeddings_graph2vec)):
+        program, edge, label = list(graphs.keys())[i]
+        inst = create_instance(program, edge, None, g_embeddings_graph2vec[i], label)
+        instances.append(inst)
+
 
 
     
-    # train, dev, test = split_631(instances)
-    # # print("done splitting ... ")
+    train, dev, test = split_631(instances)
+    # print("done splitting ... ")
 
-    # if reduction:
-    #     feature_reduction(train)
+    if reduction:
+        feature_reduction(train)
 
-    # labeled_train = probability_labeling(train)
+    labeled_train = probability_labeling(train)
 
-    # for inst in labeled_train:
-    #     print(inst.id)
-    #     print(inst.predicted)
-    #     print(inst.label)
-    #     print(inst.confidence)
-    #     print("------------------------------------------")
+    for inst in labeled_train:
+        print(inst.id)
+        print(inst.predicted)
+        print(inst.label)
+        print(inst.confidence)
+        print("------------------------------------------")
 
 
