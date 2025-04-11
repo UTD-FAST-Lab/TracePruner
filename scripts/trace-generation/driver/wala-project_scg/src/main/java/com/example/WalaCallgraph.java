@@ -114,7 +114,7 @@ public class WalaCallgraph {
     AnalysisScope scope = AnalysisScopeReader.instance.makeJavaBinaryAnalysisScope(classpath, exclusion);
     ClassHierarchy cha = ClassHierarchyFactory.make(scope);
 
-    Iterable<Entrypoint> entrypoints = Util.makeMainEntrypoints(scope, cha, "L" + mainclass.replaceAll("\\.","/"));
+    Iterable<Entrypoint> entrypoints = Util.makeMainEntrypoints(cha, "L" + mainclass.replaceAll("\\.","/"));
     AnalysisOptions options = new AnalysisOptions(scope, entrypoints);
 
     /* Choose the correct reflection option */
@@ -128,13 +128,16 @@ public class WalaCallgraph {
     CallGraphBuilder builder;
     switch(analysis) {
         case "0cfa":
-            builder = Util.makeZeroCFABuilder(Language.JAVA, options, new AnalysisCacheImpl(), cha, scope);
+            builder = Util.makeZeroCFABuilder(Language.JAVA, options, new AnalysisCacheImpl(), cha);
             break;
         case "1cfa":
-            builder = Util.makeNCFABuilder(1, options, new AnalysisCacheImpl(), cha, scope);
+            builder = Util.makeNCFABuilder(1, options, new AnalysisCacheImpl(), cha);
             break;
         case "rta":
-            builder = Util.makeRTABuilder(options, new AnalysisCacheImpl(), cha, scope);
+            builder = Util.makeRTABuilder(options, new AnalysisCacheImpl(), cha);
+            break;
+        case "1obj":
+            builder = Util.makeNObjBuilder(1, options, new AnalysisCacheImpl(), cha);
             break;
         default:
             System.out.println("-----Invalid analysis option----");

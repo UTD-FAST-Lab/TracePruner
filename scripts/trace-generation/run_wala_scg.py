@@ -14,7 +14,7 @@ import argparse
 WALA_DRIVER = "/home/mohammad/projects/CallGraphPruner/scripts/trace-generation/driver/wala-project_scg/target/wala-project_scg-1.0-SNAPSHOT-jar-with-dependencies.jar"
 data_folder = '/home/mohammad/projects/CallGraphPruner_data'  
 NJR1_DATASET_FOLDER = f'{data_folder}/njr-1_dataset/june2020_dataset'
-PROGRAM_FILES = '/home/mohammad/projects/CallGraphPruner/scripts/trace-generation/programs.txt'
+PROGRAM_FILES = '/home/mohammad/projects/CallGraphPruner/data/programs/all_programs.txt'
 
 
 
@@ -35,7 +35,7 @@ def run_wala(program):
 		
 	mainclass = get_mainclass(program)
 	jar_file = get_jar_file(program)
-	output_file = f'/home/mohammad/projects/CallGraphPruner/data/static-cgs/{program}/wala0cfa.csv'
+	output_file = f'/home/mohammad/projects/CallGraphPruner/data/static-cgs/{program}/walarta.csv'
 
 	# command = [
 	# 	'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java',
@@ -48,7 +48,7 @@ def run_wala(program):
 	# 	'-output', output_file
 	# ]
 
-	command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -jar {WALA_DRIVER} -classpath {jar_file} -mainclass {mainclass} -output {output_file} -resolveinterfaces true -reflection false -analysis 0cfa '
+	command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -jar {WALA_DRIVER} -classpath {jar_file} -mainclass {mainclass} -output {output_file} -resolveinterfaces true -reflection false -analysis rta '
 
 
 	os.system(command)

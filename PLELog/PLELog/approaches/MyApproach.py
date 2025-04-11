@@ -19,8 +19,11 @@ import pandas as pd
 import json
 import networkx as nx
 from collections import defaultdict
+import os
+import pickle
 
-from graphs import embed_graphs_node2vec, embed_graphs_graph2vec
+# from graphs import embed_graphs_node2vec, embed_graphs_graph2vec
+from graphs import embed_graphs_node2vec_original
 
 
 
@@ -462,14 +465,14 @@ def probability_labeling(train):
     '''clustering algorithm'''
 
     prob_label_res_file = os.path.join(
-                                       'results_g2v/PLELog/' + "testdata" + '_' +
+                                       'results_n2v/PLELog/' + "testdata" + '_' +
                                        '/prob_label_res/mcs-' + str(100) + '_ms-' + str(100))
     rand_state = os.path.join(
-                              'results_g2v/PLELog/' + "testdata" + '_' +
+                              'results_n2v/PLELog/' + "testdata" + '_' +
                               '/prob_label_res/random_state')
 
 
-    label_generator = Probabilistic_Labeling(min_samples=100, min_clust_size=100,
+    label_generator = Probabilistic_Labeling(min_samples=50, min_clust_size=75,
                                              res_file=prob_label_res_file, rand_state_file=rand_state)    
 
     
@@ -495,14 +498,14 @@ def evaluate_cluster(labeled_train, normal_ids):
     for inst in labeled_train:
         if inst.predicted == 'Normal':
             if inst.label == 'Normal':
-                TN += 1
-            else:
-                FN += 1
-        else:
-            if inst.label == 'Anomalous':
                 TP += 1
             else:
                 FP += 1
+        else:
+            if inst.label == 'Anomalous':
+                TN += 1
+            else:
+                FN += 1
     from utils.common import get_precision_recall
 
     print(len(normal_ids))
@@ -517,105 +520,139 @@ def evaluate_cluster(labeled_train, normal_ids):
 
 
 
+def save_pickle(obj, path):
+    with open(path, 'wb') as f:
+        pickle.dump(obj, f)
+
+def load_pickle(path):
+    with open(path, 'rb') as f:
+        return pickle.load(f)
+    
+
+
 if __name__ == '__main__':
 
-    template =  Simple_template_TF_IDF()
 
     programs_path = "/app/data/edge-traces/cgs"
     branches_path = "/app/data/edge-traces/branches"
     id2log_path = '/app/data/WALA_hash_map.json'
 
+    graphs_path = '/app/data/cached_graphs.pkl'
+    embeddings_path = '/app/data/cached_graph_embeddings.pkl'
+
+    reduction = False
     instances = []
-    reduction = True
 
 
-    # embed wala's method names
-    id2embd, string_to_id, id_to_string = gen_id2embd(id2log_path, template)
+    # Load or generate graphs
 
     
+    if os.path.exists(graphs_path):
+        # print("Loading cached graphs...")
+        graphs = load_pickle(graphs_path)
+    else:
 
-    # n_normal = 0
-    # n_anormal = 0
+        # Embed WALA method names
+        template = Simple_template_TF_IDF()
+        id2embd, string_to_id, id_to_string = gen_id2embd(id2log_path, template)
 
-    # done= False
-    graphs = {} 
-    for p_id, program in enumerate(os.listdir(programs_path)):
-        program_path = os.path.join(programs_path, program)
-        labels_df = load_label(program_path)
-        edges_path = os.path.join(programs_path, program, "edges")
-        for edge in os.listdir(edges_path):
+        graphs = {}
+        for p_id, program in enumerate(os.listdir(programs_path)):
+            program_path = os.path.join(programs_path, program)
+            labels_df = load_label(program_path)
+            edges_path = os.path.join(programs_path, program, "edges")
 
-            # paths
-            edge_path_cg = os.path.join(edges_path, edge)
-            edge_path_br = os.path.join(branches_path, program, "edges", edge)
+            for edge in os.listdir(edges_path):
+                edge_path_cg = os.path.join(edges_path, edge)
+                edge_path_br = os.path.join(branches_path, program, "edges", edge)
 
-            # get label
-            edge_id = edge.split('.')[0]
-            label = labels_df.loc[labels_df["edge_name"] == edge_id, "wiretap"].values
-            if len(label) <= 0:
-                continue
-            label = label[0]
-            
-            # load traces of cg and branch
-            cg_trace = load_trace(edge_path_cg)
-            br_trace = load_trace(edge_path_br)
+                edge_id = edge.split('.')[0]
+                label_row = labels_df.loc[labels_df["edge_name"] == edge_id, "wiretap"]
 
-            print("done loading the traces!")
+                if label_row.empty:
+                    continue
 
-            # encode the traces of cg and branch 
-            cg_encoded_trace = parse_cg_trace(id2log_path, cg_trace, string_to_id, id_to_string)
-            br_encoded_trace = parse_br_trace(id2log_path, br_trace, string_to_id, id_to_string)
+                label = label_row.values[0]
 
-            # # data representation
-            brgraphs = create_br_graphs(br_encoded_trace)    #{node_id: graph}, eg., {1:graph, 2:graph}
-            graph = create_cg_graph(cg_encoded_trace, brgraphs)
+                cg_trace = load_trace(edge_path_cg)
+                br_trace = load_trace(edge_path_br)
+                print("Traces loaded for:", program, edge)
 
-            print(graph.number_of_nodes(), graph.number_of_edges())
+                cg_encoded_trace = parse_cg_trace(id2log_path, cg_trace, string_to_id, id_to_string)
+                br_encoded_trace = parse_br_trace(id2log_path, br_trace, string_to_id, id_to_string)
 
-            
+                brgraphs = create_br_graphs(br_encoded_trace)
+                graph = create_cg_graph(cg_encoded_trace, brgraphs)
 
-            # final_embedding = embedd_trace(id2embd, encoded_trace)
+                print(f"Graph {program}-{edge} has {graph.number_of_nodes()} nodes and {graph.number_of_edges()} edges")
 
-            # print('embedding done ...')
+                graphs[(program, edge, label)] = graph
 
-    #         # new instance
-            # inst = create_instance(p_id, edge, trace, final_embedding, label)
-            # inst = create_instance(program, edge, None, final_embedding, label)
-
-            # print("instance created ...")
-
-            # instances.append(inst)
-            graphs[(program, edge, label)] = graph
-        
-
-    
-    # g_embeddings_node2vec = embed_graphs_node2vec(graphs)
-    # print(g_embeddings_node2vec[0])
-    g_embeddings_graph2vec = embed_graphs_graph2vec(list(graphs.values()))
-    print(g_embeddings_graph2vec[0])
+        save_pickle(graphs, graphs_path)
+        print("Graphs saved.")
 
 
-    for i in range(len(g_embeddings_graph2vec)):
-        program, edge, label = list(graphs.keys())[i]
-        inst = create_instance(program, edge, None, g_embeddings_graph2vec[i], label)
+    # first_key = list(graphs.keys())[0]
+    # first_graph = graphs[first_key]
+
+    # # Get first edge (u, v)
+    # u, v = list(first_graph.edges())[0]
+
+    # # Modify the weight
+    # if 'weight' in first_graph[u][v]:
+    #     print("Old weight:", first_graph[u][v]['weight'])
+
+    # first_graph[u][v]['weight'] = 5  # example new weight
+    # print("New weight set.", first_graph[u][v]['weight'])
+
+    # Load or generate embeddings
+    if os.path.exists(embeddings_path):
+        # print("Loading cached graph embeddings...")
+        g_embeddings_graph2vec = load_pickle(embeddings_path)
+    else:
+        # g_embeddings_graph2vec = embed_graphs_graph2vec(list(graphs.values()))
+        g_embeddings_graph2vec = embed_graphs_node2vec_original(list(graphs.values()))
+        save_pickle(g_embeddings_graph2vec, embeddings_path)
+        print("Graph embeddings saved.")
+
+
+    # Create instances
+    for i, (key, graph) in enumerate(graphs.items()):
+        program, edge, label = key
+        embedding = g_embeddings_graph2vec[i]
+        inst = create_instance(program, edge, None, embedding, label)
         instances.append(inst)
 
-
-
-    
+    # Split and reduce
     train, dev, test = split_631(instances)
-    # print("done splitting ... ")
 
     if reduction:
         feature_reduction(train)
 
-    labeled_train = probability_labeling(train)
 
-    for inst in labeled_train:
-        print(inst.id)
-        print(inst.predicted)
-        print(inst.label)
-        print(inst.confidence)
-        print("------------------------------------------")
+    n_false = 0
+    n_true = 0
+    i = 0
+    print('program,','edge,','label')
+    for inst in train:
+        if inst.label == 'Anomalous':
+            id = inst.id.split('_')
+            edge = id[-1]
+            program = '_'.join(id[:-1])
+            print(program.strip(),',',edge.strip(),',')
+            n_false += 1
+        else:
+            n_true += 1
+
+
+    # labeled_train = probability_labeling(train)
+
+    # # Debug print
+    # for inst in labeled_train:
+    #     print(inst.id)
+    #     print("predicted: ", inst.predicted)
+    #     print("label: ", inst.label)
+    #     print(inst.confidence)
+    #     print("------------------------------------------")
 
 
