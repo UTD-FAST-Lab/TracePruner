@@ -93,7 +93,8 @@ class Solitary_HDBSCAN():
         '''
         predicted = []
         assert len(inputs) == len(self.labels)
-        inputs = np.asarray(inputs, dtype=np.float)
+        # inputs = np.asarray(inputs, dtype=np.float)
+        inputs = np.asarray(inputs, dtype=float)
         self.logger.info('Summarizing labeled normals and their reprs.')
         normal_matrix = []
         for id in normal_ids:
@@ -101,7 +102,8 @@ class Solitary_HDBSCAN():
             if self.labels[id] != -1:
                 self.normal_cores.add(self.labels[id])
         self.logger.info('Normal clusters are: ' + str(self.normal_cores))
-        normal_matrix = np.asarray(normal_matrix, dtype=np.float)
+        normal_matrix = np.asarray(normal_matrix, dtype=float)
+        # normal_matrix = np.asarray(normal_matrix, dtype=np.float)
         self.logger.info('Shape of normal matrix: %d x %d' % (normal_matrix.shape[0], normal_matrix.shape[1]))
 
         by_normal_core_normal = 0

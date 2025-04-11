@@ -1,6 +1,8 @@
 import os, json, re
 
 import pandas as pd
+import argparse
+
 
 
 class TraceEdgeExtractor:
@@ -233,8 +235,17 @@ class TraceEdgeExtractor:
 
 if __name__ == "__main__":
 
+    parser = argparse.ArgumentParser(description="Extract edges for different instrumentation types of WALA")
+    # Define command-line arguments
+    parser.add_argument('--type', type=str, required=True, help="specify the type of instrumentation (B:Branch, C:Call graph)")
+    args = parser.parse_args()  # Parse arguments
+
     trace_types = ('cgs', 'branches', 'variables')
-    trace_type = trace_types[0]
+    
+    if args.type == 'B':
+        trace_type = trace_types[1]
+    elif args.type == 'C':
+        trace_type = trace_types[0]
 
     traces_dir = f'/home/mohammad/projects/CallGraphPruner/data/traces/{trace_type}'  
     edge_traces_dir = f'/home/mohammad/projects/CallGraphPruner/data/edge-traces/{trace_type}'  

@@ -6,6 +6,8 @@ import argparse
 import csv
 from concurrent.futures import ThreadPoolExecutor, as_completed
 import threading, subprocess
+import argparse
+
 
 
 
@@ -35,7 +37,7 @@ def get_jar_file(program):
 	return jar_file
 
 
-def run_wala(program):
+def run_wala(program, args):
 	
 	print(program)
 		
@@ -46,9 +48,17 @@ def run_wala(program):
 	# command += f' > /home/mohammad/projects/CallGraphPruner/data/traces/branches/{program}.txt'
 
 	# Construct the command string
+
+	if args.type == 'B':
+		agentType = agentLevel[1]
+		path = 'branches'
+	elif args.type == 'C':
+		agentType = agentLevel[0]
+		path = 'cgs'
+
 	command = [
 		'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java',
-		f'-javaagent:{agent}=logLevel=method,agentLevel={agentLevel[0]}',
+		f'-javaagent:{agent}=logLevel=method,agentLevel={agentType}',
 		'-jar', WALA_DRIVER,
 		'-classpath', jar_file,
 		'-mainclass', mainclass,
@@ -58,7 +68,7 @@ def run_wala(program):
 	]
 
 	# Specify the output file for logs
-	output_file = f'/home/mohammad/projects/CallGraphPruner/data/traces/cgs/{program}.txt'
+	output_file = f'/home/mohammad/projects/CallGraphPruner/data/traces/{path}/{program}.txt'
 
 	# Open the file to capture everything
 	with open(output_file, 'w') as f:
@@ -70,23 +80,31 @@ def run_wala(program):
 	# os.system(command)
 
 
-def run_wala_in_parallel(num_threads, programs):
+def run_wala_in_parallel(num_threads, programs, args):
 	with ThreadPoolExecutor(max_workers=num_threads) as executor:
 		futures = []
 		for program in programs:		
-			future = executor.submit(run_wala, program)
+			future = executor.submit(run_wala, program, args)
 
 
-def main():
+def main(args):
 	
     programs = []
     with open(PROGRAM_FILES, 'r') as file:
         programs = [program.strip() for program in file.readlines()]
 		
-    run_wala_in_parallel(15, programs)
+    run_wala_in_parallel(15, programs, args)
 
 	
 
 if __name__ == '__main__':
 
-	main()
+	parser = argparse.ArgumentParser(description="Run WALA with different instrumentations")
+
+	# Define command-line arguments
+	parser.add_argument('--type', type=str, required=True, help="specify the type of instrumentation (B:Branch, C:Call graph)")
+
+	args = parser.parse_args()  # Parse arguments
+
+
+	main(args)

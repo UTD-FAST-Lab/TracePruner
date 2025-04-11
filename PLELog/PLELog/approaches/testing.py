@@ -42,12 +42,12 @@ seq = {
 }
 
 seq1 = {
-    8:'AgentLogger|CG_edge: com.ibm.wala.ssa.SSABuilder$SymbolicPropagator.emitInstruction (Lcom/ibm/wala/ssa/SSAInstruction;)V -> com.ibm.wala.ssa.SSABuilder$SymbolicPropagator.getCurrentInstructionIndex ()I',
-    9:'AgentLogger|CG_edge: com.ibm.wala.ssa.SSABuilder$SymbolicPropagator.emitInstruction (Lcom/ibm/wala/ssa/SSAInstruction;)V -> com.ibm.wala.ssa.SSAInstruction.getNumberOfDefs ()I',
-    10:'AgentLogger|CG_edge: com.ibm.wala.analysis.stackMachine.AbstractIntStackMachine$BasicStackFlowProvider.flow (Lcom/ibm/wala/analysis/stackMachine/AbstractIntStackMachine$MachineState;Lcom/ibm/wala/cfg/ShrikeCFG$BasicBlock;)Lcom/ibm/wala/analysis/stackMachine/AbstractIntStackMachine$MachineState; -> com.ibm.wala.cfg.ShrikeCFG$BasicBlock.getLastInstructionIndex ()I',
-    11:'AgentLogger|CG_edge: com.ibm.wala.cfg.ShrikeCFG$BasicBlock.getLastInstructionIndex ()I -> com.ibm.wala.cfg.ShrikeCFG.entry ()Lcom/ibm/wala/cfg/IBasicBlock;',
-    13:'AgentLogger|CG_edge: com.ibm.wala.cfg.AbstractCFG.getNode (I)Lcom/ibm/wala/cfg/IBasicBlock; -> com.ibm.wala.util.graph.impl.DelegatingNumberedNodeManager.getNode (I)Lcom/ibm/wala/util/graph/INodeWithNumber;',
-    12:'AgentLogger|CG_edge: com.ibm.wala.cfg.AbstractCFG.entry ()Lcom/ibm/wala/cfg/IBasicBlock; -> com.ibm.wala.cfg.AbstractCFG.getNode (I)Lcom/ibm/wala/cfg/IBasicBlock;',
+    '8':'AgentLogger|CG_edge: com.ibm.wala.ssa.SSABuilder$SymbolicPropagator.emitInstruction (Lcom/ibm/wala/ssa/SSAInstruction;)V -> com.ibm.wala.ssa.SSABuilder$SymbolicPropagator.getCurrentInstructionIndex ()I',
+    '9':'AgentLogger|CG_edge: com.ibm.wala.ssa.SSABuilder$SymbolicPropagator.emitInstruction (Lcom/ibm/wala/ssa/SSAInstruction;)V -> com.ibm.wala.ssa.SSAInstruction.getNumberOfDefs ()I',
+    '10':'AgentLogger|CG_edge: com.ibm.wala.analysis.stackMachine.AbstractIntStackMachine$BasicStackFlowProvider.flow (Lcom/ibm/wala/analysis/stackMachine/AbstractIntStackMachine$MachineState;Lcom/ibm/wala/cfg/ShrikeCFG$BasicBlock;)Lcom/ibm/wala/analysis/stackMachine/AbstractIntStackMachine$MachineState; -> com.ibm.wala.cfg.ShrikeCFG$BasicBlock.getLastInstructionIndex ()I',
+    '11':'AgentLogger|CG_edge: com.ibm.wala.cfg.ShrikeCFG$BasicBlock.getLastInstructionIndex ()I -> com.ibm.wala.cfg.ShrikeCFG.entry ()Lcom/ibm/wala/cfg/IBasicBlock;',
+    '13':'AgentLogger|CG_edge: com.ibm.wala.cfg.AbstractCFG.getNode (I)Lcom/ibm/wala/cfg/IBasicBlock; -> com.ibm.wala.util.graph.impl.DelegatingNumberedNodeManager.getNode (I)Lcom/ibm/wala/util/graph/INodeWithNumber;',
+    '12':'AgentLogger|CG_edge: com.ibm.wala.cfg.AbstractCFG.entry ()Lcom/ibm/wala/cfg/IBasicBlock; -> com.ibm.wala.cfg.AbstractCFG.getNode (I)Lcom/ibm/wala/cfg/IBasicBlock;',
 }
 # seq1 = {
 #     1:'AgentLogger|BRANCH: com.ibm.wala.classLoader.ShrikeBTMethod.isStatic ()Z:ELSE#0',
