@@ -2,15 +2,18 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import KFold
-from approach.utils import evaluate_fold, write_results_to_csv, write_metrics_to_csv, split_folds
+from approach.utils import evaluate_fold, write_results_to_csv, write_metrics_to_csv, split_folds, balance_training_set
 
 class RandomForestBaseline:
 
-    def __init__(self, instances, output_dir, raw_baseline=False, use_trace=False):
+    def __init__(self, instances, output_dir, train_with_unknown=True, make_balance=False, threshold=0.5, raw_baseline=False, use_trace=False):
         self.instances = instances
         self.use_trace = use_trace
         self.raw_baseline = raw_baseline
         self.output_dir = output_dir
+        self.threshold = threshold
+        self.make_balance = make_balance
+        self.train_with_unknown = train_with_unknown
         self.labeled = [i for i in instances if i.is_known()]
         self.unknown = [i for i in instances if not i.is_known()]
 
@@ -19,7 +22,8 @@ class RandomForestBaseline:
 
 
     def run(self):
-        folds = split_folds(self.labeled, self.unknown)
+
+        folds = split_folds(self.labeled, self.unknown, self.train_with_unknown)
         all_metrics = []
         all_eval = []
         unk_labeled_true = 0
@@ -27,6 +31,10 @@ class RandomForestBaseline:
 
         for fold, (train, test) in enumerate(folds, 1):
             print(f"\n=== RF Fold {fold} ===")
+            
+            if self.make_balance:
+                train = balance_training_set(train)
+
             X_train = self.get_features(train)
             y_train = np.array([1 if i.get_label() else 0 for i in train])
 
@@ -47,12 +55,17 @@ class RandomForestBaseline:
                 min_samples_split=2,
                 min_samples_leaf=1,
                 bootstrap=False,
-                criterion="entropy"
+                criterion="entropy",
+                class_weight='balanced'
             )
             clf.fit(X_train_scaled, y_train)
 
-            y_pred = clf.predict(X_test_scaled)
-            y_conf = clf.predict_proba(X_test_scaled).max(axis=1)
+            # y_pred = clf.predict(X_test_scaled)
+            # y_conf = clf.predict_proba(X_test_scaled).max(axis=1)
+            probs = clf.predict_proba(X_test_scaled)[:, 1]  # Probabilities of class=1
+            y_pred = (probs >= self.threshold).astype(int)
+            y_conf = probs  # Confidence = p(class=1)
+
 
             for inst, pred, conf in zip(test, y_pred, y_conf):
                 inst.set_predicted_label(pred)
@@ -94,13 +107,13 @@ class RandomForestBaseline:
         print(f"TP: {overall['TP']} | FP: {overall['FP']} | TN: {overall['TN']} | FN: {overall['FN']}")
 
         if not self.raw_baseline:
-            res_path = f"{self.output_dir}/rf_results.csv"
-            metrics_path = f"{self.output_dir}/rf_fold_metrics.csv"
+            res_path = f"{self.output_dir}/rf_results_{self.threshold}_only_labeled_balanced.csv"
+            metrics_path = f"{self.output_dir}/rf_fold_metrics_{self.threshold}_only_labeled_balanced.csv"
         else:
-            res_path = f"{self.output_dir}/rf_raw_results.csv"
-            metrics_path = f"{self.output_dir}/rf_raw_fold_metrics.csv"
+            res_path = f"{self.output_dir}/rf_raw_results_{self.threshold}.csv"
+            metrics_path = f"{self.output_dir}/rf_raw_fold_metrics_{self.threshold}.csv"
 
-        write_results_to_csv(all_eval, res_path)
+        # write_results_to_csv(all_eval, res_path)
         write_metrics_to_csv(all_metrics, metrics_path)
         
 

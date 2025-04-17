@@ -2,6 +2,7 @@ import numpy as np
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import KFold
 from approach.utils import evaluate_fold, write_results_to_csv, write_metrics_to_csv, split_folds
+from collections import defaultdict
 
 class ClusteringRunner:
     def __init__(self, instances, clusterer, fallback, labeler, output_dir, use_trace=False, use_fallback=True, train_with_unknown=False):
@@ -22,11 +23,7 @@ class ClusteringRunner:
     def run(self):
 
 
-        if self.train_with_unknown:
-            folds = split_folds(self.labeled, self.unknown)
-        else: 
-            folds = split_folds(self.labeled)
-
+        folds = split_folds(self.labeled, self.unknown, self.train_with_unknown)
 
         all_metrics = []
         all_eval = []
@@ -45,13 +42,22 @@ class ClusteringRunner:
             X_train_scaled = X_all[:len(X_train)]
             X_test_scaled = X_all[len(X_train):]
 
-            self.clusterer.fit(X_train_scaled)
-            self.clusterer.label_clusters(y_train, self.clusterer.clusterer.labels_, self.labeler)
+            # self.clusterer.fit(X_train_scaled) #hdbscan
+            # self.clusterer.label_clusters(y_train, self.clusterer.clusterer.labels_, self.labeler) #hdbscan
+
+            self.clusterer.fit_smote(X_train_scaled, train) #mpckmeans
+            self.clusterer.label_clusters(train, self.clusterer.clusterer.labels_, self.labeler) #mpckmeans
+
+            if fold == 1:
+                self.print_cluster_distribution(train, self.clusterer.clusterer.labels_)
+
+            print(self.clusterer.cluster_labels)
 
             cluster_ids, strengths = self.clusterer.predict(X_test_scaled)
 
             if self.use_fallback:
-                self.fallback.fit(X_train_scaled, y_train, self.clusterer.clusterer.labels_, self.clusterer.cluster_labels)
+                # self.fallback.fit(X_train_scaled, y_train, self.clusterer.clusterer.labels_, self.clusterer.cluster_labels)
+                self.fallback.fit(X_train_scaled, y_train)
                 fallback_preds = self.fallback.predict(X_test_scaled)
                 fallback_conf = self.fallback.predict_proba(X_test_scaled)
 
@@ -102,8 +108,8 @@ class ClusteringRunner:
         print(f"TP: {overall['TP']} | FP: {overall['FP']} | TN: {overall['TN']} | FN: {overall['FN']}")
 
 
-        write_results_to_csv(all_eval, f"{self.output_dir}/cluster_results.csv")
-        write_metrics_to_csv(all_metrics, f"{self.output_dir}/fold_metrics.csv")
+        # write_results_to_csv(all_eval, f"{self.output_dir}/cluster_results.csv")
+        write_metrics_to_csv(all_metrics, f"{self.output_dir}/fold_metrics_balanced.csv")
 
 
 
@@ -131,3 +137,32 @@ class ClusteringRunner:
         print("false: ", false)
         
         return (evaluate_fold(y_true, y_pred), true, false)
+    
+
+    def print_cluster_distribution(self, train, cluster_ids):
+        '''print in each cluster how many true, false and unknowns are there'''
+
+        cluster_2_data = defaultdict(list)
+
+        for inst, cid in zip(train, cluster_ids):
+            cluster_2_data[cid].append(inst)
+        
+
+        with open(f'{self.output_dir}/cluster_distibution_balanced.txt', 'w') as f:
+            for cid, val in cluster_2_data.items():
+                true = 0
+                false = 0
+                unk = 0
+                for inst in val:
+                    if not inst.is_known():
+                        unk += 1
+                    else:
+                        if inst.get_label() is True:
+                            true += 1
+                        else:
+                            false += 1
+                
+                f.write(f"cid: {cid} -> true: {true}\t false: {false}\t unk: {unk}\n ")
+
+            
+            

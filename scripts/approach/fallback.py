@@ -49,3 +49,33 @@ class CDistFallback(FallbackStrategy):
 
     def predict_proba(self, X_test):
         return np.ones(len(X_test)) * 0.5  # placeholder
+
+class CDistFallback2(FallbackStrategy):
+    
+    def __init__(self, epsilon=1e-8):
+        self.true_points = None
+        self.epsilon = epsilon  # for numerical stability
+
+    def fit(self, X_train, y_train):
+        # Store only the feature vectors of known True-labeled instances
+        self.true_points = X_train[y_train == 1]
+
+    def predict(self, X_test):
+        if self.true_points is None or len(self.true_points) == 0:
+            raise ValueError("No true-labeled points available for fallback.")
+
+        distances = cdist(X_test, self.true_points)  # shape: (n_test, n_true)
+        labels = []
+
+        for row in distances:
+            if np.any(row <= self.epsilon):  # check if any true point is identical
+                labels.append(1)  # assign True
+            else:
+                labels.append(0)  # assign False
+
+        return labels
+
+    def predict_proba(self, X_test):
+        # Optional: confidence = 1.0 if match found, 0.0 otherwise
+        distances = cdist(X_test, self.true_points)
+        return np.array([1.0 if np.any(row <= self.epsilon) else 0.0 for row in distances])

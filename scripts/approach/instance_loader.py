@@ -34,6 +34,8 @@ def load_instances(dataset="njr"):
         unknown_df = all_df.merge(labeled_keys, on=['method', 'offset', 'target'], how='left', indicator=True)
         unknown_df = unknown_df[unknown_df['_merge'] == 'left_only'].drop(columns=['_merge'])
 
+        unknown_df.to_csv(f'{program_dir_path}/unknown.csv', index=False)
+
         def create_instance(row, label, is_unknown):
             key = (row['method'], row['offset'], row['target'])
             if key in features_df.index:
