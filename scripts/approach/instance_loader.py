@@ -7,9 +7,19 @@ def load_instances(dataset="njr"):
     
     programs_path = '/home/mohammad/projects/CallGraphPruner/data/programs/all_programs.txt' 
     static_cg_dir = '/home/mohammad/projects/CallGraphPruner/data/static-cgs'
+    manual_gt_path = '/home/mohammad/projects/CallGraphPruner/data/manual/manual_unknown_labels.csv'
     
     with open(programs_path, 'r') as f:
         program_names = [line.strip() for line in f if line.strip()]
+
+    # Load manually labeled unknowns
+    manual_gt_map = {}
+    if os.path.exists(manual_gt_path):
+        manual_gt_df = pd.read_csv(manual_gt_path)
+        for _, row in manual_gt_df.iterrows():
+            key = (row['program'], row['method'], row['offset'], row['target'])
+            manual_gt_map[key] = int(row['label'])  # 0 or 1
+
 
     instances = []
     for program in program_names:
@@ -41,6 +51,12 @@ def load_instances(dataset="njr"):
             if key in features_df.index:
                 inst = Instance(program, *key, is_unknown, label=label)
                 inst.set_static_features(features_df.loc[key])
+
+                 # Set GT if exists
+                gt_key = (program, row['method'], row['offset'], row['target'])
+                if gt_key in manual_gt_map:
+                    inst.set_ground_truth(manual_gt_map[gt_key])
+                
                 return inst
 
         for _, row in true_df.iterrows():

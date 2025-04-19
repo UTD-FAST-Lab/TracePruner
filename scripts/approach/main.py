@@ -19,15 +19,15 @@ clusterers = (
 
 runner = ClusteringRunner(
     instances=instances,
-    clusterer=clusterers[1],
-    fallback=CDistFallback2(),
-    labeler=RelativeMajorityHeuristic(),
-    output_dir="results/majority",
+    clusterer=clusterers[0],
+    fallback=CDistFallback(),
+    labeler=MajorityLabelHeuristic(),
+    output_dir="results/majority/hdbscan",
     use_trace=False,
-    use_fallback=False,
+    use_fallback=True,
     train_with_unknown=True
 )
 
-# runner = RandomForestBaseline(instances=instances, threshold=0.45, train_with_unknown=False, make_balance=False , raw_baseline=False, output_dir="results/rf_baseline")
+# runner = RandomForestBaseline(instances=instances, threshold=0.45, train_with_unknown=False, make_balance=True , raw_baseline=False, output_dir="results/rf_baseline")
 
 runner.run()

@@ -1,0 +1,57 @@
+/**
+ * This Gradle build file shows how to run Doop as a library.
+ *
+ * Quick setup:
+ *
+ * 1. gradle build
+ *
+ * 2. Set DOOP_HOME to doop-home directory (see message printed by previous step).
+ *
+ * 3. gradle run
+ */
+
+plugins {
+    id 'application'
+    id 'groovy'
+}
+
+repositories {
+    // Uncomment to be able to use Doop's "publishToMavenLocal" task.
+    mavenLocal()
+    mavenCentral()
+    maven { url "http://centauri.di.uoa.gr:8081/artifactory/plast-deps" }
+    maven { url "http://centauri.di.uoa.gr:8081/artifactory/plast-public" }
+}
+
+configurations {
+    logic      { transitive = false }
+}
+
+def groovyVersion='3.0.8'
+def doopVersion = '4.+'
+dependencies {
+    logic          "org.clyze:doop:${doopVersion}:logic-files"
+    implementation "org.clyze:doop:${doopVersion}"
+    implementation "org.codehaus.groovy:groovy-all:${groovyVersion}"
+}
+
+// Extract logic/generators/apktool dependencies to local "Doop home"
+// directory and print message with corresponding value for
+// environment variable DOOP_HOME.
+task resolveDoopResources {
+    doLast {
+        def baseDir = "${projectDir}/doop-home"
+        copy {
+            from zipTree(configurations.logic.files[0])
+            into baseDir
+        }
+        println "Doop resources installed, set environment variable: DOOP_HOME=${baseDir}"
+    }
+}
+tasks.build.dependsOn resolveDoopResources
+
+mainClassName = "DoopRunner"
+
+wrapper {
+    gradleVersion = "6.2"
+}

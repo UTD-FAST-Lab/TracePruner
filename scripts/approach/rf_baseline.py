@@ -77,6 +77,12 @@ class RandomForestBaseline:
             metrics["unk_labeled_true"] = res[1]
             metrics["unk_labeled_false"] = res[2]
             metrics["unk_labeled_all"] = res[1] + res[2]
+
+            gt_metrics = res[3]
+            if gt_metrics:
+                for k, v in gt_metrics.items():
+                    metrics[f"gt_{k}"] = v
+
             metrics["fold"] = fold
 
             unk_labeled_true += res[1]
@@ -99,6 +105,16 @@ class RandomForestBaseline:
         overall["unk_labeled_true"] = unk_labeled_true
         overall["unk_labeled_false"] = unk_labeled_false
         overall["unk_labeled_all"] = unk_labeled_false + unk_labeled_true
+
+        # Add evaluation on manually labeled unknowns
+        gt_instances = [i for i in self.instances if i.ground_truth is not None and not i.is_known()]
+        gt_y_true = [int(i.ground_truth) for i in gt_instances]
+        gt_y_pred = [int(i.get_predicted_label()) for i in gt_instances]
+        gt_metrics = evaluate_fold(gt_y_true, gt_y_pred) if gt_y_true else {}
+
+        for k, v in gt_metrics.items():
+            overall[f"gt_{k}"] = v
+
         overall["fold"] = "overall"
         all_metrics.append(overall)
 
@@ -107,10 +123,10 @@ class RandomForestBaseline:
         print(f"TP: {overall['TP']} | FP: {overall['FP']} | TN: {overall['TN']} | FN: {overall['FN']}")
 
         if not self.raw_baseline:
-            res_path = f"{self.output_dir}/rf_results_{self.threshold}_only_labeled_balanced.csv"
-            metrics_path = f"{self.output_dir}/rf_fold_metrics_{self.threshold}_only_labeled_balanced.csv"
+            # res_path = f"{self.output_dir}/rf_results_{self.threshold}_only_labeled_balanced.csv"
+            metrics_path = f"{self.output_dir}/rf_fold_metrics_{self.threshold}_only_labeled_balanced_gt.csv"
         else:
-            res_path = f"{self.output_dir}/rf_raw_results_{self.threshold}.csv"
+            # res_path = f"{self.output_dir}/rf_raw_results_{self.threshold}.csv"
             metrics_path = f"{self.output_dir}/rf_raw_fold_metrics_{self.threshold}.csv"
 
         # write_results_to_csv(all_eval, res_path)
@@ -120,32 +136,42 @@ class RandomForestBaseline:
 
     def evaluate(self, test):
         y_true = []
-        y_pred = []
+        y_pred = [] 
         
         true = 0
         false = 0
 
-        for inst in test:
+        # For GT-labeled unknowns
+        gt_y_true = []
+        gt_y_pred = []
 
-            if not self.raw_baseline:
-                if inst.is_known():
-                    y_true.append(int(inst.get_label()))
-                    y_pred.append(int(inst.get_predicted_label()))
-                else:
-                    pl = inst.get_predicted_label()
-                    if pl == True:
-                        true += 1
-                    elif pl == False:
-                        false += 1
-            else:
+        for inst in test:
+            pred = int(inst.get_predicted_label())
+
+            if inst.is_known():
                 y_true.append(int(inst.get_label()))
-                y_pred.append(int(inst.get_predicted_label()))
-                
+                y_pred.append(pred)
+            else:
+                if pred == 1:
+                    true += 1
+                elif pred == 0:
+                    false += 1
+
+                if inst.ground_truth is not None:
+                    gt_y_true.append(int(inst.ground_truth))
+                    gt_y_pred.append(pred)
+            
         
         print("all: ", true+false)
         print("true: ", true)
         print("false: ", false)
+        print("Manually labeled unknowns:", len(gt_y_true))
+
+        eval_main = evaluate_fold(y_true, y_pred)
+        eval_gt = evaluate_fold(gt_y_true, gt_y_pred) if gt_y_true else {}
+
+        print(eval_gt)
         
-        return (evaluate_fold(y_true, y_pred), true, false)
+        return eval_main, true, false, eval_gt
     
 

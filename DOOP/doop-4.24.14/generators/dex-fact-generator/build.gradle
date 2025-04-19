@@ -1,0 +1,38 @@
+ plugins {
+     id 'application'
+     id 'java-library'
+//     id 'org.checkerframework' version '0.3.31'
+ }
+// apply plugin: 'org.checkerframework'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+}
+
+// // Uncomment to compile with nullness checker.
+// checkerFramework {
+//   checkers = [
+//     'org.checkerframework.checker.nullness.NullnessChecker'
+//   ]
+// }
+
+dependencies {
+    api project(path: ':generators:fact-generator-common', configuration: 'shadow')
+    implementation 'org.smali:dexlib2:2.4.0'
+    implementation 'org.checkerframework:checker-qual:2.11.0'   // needed when the Checker plugin is disabled
+}
+
+mainClassName = 'org.clyze.doop.dex.DexInvoker'
+
+//fatJar already exists
+fatJar {
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+    from { configurations.compileClasspath.collect { it.directory ? it : zipTree(it) } }
+    with jar
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+ startScripts.dependsOn fatJar

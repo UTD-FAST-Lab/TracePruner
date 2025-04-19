@@ -1,0 +1,35 @@
+plugins {
+    id 'application'
+    id 'groovy'
+    id 'java-library'
+}
+
+mainClassName = 'org.clyze.doop.soot.Main'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    api project(path: ':generators:fact-generator-common', configuration: 'shadow')
+
+    implementation "org.soot-oss:soot:4.5.0"
+    testImplementation "org.apache.groovy:groovy-all:${groovyVersion}"  // Groovy
+    testImplementation "org.spockframework:spock-core:${spockVersion}"
+}
+
+//fatJar already exists
+fatJar {
+    manifest {
+        attributes 'Main-Class': mainClassName
+    }
+    from { configurations.compileClasspath.collect { it.directory ? it : zipTree(it) } }
+    with jar
+    duplicatesStrategy = DuplicatesStrategy.INCLUDE
+}
+
+test {
+    useJUnitPlatform()
+}
+
+startScripts.dependsOn fatJar

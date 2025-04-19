@@ -1,0 +1,111 @@
+// #define DEBUG
+
+/* Types */
+
+.type SymbolicInput = Var | MethodInvocation | NumConstant
+.type Operator = symbol
+.type ExpressionType = PrimitiveType | ReferenceType
+.type Base = SymbolicInput | Operator
+
+.type Expr = [
+  ?base: Base,
+  ?type: ExpressionType,
+  ?left: Expr,
+  ?right: Expr
+]
+
+/* Various util predicate declarations */
+
+.decl isOperator(?op: Operator)
+.decl isRelationalOperator(?op: Operator)
+.decl isSymbolicInput(?symbInput: SymbolicInput)
+
+
+.decl isBooleanExprLeftRight(?exprOther: Expr, ?exprX: Expr, ?exprY: Expr, ?op: Operator)
+.decl isBooleanExprLeftRightInMethod(?expr: Expr, ?exprX: Expr, ?exprZ: Expr, ?op: Operator, ?meth: Method)
+.decl isTransitiveBooleanConjunction(?expr: Expr, ?exprX: Expr, ?exprZ: Expr, ?op: Operator)
+
+.decl FirstIfInsnInMethod(?insn: Instruction, ?meth: Method)
+.decl IfsInMethod(?insn: Instruction, ?meth: Method)
+.decl FirstPredOfInsnInMethodOrdinal(?meth: Method, ?first: number, ?insn: Instruction)
+.decl FirstPredOfInsnInMethod(?meth: Method, ?first: Instruction, ?insn: Instruction)
+.decl LastPredOfInsnInMethodOrdinal(?meth: Method, ?first: number, ?insn: Instruction)
+.decl LastPredOfInsnInMethod(?meth: Method, ?first: Instruction, ?insn: Instruction)
+.decl NotNextPredOfInsnInMethod(?meth: Method, ?prev: Instruction, ?next: Instruction, ?insn: Instruction)
+.decl NextPredOfInsnInMethod(?meth: Method, ?prev: Instruction, ?next: Instruction, ?insn:Instruction)
+
+.decl NegateOp(after: Operator, before: Operator)
+.decl NegationOfConditionAtIfInsn(cond: Expr, negatedCond: Expr, ?insn: Instruction)
+
+.decl AssignBinaryVarVar(?insn:Instruction, ?var: Var, ?meth: Method, ?right1: Var, ?right2: Var, ?op: Operator)
+.decl AssignBinaryVarConst(?insn:Instruction, ?var: Var, ?meth: Method, ?right1: Var, ?right2: NumConstant, ?op: Operator)
+.decl AssignBinaryConstVar(?insn:Instruction, ?var: Var, ?meth: Method, ?right1: NumConstant, ?right2: Var, ?op: Operator)
+.decl AssignBinaryConstConst(?insn:Instruction, ?var: Var, ?meth: Method, ?right1: NumConstant, ?right2: NumConstant, ?op: Operator)
+
+.decl LeftExpr(?var: Var, ?op: Operator, ?constL: Expr)
+.decl RightExpr(?var: Var, ?op: Operator, ?constR: Expr)
+
+.decl IfVarVar(?insn: Instruction, ?var: Var, ?meth: Method, ?right1: Var, ?right2: Var, ?op: Operator)
+.decl IfVarConst(?insn: Instruction, ?var: Var, ?meth: Method, ?right1: Var, ?right2: NumConstant, ?op: Operator)
+
+.decl SinglePredOfInsnInMethod(?pred: Instruction, ?insn: Instruction, ?meth: Method)
+.decl FirstOfMultiplePredsOfInsnInMethod(?pred: Instruction, ?insn: Instruction, ?meth: Method)
+.decl NextOfMultiplePredsOfInsnInMethod(?next: Instruction, ?prev: Instruction, ?insn: Instruction, ?meth: Method)
+.decl LastOfMultiplePredsOfInsnInMethod(?pred: Instruction, ?insn: Instruction, ?meth: Method)
+
+
+.decl isBooleanExpr(?expr: Expr)
+.decl isArithmeticExpr(?expr: Expr)
+.decl isReferenceExpr(?expr: Expr)
+.decl isExpr(?expr: Expr)
+
+#ifdef DEBUG
+.decl ToString(?expr: Expr, ?out: symbol)
+#endif // DEBUG
+.decl Sanity(?expr: Expr)
+.output Sanity
+
+/* Expression method */
+
+.decl Expression_Method(?expr: Expr, ?meth: Method)
+
+/* Expression tree construction declarations */
+
+.decl ResolveExpr(?meth: Method, ?var: symbol, ?expr: Expr)
+
+/* Path expression construction declarations */
+
+.decl BuildPathExprBefore(?meth:Method, prev:Instruction, ?exprBase: Expr, ?insn:Instruction)
+.decl PathExpressionBefore(?meth:Method, ?insn: Instruction, ?pathExpr: Expr)
+.decl PathExpressionAfterTrue(?meth: Method, ?insn: Instruction, ?pathExpr: Expr)
+.decl PathExpressionAfterFalse(?meth: Method, ?insn: Instruction, ?pathExpr: Expr)
+
+/* Reasoner */
+
+.decl ExprImpliesOther(?expr: Expr, ?exprOther: Expr)
+.decl ExprIsAlwaysTrue(?expr: Expr)
+.decl ExprIsAlwaysFalse(?expr: Expr)
+.decl ExprIsNegationOfOther(?expr: Expr, ?exprOther: Expr)
+
+.output isBooleanExpr
+.output isArithmeticExpr
+.output ResolveExpr
+.output Expression_Method
+.output isExpr
+
+#ifdef DEBUG
+.output ToString
+.output SinglePredOfInsnInMethod
+.output FirstOfMultiplePredsOfInsnInMethod
+.output NextOfMultiplePredsOfInsnInMethod
+.output LastOfMultiplePredsOfInsnInMethod
+.output BuildPathExprBefore
+.output PathExpressionBefore
+.output PathExpressionAfterTrue
+.output PathExpressionAfterFalse
+#endif // DEBUG
+
+.output ExprImpliesOther
+.output ExprIsNegationOfOther
+.output ExprIsAlwaysFalse
+.output ExprIsAlwaysTrue

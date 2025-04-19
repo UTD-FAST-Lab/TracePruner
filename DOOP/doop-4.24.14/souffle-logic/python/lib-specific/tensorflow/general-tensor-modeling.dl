@@ -1,0 +1,292 @@
+.decl TensorShapeListLength(?hctx:configuration.HContext, ?val:Value, ?size:number)
+.decl TensorShapeListContent(?hctx:configuration.HContext, ?val:Value, ?index:number, ?indexValue:Value)
+.output TensorShapeListLength
+.output TensorShapeListContent
+
+
+//Unifying way to get the shape of a tensor object, numpy array, or the shape of a list we will statically deduce
+.decl isTensorLikeObject(?val:Value)
+.output isTensorLikeObject
+isTensorLikeObject(?val):-
+  IsPyListOrTuple(?val);
+  Value_Type(?val,"<tensorflow.Tensor>");
+  Value_Type(?val,"<numpy.ndarray>").
+
+.decl TensorLikeObjectShapeListLength(?hctx:configuration.HContext, ?val:Value, ?size:number)
+.output TensorLikeObjectShapeListLength
+
+.decl TensorLikeObjectShapeListContent(?hctx:configuration.HContext, ?val:Value, ?index:number, ?indexValue:Value)
+.output TensorLikeObjectShapeListContent
+
+.decl TensorLikeObjectToTensorDtype(?hctx:configuration.HContext, ?val:Value, ?dtypeHctx:configuration.HContext, ?dtypeVal:Value)
+.output TensorLikeObjectToTensorDtype
+
+TensorLikeObjectShapeListLength(?tensorHctx, ?tensor, ?len):-
+  TensorShape(?tensorHctx, ?tensor, ?shapeHctx, ?shapeVal),
+  TensorShapeListLength(?shapeHctx, ?shapeVal, ?len).
+
+TensorLikeObjectShapeListContent(?tensorHctx, ?tensor, ?index, ?indexVal):-
+  TensorShape(?tensorHctx, ?tensor, ?shapeHctx, ?shapeVal),
+  TensorShapeListContent(?shapeHctx, ?shapeVal, ?index, ?indexVal).
+
+TensorLikeObjectShapeListLength(?pyListHctx, ?pyList, ?len):-
+  PyListDeducedShapeLength(?pyListHctx, ?pyList, ?len).
+
+TensorLikeObjectShapeListContent(?pyListHctx, ?pyList, ?index, ?indexVal):-
+  PyListDeducedShapeContents(?pyListHctx, ?pyList, ?index, ?indexVal).
+
+TensorLikeObjectToTensorDtype(?pyListHctx, ?pyList, ?immutableHctx, ?tensorDtype):-
+  PyListDeducedDtype(?pyListHctx, ?pyList, "float"),
+  ?tensorDtype = "<tensorflow>/new <tensorflow.float32>/0",
+  isImmutableHContext(?immutableHctx).
+
+TensorLikeObjectToTensorDtype(?pyListHctx, ?pyList, ?immutableHctx, ?tensorDtype):-
+  PyListDeducedDtype(?pyListHctx, ?pyList, "int"),
+  ?tensorDtype = "<tensorflow>/new <tensorflow.int32>/0",
+  isImmutableHContext(?immutableHctx).
+
+TensorLikeObjectToTensorDtype(?tensorHctx, ?tensor, ?dtypeHctx, ?dtype):-
+  TensorDType(?tensorHctx, ?tensor, ?dtypeHctx, ?dtype).
+
+//----------------------------------------------------------------------------------------------------------------------
+//                                              GENERAL OPERATION MODELING
+//----------------------------------------------------------------------------------------------------------------------
+
+.decl TensorOperation_NameToVal(?ctx:configuration.Context, ?operationVal:Value, ?name:symbol, ?namedValHctx:configuration.HContext, ?namedVal:Value)
+.output TensorOperation_NameToVal
+
+//When creating a new operation, set the name of the input tensor that will give the dtype of the new output tensor.
+.decl TensorOperation_GetDTypeFromName(?ctx:configuration.Context, ?insn:FunctionInvocation_Insn, ?operationVal:Value, ?name:symbol)
+.output TensorOperation_GetDTypeFromName
+
+.decl TensorOperationProducesOutput(?ctx:configuration.Context, ?insn:FunctionInvocation_Insn, ?operationVal:Value)
+.output TensorOperationProducesOutput
+
+.decl TensorOperationError(?ctx:configuration.Context, ?insn:FunctionInvocation_Insn, ?operationVal:Value, ?errorMSG:symbol)
+.output TensorOperationError
+
+.decl TensorOperationWarning(?ctx:configuration.Context, ?insn:FunctionInvocation_Insn, ?operationVal:Value, ?warningMSG:symbol)
+.output TensorOperationWarning
+
+.decl TensorShape(?tensorHctx:configuration.HContext, ?tensor:Value, ?shapeHctx:configuration.HContext, ?shapeList:Value)
+.output TensorShape
+
+.decl TensorOpOutputWithHctx(?ctx:configuration.Context, ?insn:FunctionInvocation_Insn, ?opValHctx:configuration.HContext, ?operationVal:Value)
+.output TensorOpOutputWithHctx
+
+.decl TensorOpOutputShape(?ctx:configuration.Context, ?insn:FunctionInvocation_Insn, ?operationVal:Value, ?shapeHctx:configuration.HContext, ?shapeVal:Value)
+.output TensorOpOutputShape
+
+.decl TensorDType(?tensorHctx:configuration.HContext, ?tensor:Value, ?dtypeHctx:configuration.HContext, ?dtype:Value)
+.output TensorDType
+
+.decl isTensorVal(?val:Value)
+.output isTensorVal
+
+isTensorVal(?val):-
+  Value_Type(?val, "<tensorflow.Tensor>").
+
+configuration.RecordContextRequest(?ctx, ?outTensorVal, ?var) :-
+  TensorOperationProducesOutput(?ctx, ?insn, ?outTensorVal),
+  AssignInstruction_To(?insn, ?var).
+
+isClassInstanceAllocation(?outTensorVal),
+ClassInstanceAllocationInitializingClassObject(?hctx, ?outTensorVal, ?immutableHctx, "<tensorflow>/new <tensorflow.Tensor>/0"),
+TensorShape(?hctx, ?outTensorVal, ?hctx, ?tensorShapeVal),
+Value_Type(?tensorShapeVal, "<tensorflow.TensorShape>"),
+VarPointsTo(?hctx, ?outTensorVal, ?ctx, ?var),
+Value_Type(?outTensorVal, "<tensorflow.Tensor>"):-
+  configuration.RecordContextResponse(?ctx, ?outTensorVal, ?var, ?hctx),
+  TensorOperationProducesOutput(?ctx, ?insn, ?outTensorVal),
+  AssignInstruction_To(?insn, ?var),
+  ?tensorShapeVal = cat("<shape ",cat(?outTensorVal, ">")),
+  isImmutableHContext(?immutableHctx).
+
+
+TensorOpOutputWithHctx(?ctx, ?insn, ?hctx, ?outTensorVal):-
+  TensorOperationProducesOutput(?ctx, ?insn, ?outTensorVal),
+  AssignInstruction_To(?insn, ?var),
+  VarPointsTo(?hctx, ?outTensorVal, ?ctx, ?var).
+
+TensorOpOutputShape(?ctx, ?insn, ?outTensorVal, ?shapeHctx, ?shape):-
+  TensorOpOutputWithHctx(?ctx, ?insn, ?hctx, ?outTensorVal),
+  TensorShape(?hctx, ?outTensorVal, ?shapeHctx, ?shape).
+
+TensorDType(?tensorHctx, ?tensor, ?dtypeHctx, ?dtype):-
+  TensorOperationProducesOutput(?ctx, ?insn, ?tensor),
+  AssignInstruction_To(?insn, ?var),
+  VarPointsTo(?tensorHctx, ?tensor, ?ctx, ?var),
+  TensorOperation_GetDTypeFromName(?ctx, ?insn, ?tensor, ?name),
+  TensorOperation_NameToVal(?ctx, ?tensor, ?name, ?inTensorHctx, ?inTensor),
+  TensorDType(?inTensorHctx, ?inTensor, ?dtypeHctx, ?dtype).
+
+TensorObjectHasConcreteDimensions(?hctx, ?tensor):-
+  TensorOperationProducesOutput(?ctx, ?insn, ?tensor),
+  AssignInstruction_To(?insn, ?var),
+  VarPointsTo(?hctx, ?tensor, ?ctx, ?var),
+  TensorShape(?hctx, ?tensor, ?listHctx, ?tensorShape),
+  ListOfIntConsts(?listHctx, ?tensorShape).
+
+ListOfConstsLength(?hctx, ?tensorVal, ?len),
+ListOfConstsAtIndexPointsTo(?hctx, ?tensorVal, ?index, ?indexValue):-
+  TensorShapeListLength(?hctx, ?tensorVal, ?len),
+  TensorShapeListContent(?hctx, ?tensorVal, ?index, ?indexValue).
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//                                              WARNINGS / ERRORS
+//----------------------------------------------------------------------------------------------------------------------
+
+DiagnosticForLSP(?file, "Warning", ?startLine, ?endLine, ?startColumn, ?endColumn, ?warnMsg):-
+  TensorOperationWarning(_, ?insn, _, ?warnMsg),
+  Instruction_Function(?insn, ?function),
+  Function_DeclaredInFile(?function, ?file),
+  Instruction_SourcePosition(?insn, ?startLine, ?endLine, ?startColumn, ?endColumn).
+
+DiagnosticForLSP(?file, "Error", ?startLine, ?endLine, ?startColumn, ?endColumn, ?errorMsg):-
+  TensorOperationError(_, ?insn, _, ?errorMsg),
+  Instruction_Function(?insn, ?function),
+  Function_DeclaredInFile(?function, ?file),
+  Instruction_SourcePosition(?insn, ?startLine, ?endLine, ?startColumn, ?endColumn).
+
+//----------------------------------------------------------------------------------------------------------------------
+//                                              IMPRECISION METRICS
+//----------------------------------------------------------------------------------------------------------------------
+
+.decl TensorOpImpreciseNameToVal(?ctx:configuration.Context, ?insn:FunctionInvocation_Insn, ?operationVal:Value, ?name:symbol)
+.output TensorOpImpreciseNameToVal
+
+.decl TensorOpHasImpreciseArg(?ctx:configuration.Context, ?insn:FunctionInvocation_Insn, ?operationVal:Value)
+.output TensorOpHasImpreciseArg
+
+.decl TensorShapeListAtIndexHasMoreThanOneVal(?shapeValHctx:configuration.HContext, ?shapeVal:Value, ?index:number)
+.output TensorShapeListAtIndexHasMoreThanOneVal
+
+.decl ImpreciseTensorShapeList(?shapeValHctx:configuration.HContext, ?shapeVal:Value)
+.output ImpreciseTensorShapeList
+
+.decl TensorHasMoreThanOneShape(?tensorHctx:configuration.HContext, ?tensor:Value)
+.output TensorHasMoreThanOneShape
+
+TensorOpHasImpreciseArg(?ctx, ?insn, ?op):-
+  TensorOpImpreciseNameToVal(?ctx, ?insn, ?op, _).
+
+TensorOpImpreciseNameToVal(?ctx, ?insn, ?op, ?name):-
+  TensorOperationProducesOutput(?ctx, ?insn, ?op),  //TODO: Review this later, right now only care about the ones producing output
+  TensorOperation_NameToVal(?ctx, ?op, ?name, ?argHctx, ?argVal),
+  TensorOperation_NameToVal(?ctx, ?op, ?name, ?argHctx2, ?argVal2),
+  (?argVal != ?argVal2; ?argHctx != ?argHctx2).
+
+TensorShapeListAtIndexHasMoreThanOneVal(?shapeHctx, ?shapeVal, ?index):-
+  TensorShapeListContent(?shapeHctx, ?shapeVal, ?index, ?val1),
+  TensorShapeListContent(?shapeHctx, ?shapeVal, ?index, ?val2),
+  ?val1 != ?val2.
+
+ImpreciseTensorShapeList(?shapeHctx, ?shapeVal):-
+  TensorShapeListAtIndexHasMoreThanOneVal(?shapeHctx, ?shapeVal, _).
+
+TensorHasMoreThanOneShape(?tensorHctx, ?tensor):-
+  TensorShape(?tensorHctx, ?tensor, _, ?shape1),
+  TensorShape(?tensorHctx, ?tensor, _, ?shape2),
+  ?shape1 != ?shape2.
+
+
+//----------------------------------------------------------------------------------------------------------------------
+//                                              TENSORFLOW GRAPH
+//----------------------------------------------------------------------------------------------------------------------
+
+.decl TensorOperationTensorArg(?ctx:configuration.Context, ?insn:FunctionInvocation_Insn, ?operationVal:Value, ?tensorArgHctx:configuration.HContext, ?tensorArg:Value)
+.output TensorOperationTensorArg
+
+.decl TensorFlowsToTensor_Insens(?from:Value, ?to:Value)
+.output TensorFlowsToTensor_Insens
+
+.decl TensorFlowsToTensorOp(?fromHctx:configuration.HContext, ?from:Value, ?toCtx:configuration.Context, ?to:Value)
+.output TensorFlowsToTensorOp
+
+.decl TensorFlowsToSelf_Insens(?tensor:Value)
+.output TensorFlowsToSelf_Insens
+
+.decl TensorFlowsToSelf(?ctx:configuration.Context, ?tensor:Value)
+.output TensorFlowsToSelf
+
+TensorOperationTensorArg(?ctx, ?insn, ?op, ?argHctx, ?argVal):-
+  TensorOperationProducesOutput(?ctx, ?insn, ?op),  //TODO: Review this later, right now only care about the ones producing output
+  TensorOperation_NameToVal(?ctx, ?op, _, ?argHctx, ?argVal),
+  isTensorVal(?argVal).
+
+TensorFlowsToTensor_Insens(?argVal, ?op):-
+  TensorOperationTensorArg(_, _, ?op, _, ?argVal).
+
+TensorFlowsToTensor_Insens(?inDirectFlowTensor, ?op):-
+  TensorOperationTensorArg(_, _, ?op, _, ?argVal),
+  TensorFlowsToTensor_Insens(?inDirectFlowTensor, ?argVal).
+
+TensorFlowsToSelf_Insens(?tensor):-
+  TensorFlowsToTensor_Insens(?tensor, ?tensor).
+
+TensorFlowsToTensorOp(?argHctx, ?argVal, ?ctx, ?op):-
+  TensorOperationTensorArg(?ctx, _, ?op, ?argHctx, ?argVal).
+
+TensorFlowsToTensorOp(?argHctx, ?argVal, ?ctx, ?resultVal):-
+  TensorOperationTensorArg(?ctx, _, ?resultVal, ?intermHctx, ?argIntermVal),
+  configuration.RecordContextResponse(?intermCtx, ?argIntermVal, _, ?intermHctx),       //Makes sure ?intermHctx and ?intermCtx are "compatible"(for our usual case of 1-call+H  checks that the contexts are the same)
+  TensorFlowsToTensorOp(?argHctx, ?argVal, ?intermCtx, ?argIntermVal).
+
+TensorFlowsToSelf(?ctx, ?op):-
+  TensorFlowsToTensorOp(?hctx, ?op, ?ctx, ?op),
+  configuration.RecordContextResponse(?ctx, ?op, _, ?hctx).
+
+//----------------------------------------------------------------------------------------------------------------------
+//                                              CONCAT TENSOR SHAPE INFO
+//----------------------------------------------------------------------------------------------------------------------
+
+.decl TensorLikeObjectShapeInfo(?hctx:configuration.HContext, ?val:Value, ?shapeStr:symbol)
+.output TensorLikeObjectShapeInfo
+
+.decl TensorLikeObjectShapeConcatUpToDim(?hctx:configuration.HContext, ?val:Value, ?concatdims:symbol, ?upToDim:number)
+.output TensorLikeObjectShapeConcatUpToDim
+
+.decl PossibleDimValue_Representation(?val:Value, ?repr:symbol)
+.output PossibleDimValue_Representation
+
+PossibleDimValue_Representation(?numConstVal, ?repr):-
+  isIntConstantValue(?numConstVal),
+  Value_Num(?numConstVal, ?numConst),
+  ?repr = cat("[", cat(?numConst,"]")).
+
+PossibleDimValue_Representation(?none, "[None]"):-
+  isNoneValue(?none).
+
+TensorLikeObjectShapeConcatUpToDim(?hctx, ?tensorLike, ?str, 0):-
+  TensorLikeObjectShapeListContent(?hctx, ?tensorLike, 0, ?indexValue),
+  PossibleDimValue_Representation(?indexValue, ?str).
+
+TensorLikeObjectShapeConcatUpToDim(?hctx, ?tensorLike, ?str, ?index):-
+  TensorLikeObjectShapeListContent(?hctx, ?tensorLike, ?index, ?indexValue),
+  PossibleDimValue_Representation(?indexValue, ?currDimStr),
+  TensorLikeObjectShapeConcatUpToDim(?hctx, ?tensorLike, ?prevDimsStr, ?index - 1),
+  ?str = cat(?prevDimsStr, ?currDimStr).
+
+TensorLikeObjectShapeInfo(?hctx, ?tensorLike, ?DimsStr):-
+  //TensorShape(?hctx, ?tensor, ?shapeHctx, ?shapeVal),
+  TensorLikeObjectShapeListLength(?hctx, ?tensorLike, ?len),
+  TensorLikeObjectShapeConcatUpToDim(?hctx, ?tensorLike, ?DimsStr, ?len -1).
+
+HoverInfoForLSP(?file, ?callerCtx, 1 + ?index, ?startLine, ?endLine, ?startColumn, ?endColumn, ?hoverMsg, ?DimsStr):-
+  ResolvedActualParamValue(?callerCtx, ?insn, ?tofunction, ?paramName, ?hctx, ?tensorVal),
+  Value_Type(?tensorVal, "<tensorflow.Tensor>"),
+  TensorLikeObjectShapeInfo(?hctx, ?tensorVal, ?DimsStr),
+  ?hoverMsg = cat("Tensor argument <b>", cat(?paramName, "</b> has shape: ")),
+  FormalParam(?index, ?paramName, ?tofunction, _),
+  Instruction_Function(?insn, ?function),
+  Function_DeclaredInFile(?function, ?file),
+  Instruction_SourcePosition(?insn, ?startLine, ?endLine, ?startColumn, ?endColumn).
+
+HoverInfoForLSP(?file, ?ctx, 20, ?startLine, ?endLine, ?startColumn, ?endColumn, ?hoverMsg, ?DimsStr):-
+  TensorOpOutputWithHctx(?ctx, ?insn, ?hctx, ?outTensorVal),
+  TensorLikeObjectShapeInfo(?hctx, ?outTensorVal, ?DimsStr),
+  ?hoverMsg = "Output tensor has shape: ",
+  Instruction_Function(?insn, ?function),
+  Function_DeclaredInFile(?function, ?file),
+  Instruction_SourcePosition(?insn, ?startLine, ?endLine, ?startColumn, ?endColumn).

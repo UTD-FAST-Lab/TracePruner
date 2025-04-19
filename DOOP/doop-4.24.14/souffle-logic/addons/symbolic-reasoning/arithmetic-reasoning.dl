@@ -1,0 +1,85 @@
+/*
+ * The reasoning performed under the following rules is said
+ * to be arithmetic due to the fact that the expressions
+ * considered here mostly (may) consist of relational operators 
+ * between arithmetic expressions.
+ *
+ * *Implication* rhs are constrained to be among the previously
+ * computed boolean expressions, just like lhs. We may want to
+ * relax this constraint in the future. The same holds for
+ * boolean reasoning, apart from distributive property rules.
+ */
+
+// Temp relation for debugging 
+
+.decl Transitive(?expr: Expr)
+.output Transitive
+
+// Transitivity
+
+/**
+  * Captures every possible transitive rule,
+  * for each relational operator.
+  * 
+  * It eventually works because of the boolean
+  * path expressions encoding.
+  *
+ **/
+
+Transitive(?exprOther),
+ExprImpliesOther(?expr, ?exprOther) :-
+  isBooleanExprLeftRight(?exprOther, ?exprX, ?exprZ, ?op),
+  isRelationalOperator(?op),
+  isTransitiveBooleanConjunction(?expr, ?exprX, ?exprZ, ?op).
+
+// Reflexivity
+
+ExprIsAlwaysTrue(?expr) :-
+  isBooleanExprLeftRight(?expr, ?exprInner, ?exprInner, ?op),
+  (?op = "<=" ; ?op = "==" ; ?op = ">=").
+
+// Anti-Symmetry
+
+ExprImpliesOther(?expr, ?exprOther) :-
+  isBooleanExprLeftRightInMethod(?expr, ?expr1, ?expr2, "&&", ?meth),
+  ?expr1 = [">=", ?type, ?exprX, ?exprY],
+  ?expr2 = [">=", ?type, ?exprY, ?exprX],
+  isBooleanExprLeftRightInMethod(?exprOther, ?exprX, ?exprY, "==", ?meth).
+
+ExprImpliesOther(?expr, ?exprOther) :-
+  isBooleanExprLeftRightInMethod(?expr, ?expr1, ?expr2, "&&", ?meth),
+  ?expr1 = ["<=", ?type, ?exprX, ?exprY],
+  ?expr2 = ["<=", ?type, ?exprY, ?exprX],
+  isBooleanExprLeftRightInMethod(?exprOther, ?exprX, ?exprY, "==", ?meth).
+
+// Various
+
+ExprImpliesOther(?expr, ?exprOther) :-
+  isBooleanExprLeftRightInMethod(?expr, ?exprX, ?exprY, "<", ?meth),
+  isBooleanExprLeftRightInMethod(?exprOther, ?exprX, ?exprY, "<=", ?meth).
+
+ExprImpliesOther(?expr, ?exprOther) :-
+  isBooleanExprLeftRightInMethod(?expr, ?exprX, ?exprY, ">", ?meth),
+  isBooleanExprLeftRightInMethod(?exprOther, ?exprX, ?exprY, ">=", ?meth).
+
+ExprImpliesOther(?expr, ?exprOther) :-
+  isBooleanExprLeftRightInMethod(?expr, ?exprX, ?exprY, ?op, ?meth),
+  (?op = ">" ; ?op = "<"),
+  isBooleanExprLeftRightInMethod(?exprOther, ?exprX, ?exprY, "!=", ?meth).
+
+ExprIsAlwaysFalse(?expr) :-
+  ?expr1 = ["<", ?type, ?exprX, ?exprY],
+  ?expr2 = [">=", ?type, ?exprX, ?exprY],
+  isBooleanExprLeftRightInMethod(?expr, ?expr1, ?expr2, "&&", ?meth).
+
+ExprImpliesOther(?expr, ?exprOther) :-
+  isBooleanExprLeftRightInMethod(?expr, ?exprX, ?exprY, "<=", ?meth),
+  ?exprL = ["<", ?type, ?exprX, ?exprY],
+  ?exprR = ["==", ?type, ?exprX, ?exprY],
+  isBooleanExprLeftRightInMethod(?exprOther, ?exprL, ?exprR, "||", ?meth).
+
+ExprImpliesOther(?expr, ?exprOther) :-
+  isBooleanExprLeftRightInMethod(?expr, ?exprX, ?exprY, ">=", ?meth),
+  ?exprL = [">", ?type, ?exprX, ?exprY],
+  ?exprR = ["==", ?type, ?exprX, ?exprY],
+  isBooleanExprLeftRightInMethod(?exprOther, ?exprL, ?exprR, "||", ?meth).

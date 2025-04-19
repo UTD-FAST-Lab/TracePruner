@@ -42,22 +42,20 @@ class ClusteringRunner:
             X_train_scaled = X_all[:len(X_train)]
             X_test_scaled = X_all[len(X_train):]
 
-            # self.clusterer.fit(X_train_scaled) #hdbscan
-            # self.clusterer.label_clusters(y_train, self.clusterer.clusterer.labels_, self.labeler) #hdbscan
+            self.clusterer.fit(X_train_scaled) #hdbscan 
+            self.clusterer.label_clusters(train, self.clusterer.clusterer.labels_, self.labeler) #hdbscan {any_normal:y_trian, majority: train}
 
-            self.clusterer.fit_smote(X_train_scaled, train) #mpckmeans
-            self.clusterer.label_clusters(train, self.clusterer.clusterer.labels_, self.labeler) #mpckmeans
+            # self.clusterer.fit_smote(X_train_scaled, train) #mpckmeans
+            # self.clusterer.label_clusters(train, self.clusterer.clusterer.labels_, self.labeler) #mpckmeans
 
             if fold == 1:
                 self.print_cluster_distribution(train, self.clusterer.clusterer.labels_)
 
-            print(self.clusterer.cluster_labels)
-
             cluster_ids, strengths = self.clusterer.predict(X_test_scaled)
 
             if self.use_fallback:
-                # self.fallback.fit(X_train_scaled, y_train, self.clusterer.clusterer.labels_, self.clusterer.cluster_labels)
-                self.fallback.fit(X_train_scaled, y_train)
+                self.fallback.fit(X_train_scaled, y_train, self.clusterer.clusterer.labels_, self.clusterer.cluster_labels) #dist1
+                # self.fallback.fit(X_train_scaled, y_train) #dist2
                 fallback_preds = self.fallback.predict(X_test_scaled)
                 fallback_conf = self.fallback.predict_proba(X_test_scaled)
 
@@ -85,6 +83,13 @@ class ClusteringRunner:
             metrics["unk_labeled_true"] = res[1]
             metrics["unk_labeled_false"] = res[2]
             metrics["unk_labeled_all"] = res[1] + res[2]
+
+            gt_metrics = res[3]
+            if gt_metrics:
+                for k, v in gt_metrics.items():
+                    metrics[f"gt_{k}"] = v
+            # metrics["gt_count"] = len(gt_metrics.get("TP", []))  # fallback to 0 if empty
+
             metrics["fold"] = fold
 
             unk_labeled_true += res[1]
@@ -100,6 +105,17 @@ class ClusteringRunner:
         overall["unk_labeled_true"] = unk_labeled_true
         overall["unk_labeled_false"] = unk_labeled_false
         overall["unk_labeled_all"] = unk_labeled_false + unk_labeled_true
+        
+        # Add evaluation on manually labeled unknowns
+        gt_instances = [i for i in self.instances if i.ground_truth is not None and not i.is_known()]
+        gt_y_true = [int(i.ground_truth) for i in gt_instances]
+        gt_y_pred = [int(i.get_predicted_label()) for i in gt_instances]
+        gt_metrics = evaluate_fold(gt_y_true, gt_y_pred) if gt_y_true else {}
+
+        for k, v in gt_metrics.items():
+            overall[f"gt_{k}"] = v
+        # overall["gt_count"] = len(gt_y_true)
+        
         overall["fold"] = "overall"
         all_metrics.append(overall)
 
@@ -109,7 +125,7 @@ class ClusteringRunner:
 
 
         # write_results_to_csv(all_eval, f"{self.output_dir}/cluster_results.csv")
-        write_metrics_to_csv(all_metrics, f"{self.output_dir}/fold_metrics_balanced.csv")
+        write_metrics_to_csv(all_metrics, f"{self.output_dir}/fold_metrics_hdbscan_dist1_gt.csv")
 
 
 
@@ -120,23 +136,38 @@ class ClusteringRunner:
         true = 0
         false = 0
 
+        # For GT-labeled unknowns
+        gt_y_true = []
+        gt_y_pred = []
+
         for inst in test:
+            pred = int(inst.get_predicted_label())
+
             if inst.is_known():
                 y_true.append(int(inst.get_label()))
-                y_pred.append(int(inst.get_predicted_label()))
+                y_pred.append(pred)
             else:
-                pl = inst.get_predicted_label()
-                if pl == True:
+                if pred == 1:
                     true += 1
-                elif pl == False:
+                elif pred == 0:
                     false += 1
+
+                if inst.ground_truth is not None:
+                    gt_y_true.append(int(inst.ground_truth))
+                    gt_y_pred.append(pred)
             
         
         print("all: ", true+false)
         print("true: ", true)
         print("false: ", false)
+        print("Manually labeled unknowns:", len(gt_y_true))
+
+        eval_main = evaluate_fold(y_true, y_pred)
+        eval_gt = evaluate_fold(gt_y_true, gt_y_pred) if gt_y_true else {}
+
+        print(eval_gt)
         
-        return (evaluate_fold(y_true, y_pred), true, false)
+        return eval_main, true, false, eval_gt
     
 
     def print_cluster_distribution(self, train, cluster_ids):

@@ -1,0 +1,184 @@
+#pragma once
+
+.type Cond = [left: AccessPath, op: symbol, right: AccessPath]
+.type GroupCond = [rest: GroupCond, last: Cond]
+
+.decl IfOperand(stmt: Instruction, pos: number, ap: AccessPath)
+.decl IfBothGotoSame_AUX(ifStmt1: Instruction, ifStmt2: Instruction, index1: number, index2: number, label: number)
+.decl IfJumpToDifferentInBetween_AUX(ifStmt1: Instruction, ifStmt2: Instruction)
+.decl IfInGroup_AUX(ifStmt1: Instruction, ifStmt2: Instruction, index1: number, index2: number)
+.decl Next_IfInGroup(ifStmt1: Instruction, ifStmt2: Instruction)
+
+.decl IfCondition(ifStmt: Instruction, cond: Cond)
+.decl IfGroupCondition(ifStmt: Instruction, cond: GroupCond)
+.decl IfGroup_AUX(ifStmt: Instruction, method: Method, index: number)
+.decl Next_IfGroup(ifStmt1: Instruction, ifStmt2: Instruction)
+.decl OUT_IfGroupConditionStr(ifStmt: Instruction, methodName: symbol, out: symbol)
+
+.decl IfReturns(ifStmt: Instruction, retStmt: Instruction, ap: AccessPath)
+.decl OUT_IfReturnsStr(ifStmt: Instruction, out: symbol)
+.decl NoIfReturns(method: Method, ap: AccessPath)
+.decl OUT_NoIfReturnsStr(method: Method, retType: Type, out: symbol)
+
+.decl isCond(cond: Cond)
+.decl CondStr(cond: Cond, out: symbol)
+.decl isGroupCond(cond: GroupCond)
+.decl GroupCondStr(cond: GroupCond, out: symbol)
+
+.output OUT_IfGroupConditionStr
+.output OUT_IfReturnsStr
+.output OUT_NoIfReturnsStr
+
+
+IfOperand(ifStmt, pos, ap) :-
+	IF(ifStmt, _, _),
+	InterestingStmt(ifStmt),
+	OPERAND_VAR(ifStmt, pos, var),
+	VarHasAP(var, ap).
+
+IfOperand(ifStmt, pos, [nil, to_string(num)]) :-
+	IF(ifStmt, _, _),
+	InterestingStmt(ifStmt),
+	OPERAND_NUM(ifStmt, pos, num).
+
+IfBothGotoSame_AUX(ifStmt1, ifStmt2, index1, index2, label) :-
+	IF(ifStmt1, _, label),
+	InterestingStmt(ifStmt1),
+	Instruction_Method(ifStmt1, method),
+	Instruction_Index(ifStmt1, index1),
+	IF(ifStmt2, _, label),
+	Instruction_Method(ifStmt2, method),
+	Instruction_Index(ifStmt2, index2),
+	index1 < index2.
+
+IfJumpToDifferentInBetween_AUX(ifStmt1, ifStmt2) :-
+	IfBothGotoSame_AUX(ifStmt1, ifStmt2, index1, index2, label),
+	Instruction_Method(ifStmt1, method),
+	Instruction_Method(stmt, method),
+	(IF(stmt, _, otherLabel); GOTO(stmt, otherLabel)),
+	label != otherLabel,
+	Instruction_Index(stmt, index),
+	index1 < index, index < index2.
+
+IfInGroup_AUX(ifStmt1, ifStmt2, index1, index2) :-
+	IfBothGotoSame_AUX(ifStmt1, ifStmt2, index1, index2, _),
+	!IfJumpToDifferentInBetween_AUX(ifStmt1, ifStmt2).
+
+Next_IfInGroup(ifStmt, "-"),
+Next_IfInGroup("-", ifStmt) :-
+	IF(ifStmt, _, _),
+	InterestingStmt(ifStmt),
+	!IfInGroup_AUX(ifStmt, _, _, _),
+	!IfInGroup_AUX(_, ifStmt, _, _).
+
+Next_IfInGroup("-", ifStmt) :-
+	IfInGroup_AUX(ifStmt, _, _, _),
+	!IfInGroup_AUX(_, ifStmt, _, _).
+
+Next_IfInGroup(ifStmt, "-") :-
+	IfInGroup_AUX(_, ifStmt, _, _),
+	!IfInGroup_AUX(ifStmt, _, _, _).
+
+Next_IfInGroup(ifStmt1, ifStmt2) :-
+	IfInGroup_AUX(ifStmt1, ifStmt2, index1, minMaxIndex2),
+	minMaxIndex2 = min index2 : { IfInGroup_AUX(ifStmt1, _, index1, index2) }.
+
+IfCondition(ifStmt, [left, reverseOp, right]) :-
+	IF(ifStmt, op, _),
+	InterestingStmt(ifStmt),
+	!LoopMainExitCond(ifStmt),
+	Instruction_Method(ifStmt, method),
+	API_ResultMethod(method),
+	ReverseCondition(op, reverseOp),
+	IfOperand(ifStmt, 1, left),
+	IfOperand(ifStmt, 2, right).
+
+IfGroupCondition(ifStmt, [nil, cond]) :-
+	IF(ifStmt, _, _),
+	InterestingStmt(ifStmt),
+	!Next_IfInGroup(_, ifStmt),
+	!Next_IfInGroup(ifStmt, _),
+	IfCondition(ifStmt, cond).
+
+IfGroupCondition(ifStmt, [nil, cond]) :-
+	Next_IfInGroup("-", ifStmt),
+	IfCondition(ifStmt, cond).
+
+IfGroupCondition(ifStmt2, [rest, cond]) :-
+	Next_IfInGroup(ifStmt1, ifStmt2), ifStmt2 != "-",
+	IfGroupCondition(ifStmt1, rest),
+	IfCondition(ifStmt2, cond).
+
+IfGroup_AUX(ifStmt, method, index) :-
+	Next_IfInGroup(ifStmt, "-"),
+	Instruction_Index(ifStmt, index),
+	Instruction_Method(ifStmt, method).
+
+Next_IfGroup("-", ifStmt) :-
+	IfGroup_AUX(ifStmt, method, minIndex),
+	minIndex = min index : { IfGroup_AUX(_, method, index) }.
+
+Next_IfGroup(ifStmt1, ifStmt2) :-
+	IfGroup_AUX(ifStmt1, method, index1),
+	IfGroup_AUX(ifStmt2, method, minMaxIndex2),
+	minMaxIndex2 = min index2 : { IfGroup_AUX(_, method, index2), index2 > index1 }.
+
+IfReturns(ifStmt, retStmt, ap) :-
+	IfGroupCondition(ifStmt, _),
+	Instruction_Next(ifStmt, ifBB),
+	BasicBlockTail(ifBB, retStmt),
+	RET(retStmt),
+	FORMAL_RET(retStmt, var),
+	VarHasAP(var, ap).
+
+NoIfReturns(method, [nil, val]) :-
+	InterestingStmt(retStmt),
+	Instruction_Method(retStmt, method),
+	API_ResultMethod(method),
+	RET(retStmt),
+	FORMAL_RET(retStmt, var),
+	VarSymbolicValue(var, val),
+	!IfReturns(_, retStmt, _).
+
+
+isAccessPath(ap) :- IfOperand(_, _, ap).
+isAccessPath(ap) :- NoIfReturns(_, ap).
+
+isCond(cond) :- isGroupCond([_, cond]).
+
+CondStr(cond, cat(cat(leftOut, cat("|", cat(op, "|"))), rightOut)) :-
+	isCond(cond),
+	cond = [left, op, right],
+	AccessPathStr(left, leftOut),
+	AccessPathStr(right, rightOut).
+
+isGroupCond(cond) :- Next_IfInGroup(stmt, "-"), IfGroupCondition(stmt, cond).
+isGroupCond(rest) :- isGroupCond([rest, _]), rest != nil.
+
+GroupCondStr(cond, out) :-
+	isGroupCond(cond),
+	cond = [nil, base],
+	CondStr(base, out).
+
+GroupCondStr(cond, cat(cat(restOut, " AND "), baseOut)) :-
+	isGroupCond(cond),
+	cond = [rest, base], rest != nil,
+	CondStr(base, baseOut),
+	GroupCondStr(rest, restOut).
+
+OUT_IfGroupConditionStr(stmt, methodName, out) :-
+	Next_IfInGroup(stmt, "-"),
+	IfGroupCondition(stmt, cond),
+	Instruction_Method(stmt, method),
+	Method_SimpleName(method, methodName),
+	GroupCondStr(cond, out).
+
+OUT_IfReturnsStr(ifStmt, out) :-
+	IfReturns(ifStmt, _, ap),
+	AccessPathStr(ap, out).
+
+OUT_NoIfReturnsStr(methodName, retType, out) :-
+	NoIfReturns(method, ap),
+	Method_SimpleName(method, methodName),
+	Method_ReturnType(method, retType),
+	AccessPathStr(ap, out).

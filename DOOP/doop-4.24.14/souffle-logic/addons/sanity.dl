@@ -1,0 +1,304 @@
+.decl Sanity(?n:symbol, ?s:symbol, ?c:number)
+.output Sanity
+
+// Every var has a type
+Sanity("1", "Var has no type", ?c) :-
+  ?c = count : VarHasNoType(_).
+
+#ifndef DISABLE_POINTS_TO
+// Every var in VarPointsTo is reachable
+Sanity("2", "Var in VarPointsTo is not reachable", ?c) :-
+  ?c = count : NotReachableVarPointsTo(_, _).
+
+// Every var in VarPointsTo points to correctly typed values
+Sanity("3", "Var in VarPointsTo points to wrongly typed values", ?c) :-
+  ?c = count : VarPointsToWronglyTypedValue(_, _, _, _).
+
+// No VarPointsTo is ever inferred for objects that should have been
+// merged. Suggests omission in the "Keep" predicate.
+Sanity("4", "VarPointsTo for merged objects", ?c) :-
+  ?c = count : VarPointsToMergedHeap(_, _).
+#endif // DISABLE_POINTS_TO
+
+Sanity("5", "HeapAllocation has no type", ?c) :-
+  ?c = count : HeapAllocationHasNoType(_).
+
+Sanity("6", "Value has no type", ?c) :-
+  ?c = count : ValueHasNoType(_).
+
+Sanity("7", "Value is neither heap nor nonheap", ?c) :-
+  ?c = count : ValueIsNeitherHeapNorNonHeap(_).
+
+Sanity("8", "ClassType is InterfaceType", ?c) :-
+  ?c = count : ClassTypeIsInterfaceType(_).
+
+Sanity("9", "PrimitiveType is ReferenceType", ?c) :-
+  ?c = count : PrimitiveTypeIsReferenceType(_).
+
+// Every type is a concrete type
+Sanity("10", "Type is not a concrete type", ?c) :-
+  ?c = count : TypeIsNotConcreteType(_).
+
+// Every instruction is a concrete instruction
+Sanity("11", "Instruction is not a concrete instruction", ?c) :-
+  ?c = count : InstructionIsNotConcreteInstruction(_).
+
+Sanity("12", "Value has no declaring type", ?c) :-
+  ?c = count : ValueHasNoDeclaringType(_).
+
+Sanity("13", "Duplicate context requests", ?c) :-
+  ?c = count : mainAnalysis.DuplicateContextRequest(_, _, _, _, _, _).
+
+Sanity("14", "Duplicate context responses", ?c) :-
+  ?c = count : mainAnalysis.DuplicateContextResponse(_, _, _, _, _, _).
+
+Sanity("15", "Duplicate method implementation", ?c) :-
+  ?c = count : basic.DuplicateMethodImplemented(_, _, _, _, _).
+
+Sanity("16", "Duplicate method lookup", ?c) :-
+  ?c = count : basic.DuplicateMethodLookup(_, _, _, _, _).
+
+Sanity("17", "Instructions with duplicate method", ?c) :-
+  ?c = count : DuplicateMethodInstructions(_, _, _).
+
+Sanity("18", "Duplicate instructions with same method/index", ?c) :-
+  ?c = count : DifferentInstructionsSameIndex(_, _, _).
+
+Sanity("19", "Duplicate StoreArrayIndex_Base", ?c) :-
+  ?c = count : Duplicate_StoreArrayIndex_Base(_, _, _).
+
+Sanity("20", "Duplicate StoreArrayIndex_From", ?c) :-
+  ?c = count : Duplicate_StoreArrayIndex_From(_, _, _).
+
+#ifndef DISABLE_POINTS_TO
+// Every field in {Instance|Static}PointsTo points to correctly typed values
+Sanity("17", "Field in {Static|Instance}FieldPointsTo points to wrongly typed values", ?c) :-
+  ?c = count : FieldPointsToWronglyTypedValue(_, _, _, _).
+#endif // DISABLE_POINTS_TO
+
+Sanity("18", "Missing artifact types from hierarchy", ?c) :-
+  ?c = count : ArtifactTypeMissingFromHierarchy(_).
+
+.decl VarHasNoType(var:Var)
+.output VarHasNoType
+
+VarHasNoType(?var) :-
+  isVar(?var),
+  !Var_Type(?var, _).
+
+#ifndef DISABLE_POINTS_TO
+.decl NotReachableVarPointsTo(?var:Var, ?method:Method)
+.output NotReachableVarPointsTo
+
+NotReachableVarPointsTo(?var, ?method) :-
+  Var_DeclaringMethod(?var, ?method),
+  mainAnalysis.VarPointsTo(_, _, _, ?var),
+  !mainAnalysis.Reachable(?method).
+#endif // DISABLE_POINTS_TO
+
+.decl ForceTypeCompatibility(?valueType:Type, ?varType:Type)
+
+// Soot quirk: method types may be shown as classes (and even leak as strings).
+ForceTypeCompatibility("java.lang.invoke.MethodType", "java.lang.Class").
+ForceTypeCompatibility("java.lang.String", "java.lang.invoke.MethodType").
+ForceTypeCompatibility("java.lang.String", "java.lang.Class").
+
+// Ignore boxing as it can happen behind the scenes (dynamic proxies,
+// invokedynamic).
+ForceTypeCompatibility(?valueType, ?varType) :-
+  mainAnalysis.BoxTypeConversion(?valueType, ?varType).
+
+// Support primitive conversions due to $numconstant reuse with different
+// target types. This should be removed when $numconstant pseudo variables
+// are removed from fact generation.
+ForceTypeCompatibility("byte", "int").
+
+#ifndef DISABLE_POINTS_TO
+.decl VarPointsToWronglyTypedValue(?var:Var, ?varType:Type, ?value:Value, ?valueType:Type)
+.output VarPointsToWronglyTypedValue
+
+VarPointsToWronglyTypedValue(?var, ?varType, ?value, ?valueType) :-
+  mainAnalysis.Value_Type(?value, ?valueType),
+  mainAnalysis.VarPointsTo(_, ?value, _, ?var),
+  Var_Type(?var, ?varType),
+  !basic.SubtypeOf(?valueType, ?varType),
+  !ForceTypeCompatibility(?valueType, ?varType).
+
+.decl FieldPointsToWronglyTypedValue(?field:Field, ?fieldType:Type, ?value:Value, ?valueType:Type)
+.output FieldPointsToWronglyTypedValue
+
+FieldPointsToWronglyTypedValue(?field, ?fieldType, ?value, ?valueType) :-
+  mainAnalysis.Value_Type(?value, ?valueType),
+  (mainAnalysis.InstanceFieldPointsTo(_, ?value, ?field, _, _);
+   mainAnalysis.StaticFieldPointsTo(_, ?value, ?field)),
+  Field_Type(?field, ?fieldType),
+  !basic.SubtypeOf(?valueType, ?fieldType),
+  !ForceTypeCompatibility(?valueType, ?fieldType).
+
+.decl VarPointsToMergedHeap(?var:Var, ?value:Value)
+.output VarPointsToMergedHeap
+
+VarPointsToMergedHeap(?var, ?value) :-
+  mainAnalysis.Value_isHeap(?value),
+  mainAnalysis.HeapAllocation_Merge(?value, ?value2),
+#if defined(NO_MERGES) || defined(DISTINGUISH_REFLECTION_ONLY_STRING_CONSTANTS) || defined(DISTINGUISH_ALL_STRING_CONSTANTS)
+  !isStringConstant(?value),
+#endif // distinguished strings support
+  mainAnalysis.VarPointsTo(_, ?value, _, ?var),
+  ?value != ?value2.
+
+#endif // DISABLE_POINTS_TO
+
+.decl HeapAllocationHasNoType(?heap:HeapAllocation)
+.output HeapAllocationHasNoType
+
+HeapAllocationHasNoType(?heap) :-
+  isHeapAllocation(?heap),
+  !HeapAllocation_Type(?heap, _).
+
+.decl ValueHasNoType(?value:Value)
+.output ValueHasNoType
+
+ValueHasNoType(?value) :-
+  isValue(?value),
+  !mainAnalysis.Value_Type(?value, _).
+
+.decl ValueHasNoDeclaringType(?value:Value)
+.output ValueHasNoDeclaringType
+
+ValueHasNoDeclaringType(?value) :-
+  isValue(?value),
+  !mainAnalysis.Value_DeclaringType(?value, _).
+
+.decl ValueIsNeitherHeapNorNonHeap(?value:Value)
+.output ValueIsNeitherHeapNorNonHeap
+
+ValueIsNeitherHeapNorNonHeap(?value) :-
+  isValue(?value),
+  !mainAnalysis.Value_isHeap(?value),
+  !mainAnalysis.Value_isNonHeap(?value),
+  mainAnalysis.NotSpecialObject(?value).
+
+.decl ClassTypeIsInterfaceType(?type:ReferenceType)
+.output ClassTypeIsInterfaceType
+
+ClassTypeIsInterfaceType(?t) :-
+  isClassType(?t),
+  isInterfaceType(?t2),
+  ord(?t) = ord(?t2).
+
+.decl PrimitiveTypeIsReferenceType(?type:PrimitiveType)
+.output PrimitiveTypeIsReferenceType
+
+PrimitiveTypeIsReferenceType(?t) :-
+  isPrimitiveType(?t),
+  isReferenceType(?t2),
+  ord(?t) = ord(?t2).
+
+.decl TypeIsConcreteType(?type:Type)
+.output TypeIsConcreteType
+
+TypeIsConcreteType(?t) :- isInterfaceType(?t).
+TypeIsConcreteType(?t) :- isClassType(?t).
+TypeIsConcreteType(?t) :- isArrayType(?t).
+TypeIsConcreteType(?t) :- isPrimitiveType(?t).
+TypeIsConcreteType(?t) :- isNullType(?t).
+
+.decl TypeIsNotConcreteType(?type:Type)
+.output TypeIsNotConcreteType
+
+TypeIsNotConcreteType(?t) :- isType(?t), !TypeIsConcreteType(?t).
+
+.decl InstructionIsConcreteInstruction(?insn:Instruction)
+.output InstructionIsConcreteInstruction
+
+InstructionIsConcreteInstruction(?insn) :- isThrow_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isThrowNull_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isGoto_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isIf_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isSwitch_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isTableSwitch_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isLookupSwitch_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isMonitorInstruction(?insn).
+InstructionIsConcreteInstruction(?insn) :- isEnterMonitor_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isExitMonitor_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isFieldInstruction(?insn).
+InstructionIsConcreteInstruction(?insn) :- isLoadInstanceField_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isStoreInstanceField_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isLoadStaticField_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isStoreStaticField_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isArrayInstruction(?insn).
+InstructionIsConcreteInstruction(?insn) :- isLoadArrayIndex_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isStoreArrayIndex_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isAssignInstruction(?insn).
+InstructionIsConcreteInstruction(?insn) :- isAssignOper_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isAssignBinop_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isAssignUnop_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isAssignLocal_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isAssignInstanceOf_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isAssignNull_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isAssignNumConstant_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isAssignCast_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isAssignCastNull_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isAssignCastNumConstant_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isAssignHeapAllocation_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isReturnInstruction(?insn).
+InstructionIsConcreteInstruction(?insn) :- isReturnVoid_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isReturnNonvoid_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isMethodInvocation(?insn).
+InstructionIsConcreteInstruction(?insn) :- isVirtualMethodInvocation_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isSpecialMethodInvocation_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isStaticMethodInvocation_Insn(?insn).
+InstructionIsConcreteInstruction(?insn) :- isUnsupportedInstruction(?insn).
+InstructionIsConcreteInstruction(?insn) :- isAssignPhantomInvoke(?insn).
+InstructionIsConcreteInstruction(?insn) :- isExceptionHandler(?insn).
+InstructionIsConcreteInstruction(?insn) :- isBreakpointStmt(?insn).
+
+.decl InstructionIsNotConcreteInstruction(?insn:Instruction)
+.output InstructionIsNotConcreteInstruction
+
+InstructionIsNotConcreteInstruction(?insn) :-
+  isInstruction(?insn),
+  !InstructionIsConcreteInstruction(?insn).
+
+.decl ArtifactTypeMissingFromHierarchy(?t:ReferenceType)
+.output ArtifactTypeMissingFromHierarchy
+
+ArtifactTypeMissingFromHierarchy(?t) :-
+  _ClassArtifact(_, ?t, _, _),
+  isReferenceType(?t),
+  !basic.SubtypeOf(?t, _).
+
+.decl DuplicateMethodInstructions(?insn:Instruction, ?method1:Method, ?method2:Method)
+.output DuplicateMethodInstructions
+
+DuplicateMethodInstructions(?insn, ?method1, ?method2) :-
+  Instruction_Method(?insn, ?method1),
+  Instruction_Method(?insn, ?method2),
+  ?method1 != ?method2.
+
+.decl DifferentInstructionsSameIndex(?insn1:Instruction, ?insn2:Instruction, ?idx:number)
+.output DifferentInstructionsSameIndex
+
+DifferentInstructionsSameIndex(?insn1, ?insn2, ?idx) :-
+  Instruction_Method(?insn1, ?method),
+  Instruction_Method(?insn2, ?method),
+  Instruction_Index(?insn1, ?idx),
+  Instruction_Index(?insn2, ?idx),
+  ?insn1 != ?insn2.
+
+.decl Duplicate_StoreArrayIndex_Base(?insn:Instruction, ?base1:Var, ?base2:Var)
+.output Duplicate_StoreArrayIndex_Base
+
+Duplicate_StoreArrayIndex_Base(?insn, ?base1, ?base2) :-
+  StoreArrayIndex_Base(?insn, ?base1),
+  StoreArrayIndex_Base(?insn, ?base2),
+  ?base1 != ?base2.
+
+.decl Duplicate_StoreArrayIndex_From(?insn:Instruction, ?from1:Var, ?from2:Var)
+.output Duplicate_StoreArrayIndex_From
+
+Duplicate_StoreArrayIndex_From(?insn, ?from1, ?from2) :-
+  StoreArrayIndex_From(?insn, ?from1),
+  StoreArrayIndex_From(?insn, ?from2),
+  ?from1 != ?from2.

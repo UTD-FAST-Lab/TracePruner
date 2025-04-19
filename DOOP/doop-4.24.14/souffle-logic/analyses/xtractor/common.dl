@@ -1,0 +1,117 @@
+#pragma once
+
+// For _EXT relations, use -1 for value, if no value available
+.decl IVALUE_Var(var: Var, value: number)
+.decl IVALUE_Var_EXT(var: Var, value: number)
+.decl IVALUE_ArraySize_EXT(stmt: Instruction, size: number)
+.decl IVALUE_ArrayIndex(stmt: Instruction, index: number)
+.decl IVALUE_OPERAND(stmt: Instruction, pos: number, value: number)
+
+IVALUE_Var(var, to_number(const)) :-
+	VarHasExpr(var, expr),
+	Var_DeclaringMethod(var, method),
+	InterestingMethod(method),
+	Normalize(expr, normExpr),
+	IsConstantExpr(normExpr, const).
+
+IVALUE_Var_EXT(var, -1) :-
+	isVar(var),
+	!VarHasExpr(var, _).
+
+IVALUE_Var_EXT(var, -1) :-
+	isVar(var),
+	VarHasExpr(var, expr),
+	Normalize(expr, normExpr),
+	!IsConstantExpr(normExpr, _).
+
+IVALUE_Var_EXT(var, value) :-
+	IVALUE_Var(var, value).
+
+
+IVALUE_ArraySize_EXT(stmt, size) :-
+	InterestingStmt(stmt),
+	AllocArraySize_NUM(stmt, _, size).
+
+IVALUE_ArraySize_EXT(stmt, size) :-
+	InterestingStmt(stmt),
+	AllocArraySize_VAR(stmt, _, var),
+	IVALUE_Var_EXT(var, size).
+
+IVALUE_ArrayIndex(stmt, index) :-
+	InterestingStmt(stmt),
+	ArrayNumIndex(stmt, index).
+
+IVALUE_ArrayIndex(stmt, index) :-
+	InterestingStmt(stmt),
+	ArrayInsnIndex(stmt, var),
+	IVALUE_Var(var, index).
+
+
+IVALUE_OPERAND(stmt, pos, value) :-
+	InterestingStmt(stmt),
+	OPERAND_NUM(stmt, pos, value).
+
+IVALUE_OPERAND(stmt, pos, value) :-
+	InterestingStmt(stmt),
+	OPERAND_VAR(stmt, pos, var),
+	IVALUE_Var(var, value).
+
+.decl API_ResultMethod(method: Method)
+
+.decl ReverseCondition(op: symbol, reverseOp: symbol) inline
+.decl FlippedCondition(op: symbol, flippedOp: symbol) inline
+
+ReverseCondition(">", "<=").
+ReverseCondition(">=", "<").
+ReverseCondition("<", ">=").
+ReverseCondition("<=", ">").
+ReverseCondition("==", "!=").
+ReverseCondition("!=", "==").
+
+FlippedCondition(">", "<").
+FlippedCondition(">=", "<=").
+FlippedCondition("<", ">").
+FlippedCondition("<=", ">=").
+FlippedCondition("==", "==").
+FlippedCondition("!=", "!=").
+
+.decl ArrayVar(var: Var)
+.decl NonArrayVar(var: Var) inline
+
+ArrayVar(var) :-
+	isVar(var),
+	Var_Type(var, type),
+	isArrayType(type).
+
+NonArrayVar(var) :-
+	isVar(var),
+	!ArrayVar(var).
+
+.type AccessPath = [rest: AccessPath, last: symbol]
+.decl VarSymbolicValue(var: Var, value: symbol)
+.decl VarHasAP(var: Var, ap: AccessPath)
+.decl isAccessPath(ap: AccessPath)
+.decl AccessPathStr(ap: AccessPath, out: symbol)
+
+isAccessPath(rest) :- isAccessPath([rest, _]), rest != nil.
+isAccessPath(ap) :- VarHasAP(_, ap).
+
+AccessPathStr(ap, last) :- isAccessPath(ap), ap = [nil, last].
+
+AccessPathStr(ap, cat(out, cat("@", last))) :-
+	isAccessPath(ap), ap = [rest, last], rest != nil,
+	AccessPathStr(rest, out).
+
+VarSymbolicValue(var, val) :-
+	isVar(var),
+	Var_DeclaringMethod(var, method),
+	InterestingMethod(method),
+	((!IVALUE_Var(var, _), val = "?") ;
+	 (InductionVariable(var, _), val = cat(var, "#?"))).
+
+VarSymbolicValue(var, to_string(val)) :-
+	isVar(var),
+	Var_DeclaringMethod(var, method),
+	InterestingMethod(method),
+	!InductionVariable(var, _),
+	IVALUE_Var(var, val).

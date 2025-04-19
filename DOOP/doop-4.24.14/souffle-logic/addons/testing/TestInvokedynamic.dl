@@ -1,0 +1,86 @@
+#include "test-exports.dl"
+
+.decl TestId(?id:symbol)
+.output TestId
+
+TestId("test1.1") :-
+  varPointsTo("<Main: void test1()>/lookup#_28", "<mock method handles lookup object for type Main>").
+TestId("test1.2") :-
+  varPointsTo("<Main: void test1()>/mType#_29", "<method type (java.lang.String)void>").
+TestId("test1.3") :-
+  varPointsTo("<Main: void test1()>/println2out#_36", "<computed direct method handle for <java.io.PrintStream: void println(java.lang.String)>>").
+TestId("test1.4") :-
+  methodHandleCGE("<Main: void test1()>/java.lang.invoke.MethodHandle.invokeExact/0", "<java.io.PrintStream: void println(java.lang.String)>").
+TestId("test1.5") :-
+  methodHandleCGE("<Main: void test1()>/java.lang.invoke.MethodHandle.invokeExact/1", "<java.io.PrintStream: void println(java.lang.String)>").
+
+TestId("test2.1") :-
+  varPointsTo("<Main: void test2()>/staticMeth_mh#_45", "<computed direct method handle for <A: java.lang.Integer staticMeth()>>").
+TestId("test2.2") :-
+  varPointsTo("<Main: void test2()>/ret#_47", "<A: java.lang.Integer staticMeth()>/new java.lang.Integer/0").
+TestId("test2.3") :-
+  methodHandleCGE("<Main: void test2()>/java.lang.invoke.MethodHandle.invokeExact/0", "<A: java.lang.Integer staticMeth()>").
+
+TestId("test3.1") :-
+  varPointsTo("<Main: void test3()>/methI_mh#_57", "<computed direct method handle for <A: void methI(java.lang.Integer)>>").
+TestId("test3.2") :-
+  varPointsTo("<A: void methI(java.lang.Integer)>/i#_0", "<Main: void test3()>/new java.lang.Integer/0").
+TestId("test3.3") :-
+  varPointsTo("<A: void methI(java.lang.Integer)>/this#_0", "<Main: void test3()>/new A/0").
+TestId("test3.4") :-
+  methodHandleCGE("<Main: void test3()>/java.lang.invoke.MethodHandle.invokeExact/0", "<A: void methI(java.lang.Integer)>").
+
+TestId("test4.1") :-
+  varPointsTo("<Main: void test4()>/methDD_mh4#_67", "<computed direct method handle for <A: java.lang.Double doubleIdentity(java.lang.Double)>>").
+TestId("test4.2") :-
+  methodHandleCGE("<Main: void test4()>/java.lang.invoke.MethodHandle.invokeExact/0", "<A: java.lang.Double doubleIdentity(java.lang.Double)>").
+TestId("test4.3") :-
+  methodHandleCGE("<Main: void test4()>/java.lang.invoke.MethodHandle.invoke/0", "<A: java.lang.Double doubleIdentity(java.lang.Double)>").
+
+TestId("test5.1") :-
+  varPointsTo("<Main: void test5()>/mType#_80", "<method type (--all-types--)java.lang.Double>").
+TestId("test5.2") :-
+  varPointsTo("<Main: void test5()>/methDD_mh5#_81", "<computed direct method handle for <A: java.lang.Double doubleIdentity(java.lang.Double)>>").
+TestId("test5.3") :-
+  methodHandleCGE("<Main: void test5()>/java.lang.invoke.MethodHandle.invokeExact/0", "<A: java.lang.Double doubleIdentity(java.lang.Double)>").
+
+TestId("test6.1") :-
+  varPointsTo("<Main: void test6_aux(java.lang.invoke.MethodType)>/add3_mh6#_103", "<computed direct method handle for <A: java.lang.Double add3(java.lang.Integer,java.lang.Float,java.lang.Short)>>").
+TestId("test6.2") :-
+  methodHandleCGE("<Main: void test6_aux(java.lang.invoke.MethodType)>/java.lang.invoke.MethodHandle.invokeExact/0", "<A: java.lang.Double add3(java.lang.Integer,java.lang.Float,java.lang.Short)>").
+TestId("test6.3") :-
+  varPointsTo("<Main: void test6_aux(java.lang.invoke.MethodType)>/lookup#_102", "<mock method handles lookup object for type java.lang.Object>").
+
+TestId("test7.1") :-
+  varPointsTo("<Main: void test7()>/mType1#_113", "<method type (java.lang.Double)java.lang.String>").
+TestId("test7.2") :-
+  varPointsTo("<Main: void test7()>/mType2#_114", "<method type (java.lang.Double)java.lang.Double>").
+TestId("test7.3") :-
+  methodHandleCGE("<Main: void test7()>/java.lang.invoke.MethodHandle.invokeExact/0", "<A: java.lang.Double doubleIdentity(java.lang.Double)>").
+
+TestId("testAdd3.1") :-
+  varPointsTo("<A: void add3_dynamic()>/add3_mh#_70", "<computed direct method handle for <A: java.lang.Double add3(java.lang.Integer,java.lang.Float,java.lang.Short)>>").
+TestId("testAdd3.2") :-
+  varPointsTo("<A: void add3_dynamic()>/d#_72", "<java.lang.Double: java.lang.Double valueOf(double)>/new java.lang.Double/0").
+
+TestId("testInit_dynamic.1") :-
+  varPointsTo("<A: A init_dynamic()>/a#_81", "A value constructed by method handle <computed direct method handle for <A: void <init>()>>").
+
+TestId("testID.1") :-
+  reachable("<A: java.lang.invoke.CallSite bootstrap(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType)>").
+TestId("testID.2") :-
+  reachable("<A: java.lang.invoke.CallSite bootstrap2(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType)>").
+TestId("testID.3") :-
+  reachable("<A: java.lang.invoke.CallSite bootstrap3(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType)>").
+TestId("testID.4") :-
+  reachable("<A: java.lang.invoke.CallSite bootstrap4(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType)>").
+TestId("testID.5") :-
+  methodHandleCGE("<InvokedynamicClass: void run()>/invokedynamic_bootstrap::print/0", "<A: void print(A)>").
+TestId("testID.6") :-
+  methodHandleCGE("<InvokedynamicClass: void run()>/invokedynamic_bootstrap2::print/0", "<A: void print(A)>").
+TestId("testID.7") :-
+  methodHandleCGE("<InvokedynamicClass: void run()>/invokedynamic_bootstrap4::print2/0", "<A: void print2(A)>").
+TestId("testID.8") :-
+  varPointsTo("<A: java.lang.invoke.CallSite bootstrap2(java.lang.invoke.MethodHandles$Lookup,java.lang.String,java.lang.invoke.MethodType)>/caller#_0", "<mock method handles lookup object for type InvokedynamicClass>").
+TestId("testID.9") :-
+  varPointsTo("<A: java.lang.Double doubleIdentity(java.lang.Double)>/d#_0", "<mock box allocation for type java.lang.Double>").

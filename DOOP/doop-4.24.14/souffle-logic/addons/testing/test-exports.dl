@@ -1,0 +1,49 @@
+// Extra logic included by some tests.
+#ifdef SANITY
+.output basic.DuplicateMethodLookup
+.output basic.DuplicateMethodImplemented
+#endif // SANITY
+
+#ifdef SANITY
+.output basic.DuplicateMethodLookup
+.output basic.DuplicateMethodImplemented
+#endif // SANITY
+
+#ifndef DISABLE_POINTS_TO
+.output mainAnalysis.ArrayIndexPointsTo
+.output mainAnalysis.InstanceFieldPointsTo
+.output mainAnalysis.StaticFieldPointsTo
+.output mainAnalysis.VarPointsTo
+#endif // DISABLE_POINTS_TO
+.output mainAnalysis.MethodHandleCallGraphEdge
+.output mainAnalysis.LambdaObject
+.output mainAnalysis.LambdaCallGraphEdge
+
+#ifdef REFLECTION_DYNAMIC_PROXIES
+.output mainAnalysis.ProxyCallGraphEdge
+#endif // REFLECTION_DYNAMIC_PROXIES
+
+#define arrayIndexPointsTo(a, v) mainAnalysis.ArrayIndexPointsTo(_, v, _, a)
+#define varPointsTo(v, h) mainAnalysis.VarPointsTo(_, h, _, v)
+#define methodHandleCGE(i, m) mainAnalysis.MethodHandleCallGraphEdge(_, i, _, m, _, _)
+#define proxyCGE(i, m) mainAnalysis.ProxyCallGraphEdge(_, i, _, m)
+#define reachable(m) mainAnalysis.Reachable(m)
+
+#ifdef ANDROID
+.output mainAnalysis.ApplicationPackage
+.output Activity
+.output BroadcastReceiver
+.output ContentProvider
+.output Service
+.output LayoutControl
+#ifdef INFORMATION_FLOW
+.output SensitiveLayoutControl
+#endif // INFORMATION_FLOW
+.output mainAnalysis.LauncherActivity
+.output mainAnalysis.ReachableLayoutControl
+.output mainAnalysis.XMLFragment_Class
+.output mainAnalysis.XMLFragment_Id
+.output mainAnalysis.XMLNode_Parent
+#endif // ANDROID
+
+.output Stats_Metrics(IO="file",filename="Stats_Metrics.csv",delimiter="\t")

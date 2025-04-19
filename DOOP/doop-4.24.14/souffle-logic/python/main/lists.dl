@@ -1,0 +1,288 @@
+
+.decl VarPointsToList(?hctx:configuration.HContext, ?listHeap:HeapAllocation, ?ctx:configuration.Context, ?var:Var)
+
+.decl ListAtIndexPointsTo(?listHctx:configuration.HContext, ?listHeap:HeapAllocation, ?index:number, ?valHctx:configuration.HContext, ?value:Value)
+.output ListAtIndexPointsTo
+
+.decl ListOfPosIntConstsAtIndexPointsTo(?listHctx:configuration.HContext, ?listHeap:HeapAllocation, ?index:number, ?value:Value)
+.output ListOfPosIntConstsAtIndexPointsTo
+
+.decl ListOfPosIntConsts(?listHctx:configuration.HContext, ?heapList:HeapAllocation)
+.output ListOfPosIntConsts
+
+.decl ListOfPosIntConstsInner(?listHctx:configuration.HContext ,?heapList:HeapAllocation, ?index:number)
+.output ListOfPosIntConstsInner
+
+.decl ListInitialLength(?listHeap:HeapAllocation, ?length:number)
+.output ListInitialLength
+
+.decl ListOfIntConstsAtIndexPointsTo(?listHctx:configuration.HContext, ?listHeap:HeapAllocation, ?index:number, ?value:Value)
+.output ListOfIntConstsAtIndexPointsTo
+
+.decl ListOfIntConsts(?listHctx:configuration.HContext, ?heapList:HeapAllocation)
+.output ListOfIntConsts
+
+.decl ListOfIntConstsInner(?listHctx:configuration.HContext ,?heapList:HeapAllocation, ?index:number)
+.output ListOfIntConstsInner
+
+.decl ListOfConstsAtIndexPointsTo(?listHctx:configuration.HContext, ?listHeap:HeapAllocation, ?index:number, ?value:Value)
+.output ListOfConstsAtIndexPointsTo
+
+.decl ListOfConsts(?listHctx:configuration.HContext, ?heapList:HeapAllocation)
+.output ListOfConsts
+
+.decl ListOfConstsInner(?listHctx:configuration.HContext, ?heapList:HeapAllocation, ?index:number)
+.output ListOfConstsInner
+
+
+//CONSTS
+ListOfConstsAtIndexPointsTo(?listHctx, ?list, ?index, ?val):-
+  ListOfConsts(?listHctx, ?list),
+  ListAtIndexPointsTo(?listHctx, ?list, ?index, _, ?val),
+  isConstantValue(?val).
+
+ListOfConsts(?listHctx, ?list):-
+  ListOfConstsInner(?listHctx, ?list, 0).
+
+ListOfConstsInner(?listHctx, ?list, ?index):-
+  ListInitialLength(?list, ?length),
+  ?index = ?length -1,
+  ListAtIndexPointsTo(?listHctx, ?list, ?index, _, ?val),
+  isConstantValue(?val).
+
+ListOfConstsInner(?listHctx, ?list, ?index):-
+  ListInitialLength(?list, ?length),
+  ?index < ?length -1,
+  ListAtIndexPointsTo(?listHctx, ?list, ?index, _, ?val),
+  isConstantValue(?val),
+  ?nextIndex = ?index + 1,
+  ListOfConstsInner(?listHctx, ?list, ?nextIndex).
+
+//INT CONSTS
+ListOfIntConstsAtIndexPointsTo(?listHctx, ?list, ?index, ?val):-
+  ListOfIntConsts(?listHctx, ?list),
+  ListOfConstsAtIndexPointsTo(?listHctx, ?list, ?index, ?val),
+  isIntConstantValue(?val).
+
+ListOfIntConsts(?listHctx, ?list):-
+  ListOfIntConstsInner(?listHctx, ?list, 0).
+
+ListOfIntConstsInner(?listHctx, ?list, ?index):-
+  ListOfConstsLength(?listHctx, ?list, ?length),
+  ?index = ?length -1,
+  ListOfConstsAtIndexPointsTo(?listHctx, ?list, ?index, ?val),
+  isIntConstantValue(?val).
+
+ListOfIntConstsInner(?listHctx, ?list, ?index):-
+  ListOfConstsLength(?listHctx, ?list, ?length),
+  ?index < ?length -1,
+  ListOfConstsAtIndexPointsTo(?listHctx, ?list, ?index, ?val),
+  isIntConstantValue(?val),
+  ?nextIndex = ?index + 1,
+  ListOfIntConstsInner(?listHctx, ?list, ?nextIndex).
+
+//POSITIVE INT CONSTS
+ListOfPosIntConstsAtIndexPointsTo(?listHctx, ?list, ?index, ?val):-
+  ListOfPosIntConsts(?listHctx, ?list),
+  ListOfIntConstsAtIndexPointsTo(?listHctx, ?list, ?index, ?val),
+  IntConstantValue_ActualNum(?val, ?num),
+  ?num > 0.
+
+ListOfPosIntConsts(?listHctx, ?list):-
+  ListOfPosIntConstsInner(?listHctx, ?list, 0).
+
+ListOfPosIntConstsInner(?listHctx, ?list, ?index):-
+  ListOfConstsLength(?listHctx, ?list, ?length),
+  ?index = ?length -1,
+  ListOfIntConstsAtIndexPointsTo(?listHctx, ?list, ?index, ?val),
+  IntConstantValue_ActualNum(?val, ?num),
+  ?num > 0.
+
+ListOfPosIntConstsInner(?listHctx, ?list, ?index):-
+  ListOfConstsLength(?listHctx, ?list, ?length),
+  ?index < ?length -1,
+  ListOfIntConstsAtIndexPointsTo(?listHctx, ?list, ?index, ?val),
+  IntConstantValue_ActualNum(?val, ?num),
+  ?num > 0,
+  ?nextIndex = ?index + 1,
+  ListOfPosIntConstsInner(?listHctx, ?list, ?nextIndex).
+
+
+//Implementation for older versions of the front end, keeping this arround for some time
+#if(0)
+//GENERAL LIST
+ListAtIndexPointsTo(?listHctx, ?list, ?index, ?hctx, ?val):-
+  ListInitialAssignVar(?list, ?var, ?ctx),
+  //ListInitialLength(?list, ?length),
+  VarPointsTo(?listHctx, ?list, ?ctx, ?var),
+  StoreInstanceField_Base(?instr, ?var),
+  isOriginalIntConstant(?fieldName),
+  FieldInstruction_Signature(?instr, ?fieldName),
+  ?index = to_number(?fieldName),
+  StoreInstanceField_From(?instr, ?from),
+  VarPointsTo(?hctx, ?val, ?ctx, ?from).
+
+ListInitialLength(?list, ?length):-
+  ListInitialAssignVar(?list, ?var, _),
+  ?length = 1 + max ?index: {
+    StoreInstanceField_Base(?instr, ?var),
+    isOriginalIntConstant(?fieldName),
+    FieldInstruction_Signature(?instr, ?fieldName),
+    ?index = to_number(?fieldName)
+  }.
+#endif
+
+VarPointsTo(?valHctx, ?val, ?ctx, ?var):-
+ ReadFromCollectionInsn_To(?insn, ?var),
+ CollectionAccessInsn_Base(?insn, ?baseVar),
+ VarPointsTo(?listHctx, ?list, ?ctx, ?baseVar),
+ IsPyListOrTuple(?list),
+ CollectionAccessInsn_IndexOrKey(?insn, ?indexVar),
+ VarHasConstIntValue(?indexVal, ?indexVar),
+ IntConstantValue_ActualNum(?indexVal, ?index),
+ ListAtIndexPointsTo(?listHctx, ?list, ?index, ?valHctx, ?val).
+
+//GENERAL LIST
+ListAtIndexPointsTo(?listHctx, ?list, ?index, ?hctx, ?val):-
+  ListInitialAssignVar(?list, ?var, ?ctx),
+  //ListInitialLength(?list, ?length),
+  VarPointsTo(?listHctx, ?list, ?ctx, ?var),
+  isWriteToCollection_Insn(?instr),
+  CollectionAccessInsn_Base(?instr, ?var),
+  CollectionAccessInsn_IndexOrKey(?instr, ?indexVar),
+  VarHasConstIntValue(?indexVal, ?indexVar),
+  IntConstantValue_ActualNum(?indexVal, ?index),
+  WriteToCollectionInsn_From(?instr, ?from),
+  VarPointsTo(?hctx, ?val, ?ctx, ?from).
+
+
+ListInitialLength(?list, ?length):-
+  ListInitialAssignVar(?list, ?var, _),
+  //?length = count: {
+  ?length = 1 + max ?index: {
+    isWriteToCollection_Insn(?instr),
+    CollectionAccessInsn_Base(?instr, ?var),
+    CollectionAccessInsn_IndexOrKey(?instr, ?indexVar),
+    AssignInstruction_To(?indexAssignInstr, ?indexVar),
+    AssignIntConstant_Id(?indexAssignInstr, ?indexStr),
+    isOriginalIntConstant(?indexStr),
+    ?index = to_number(?indexStr)
+  }.
+
+.decl ListOfConstsLength(?hctx:configuration.HContext, ?heap:HeapAllocation, ?len:number)
+.output ListOfConstsLength
+
+ListOfConstsLength(?hctx, ?heapList, ?len):-
+  ListOfConsts(?hctx, ?heapList),
+  IsPyListOrTuple(?heapList),
+  ListInitialLength(?heapList, ?len).
+
+
+//MULTIPLY ALL ELEMENTS OF A LIST OF CONSTANTS
+
+.decl ConstListMultAll(?hctx:configuration.HContext, ?heap:HeapAllocation, ?res:number)
+.decl ConstListMultAllInner(?hctx:configuration.HContext, ?heap:HeapAllocation, ?index:number, ?res:number)
+
+.output ConstListMultAll
+
+ConstListMultAll(?listHctx, ?heapList, ?res):-
+  ConstListMultAllInner(?listHctx, ?heapList, 0, ?res).
+
+ConstListMultAllInner(?listHctx, ?heapList, ?index, ?res):-
+  ListOfConstsLength(?listHctx, ?heapList, ?dims),
+  ?index = ?dims - 1,
+  ListOfConstsAtIndexPointsTo(?listHctx, ?heapList, ?index, ?val),
+  IntConstantValue_ActualNum(?val,?res).
+
+ConstListMultAllInner(?listHctx, ?heapList, ?index, ?res):-
+  ListOfConstsLength(?listHctx, ?heapList, ?dims),
+  ListOfConstsAtIndexPointsTo(?listHctx, ?heapList, ?index, ?val),
+  ?index < ?dims - 1,
+  IntConstantValue_ActualNum(?val,?num),
+  ?num > 0,
+  ConstListMultAllInner(?listHctx, ?heapList, ?index + 1, ?prevRes),
+  ?res = ?num * ?prevRes.
+
+ConstListMultAllInner(?listHctx, ?heapList, ?index, ?res):-
+  ListOfConstsLength(?listHctx, ?heapList, ?dims),
+  ListOfConstsAtIndexPointsTo(?listHctx, ?heapList, ?index, ?val),
+  ?index < ?dims - 1,
+  IntConstantValue_ActualNum(?val,?num),
+  -1 = ?num,
+  ConstListMultAllInner(?listHctx, ?heapList, ?index + 1, ?prevRes),
+  ?res = ?prevRes.
+
+ConstListMultAllInner(?listHctx, ?heapList, ?index, ?res):-
+  ListOfConstsLength(?listHctx, ?heapList, ?dims),
+  ListOfConstsAtIndexPointsTo(?listHctx, ?heapList, ?index, ?val),
+  ?index < ?dims - 1,
+  ?val = "<None>",
+  ConstListMultAllInner(?listHctx, ?heapList, ?index + 1, ?prevRes),
+  ?res = ?prevRes.
+
+
+//DEDUCE THE SAME AND DTYPE OF LISTS OF CONSTS AND LISTS OF LISTS
+//Right now it is very stupid but should work for our case
+//TODO: MAKE IT GENERAL/CORRECT
+
+.decl PyListOfNumConstsGetFirst(?listHctx:configuration.HContext, ?listHeap:HeapAllocation, ?numConst:symbol)
+.output PyListOfNumConstsGetFirst
+
+.decl PyListDeducedDtype(?listHctx:configuration.HContext, ?listHeap:HeapAllocation, ?dtype:symbol)
+.output PyListDeducedDtype
+
+.decl PyListDeducedShapeLength(?listHctx:configuration.HContext, ?listHeap:HeapAllocation, ?size:number)
+.output PyListDeducedShapeLength
+
+.decl PyListDeducedShapeContents(?listHctx:configuration.HContext, ?listHeap:HeapAllocation, ?index:number, ?indexVal:Value)
+.output PyListDeducedShapeContents
+
+//DEDUCING DATA TYPE OF LIST OF CONSTS
+
+PyListOfNumConstsGetFirst(?listHctx, ?list, ?numConst):-
+  ListInitialAssignVar(?list, ?var, ?ctx),
+  VarPointsTo(?listHctx, ?list, ?ctx, ?var),
+  ListOfConsts(?listHctx, ?list),
+  ListAtIndexPointsTo(?listHctx, ?list, 0, _, ?indexVal),
+  Value_Num(?indexVal, ?numConst).
+
+PyListDeducedDtype(?listHctx, ?list, "float"):-
+  PyListOfNumConstsGetFirst(?listHctx, ?list, ?const),
+  isFloatConstant(?const).
+
+PyListDeducedDtype(?listHctx, ?list, "int"):-
+  PyListOfNumConstsGetFirst(?listHctx, ?list, ?const),
+  isIntConstant(?const).
+
+PyListDeducedDtype(?listHctx, ?list, ?dtype):-
+  ListInitialAssignVar(?list, ?var, ?ctx),
+  VarPointsTo(?listHctx, ?list, ?ctx, ?var),
+  ListAtIndexPointsTo(?listHctx, ?list, 0, ?indexValHctx, ?indexVal),
+  PyListDeducedDtype(?indexValHctx, ?indexVal, ?dtype).
+
+
+PyListDeducedShapeLength(?listHctx, ?list, 1):-
+  ListInitialAssignVar(?list, ?var, ?ctx),
+  VarPointsTo(?listHctx, ?list, ?ctx, ?var),
+  ListOfConsts(?listHctx, ?list).
+
+PyListDeducedShapeLength(?listHctx, ?list, ?newLen):-
+  ListInitialAssignVar(?list, ?var, ?ctx),
+  VarPointsTo(?listHctx, ?list, ?ctx, ?var),
+  ListAtIndexPointsTo(?listHctx, ?list, 0, ?indexValHctx, ?indexVal),
+  PyListDeducedShapeLength(?indexValHctx, ?indexVal, ?oldLen),
+  ?newLen = ?oldLen + 1.
+
+NonBinopNewIntConstantValue(?value, ?lengthStr),
+PyListDeducedShapeContents(?listHctx, ?list, 0, ?value):-
+  ListInitialAssignVar(?list, ?var, ?ctx),
+  ListInitialLength(?list, ?length),
+  VarPointsTo(?listHctx, ?list, ?ctx, ?var),
+  ?lengthStr = to_string(?length),
+  ?value = cat(cat("<num-constant(int):", ?lengthStr),">").
+
+PyListDeducedShapeContents(?listHctx, ?list, ?index + 1, ?value):-
+  ListInitialAssignVar(?list, ?var, ?ctx),
+  VarPointsTo(?listHctx, ?list, ?ctx, ?var),
+  ListAtIndexPointsTo(?listHctx, ?list, 0, ?indexValHctx, ?indexVal),
+  PyListDeducedShapeContents(?indexValHctx, ?indexVal, ?index, ?value).

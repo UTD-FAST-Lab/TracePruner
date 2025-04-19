@@ -1,0 +1,75 @@
+#pragma once
+#include "macros.dl"
+#include "declarations.dl"
+#include "delta.dl"
+#include "core.dl"
+#include "../../main/api-mocking.dl"
+
+#ifdef X_SERVER_LOGIC
+#include "../server-logic/queries.dl"
+#endif // X_SERVER_LOGIC
+
+#ifdef SARIF
+#include "../sarif/sarif.dl"
+#endif // SARIF
+
+#define DUMMY_CONTEXT "-"
+
+MethodInvocationInContext(DUMMY_CONTEXT, ?invocation, ?tomethod),
+AnyMethodInvocation(?invocation, ?tomethod) :-
+  ResolveCall(?invocation, ?tomethod) ; ResolveCallDirect(?invocation, ?tomethod).
+
+TypeForReturnValue(?type, ?ret, ?invocation) :-
+  AssignCast(?type, ?ret, _, _),
+  MethodInvocationInfo(?invocation, _, ?ret).
+
+PlusMethodInvocation(?fakeNewSite),
+ALLOC(?fakeNewSite, ?to, ?alloc),
+HeapAllocation_Type(?alloc, ?type) :-
+  MethodInvocation_Method(?invo, ?method),
+  Method_SimpleName(?method, ?name),
+  Method_Descriptor(?method, ?desc),
+  Method_DeclaringType(?method, ?declType),
+  basic.MethodLookup(?name, ?desc, ?declType, ?invokedMethod),
+  MockedMethodReturns(?invokedMethod, ?alloc, ?type),
+  ?fakeNewSite = cat("<mock allocation site for ", cat(?alloc, ">")),
+  AssignReturnValue(?invo, ?to).
+
+// Variant of core rule, without the negation in AssignReturnValue.
+ParamTaintTransferredToBase(?param, ?ctx, ?base) :-
+  TaintTransferMethodInvocationInContext(?ctx, ?index, ?invocation),
+  ActualParam(?index, ?invocation, ?param),
+  MethodInvocation_Base(?invocation, ?base).
+
+// Variable is tainted with label.
+.decl Var_Taint(?v:Var, ?label:InformationLabel, ?source:symbol)
+.output Var_Taint
+
+// Base case: tainting method return value.
+Var_Taint(?to, ?label, ?invocation) :-
+  CallTaintingMethod(?label, _, ?invocation),
+  AssignReturnValue(?invocation, ?to).
+// Recursive case, based on core relation.
+Var_Taint(?b, ?label, ?source) :-
+  Var_Taint(?a, ?label, ?source),
+  VarIsTaintedFromVar(_, _, ?b, _, ?a).
+// Recursive case: data-flow propagates taint.
+Var_Taint(?to, ?label, ?source),
+VarIsTaintedFromVar(?type, DUMMY_CONTEXT, ?to, DUMMY_CONTEXT, ?from) :-
+  Var_Taint(?from, ?label, ?source),
+  Flows(?from, ?to),
+  Var_Type(?to, ?type).
+// Recursive case: parameter-taints-base.
+Var_Taint(?base, ?label, ?source) :-
+  Var_Taint(?param, ?label, ?source),
+  ParamTaintTransferredToBase(?param, _, ?base).
+// Recursive case: parameter-taints-return-value.
+Var_Taint(?to, ?label, ?source) :-
+  Var_Taint(?param, ?label, ?source),
+  ParamTaintTransferredToRet(_, ?to, DUMMY_CONTEXT, ?param).
+// Finally, handle the sinks.
+LeakingTaintedInformation(?sourceLabel, ?destLabel, DUMMY_CONTEXT, ?invocation, ?source) :-
+  Var_Taint(?var, ?sourceLabel, ?source),
+  LeakingSinkVariable(?destLabel, ?invocation, _, ?var).
+
+

@@ -1,0 +1,19 @@
+#include "macros.dl"
+
+#ifndef DISABLE_POINTS_TO
+#ifdef ANDROID
+// Handle instance-sensitive tainting: specific methods called on specific values.
+TaintedValueIntroduced(?declaringType, ?invocation, ?type, ?label, ?valueId),
+mainAnalysis.VarPointsTo(?hctx, ?valueId, ?ctx, ?to) :-
+  SensitiveLayoutControlTaintConfig(?label, ?method),
+  MethodInvocationInContextInApplication(?ctx, ?invocation, ?method),
+  MethodInvocationInfo(?invocation, ?type, ?to),
+  Instruction_Method(?invocation, ?inmethod),
+  Method_DeclaringType(?inmethod, ?declaringType),
+  MethodInvocation_Base(?invocation, ?base),
+  mainAnalysis.VarPointsTo(_, ?layoutControlValue, ?ctx, ?base),
+  mainAnalysis.SensitiveLayoutControlValue(?layoutControlValue),
+  mainAnalysis.isImmutableHContext(?hctx),
+  ?valueId = ValueIdMacro(?invocation, ?type, DEFAULT_BREADCRUMB).
+#endif // ANDROID
+#endif // DISABLE_POINTS_TO

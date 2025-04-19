@@ -1,0 +1,19 @@
+// Export directives used by the native scanner benchmarks.
+
+.output mainAnalysis.AppReachable(IO="file",filename="AppReachable.csv",delimiter="\t")
+
+#ifdef SCAN_NATIVE_CODE
+.output mainAnalysis.ReachableMethodFromNativeCode
+.output mainAnalysis.ReachableAppMethodFromNativeCode
+.output basic.PossibleNativeCodeTargetMethod
+.output basic.PossibleNativeCodeTargetMethodLocalized
+.output mainAnalysis.NativeAllocation
+.output mainAnalysis.HighlyPossibleNativeCodeTargetMethod
+#endif // SCAN_NATIVE_CODE
+
+#ifdef HEAPDLS
+.output DynamicCallGraphEdgeFromNative
+.output DynamicAppCallGraphEdgeFromNative
+.output DynamicNativeCodeTarget
+.output DynamicAppNativeCodeTarget
+#endif // HEAPDLS

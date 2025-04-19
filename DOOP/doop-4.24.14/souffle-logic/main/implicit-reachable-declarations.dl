@@ -1,0 +1,10 @@
+/**
+ * These methods are implicitly reachable according to Soot (see soot/EntryPoints.java)
+ */
+.decl ImplicitReachable(?sig:Method)
+
+.decl ApplicationEntryPoint(?meth:Method)
+
+#ifndef MICRO
+.decl ForcedReachable(?method:Method)
+#endif // MICRO

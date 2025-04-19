@@ -1,0 +1,81 @@
+/**
+ * Generic declarations for context-sensitive pointer analysis.
+ */
+
+.decl isContext(?ctx:configuration.Context)
+.decl isHContext(?hctx:configuration.HContext)
+
+.decl isImmutableContext(?ctx:configuration.Context)
+.decl isInitialContext(?ctx:configuration.Context)
+.decl isImmutableHContext(?ctx:configuration.HContext)
+
+.decl VarPointsTo(?hctx:configuration.HContext, ?value:Value, ?ctx:configuration.Context, ?var:Var)
+
+.decl InstanceFieldPointsTo(?hctx:configuration.HContext, ?value:Value, ?sig:Field, ?basehctx:configuration.HContext, ?basevalue:Value)
+
+// array-element insensitive
+.decl ArrayIndexPointsTo(?hctx:configuration.HContext, ?value:Value, ?basehctx:configuration.HContext, ?basevalue:Value)
+
+/**
+ * Call graph
+ */
+.decl CallGraphEdge(?callerCtx:configuration.Context, ?invocation:FunctionInvocation_Insn, ?calleeCtx:configuration.Context, ?function:Function) overridable
+
+/**
+ * Reachable
+ */
+.decl Reachable(?function:Function)
+.decl ReachableContext(?ctx:configuration.Context, ?function:Function)
+
+/**
+ *  Value
+ **/
+
+.decl isValue(?value:Value)
+.decl isHeapValue(?value:Value)
+.decl isModeledHeapValue(?value:Value)
+.decl isIntConstantValue(?value:Value)
+.decl isFloatConstantValue(?value:Value)
+.decl isConstantValue(?value:Value)
+.decl IsPyListOrTuple(?heap:HeapAllocation)
+.decl isPyDict(?heap:HeapAllocation)
+.decl isNonFunctionObjectValue(?val:Value)
+
+.decl isClassInstanceAllocation(?h: ClassInstanceAllocation)
+.decl isClassObjectAllocation(?h: ClassObjectAllocation)
+.decl isFunctionObjectAllocation(?h: FunctionObjectAllocation)
+.decl isUnboundMethodOrFunctionObjectAllocation(?h: FunctionObjectAllocation)
+.decl isUnboundMethodObjectAllocation(?h: FunctionObjectAllocation)
+.decl isBoundMethodObjectAllocation(?h: FunctionObjectAllocation)
+
+
+// Value_Num maps each numeric constant to a value while
+// also prepending it with *num-constant-* to distinguish it
+// from heap allocations that share the same string value.
+.decl Value_Num(?value:Value, ?const:symbol)
+.decl IntConstantValue_ActualNum(?value:Value, ?num:number)
+.decl Value_String(?value:Value, ?str:StringConstant)
+.decl isNonHeapValue(?value:Value)
+
+.decl NonBinopNewIntConstantValue(?value:Value, ?numStr:IntConstant)
+.decl BinopNewIntConstantValue(?value:Value, ?numStr:IntConstant, ?dist:number)
+
+.decl ClassInstanceAllocationInitializingClassObject(?instanceHctx:configuration.HContext, ?classInstance:HeapAllocation, ?classObjectHctx:configuration.HContext, ?classObject:HeapAllocation)
+.decl BoundMethodAllocationSelfArgument(?boundMethHctx:configuration.HContext, ?boundMethodVal:Value, ?selfHctx:configuration.HContext, ?selfVal:Value)
+
+.decl Value_Type(?value:Value, ?type:Type)
+//.decl Value_DeclaringType(?value:Value, ?type:Type)
+
+.decl isNoneValue(?none:Value)
+
+.decl GlobalNamePointsTo(?hctx:configuration.HContext, ?value:Value, ?scope:Scope, ?name:symbol)
+
+.decl ListInitialAssignVar(?heap:HeapAllocation, ?var:Var, ?ctx:configuration.Context)
+.decl DictInitialAssignVar(?heap:HeapAllocation, ?var:Var, ?ctx:configuration.Context)
+
+.decl DiagnosticForLSP(?file:File, ?severity:symbol, ?startLine:number, ?startCol:number, ?endLine:number, ?endCol:number, ?message:symbol)
+.output DiagnosticForLSP
+
+//The message is split in messagePart, valuePart. The first may contain markdown tags and the second may contain doops values that contain '<' and '>' that we may need to escape
+.decl HoverInfoForLSP(?file:File, ?ctx:configuration.Context, ?index:number, ?startLine:number, ?startCol:number, ?endLine:number, ?endCol:number, ?messagePart:symbol, ?valuePart:symbol)
+.output HoverInfoForLSP

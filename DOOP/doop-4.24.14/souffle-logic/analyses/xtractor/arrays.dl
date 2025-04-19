@@ -1,0 +1,134 @@
+#pragma once
+
+.decl MainArrayVar(array: Var, name: symbol, types: symbol)
+.decl ArrayDims(array: Var, dim: number, size: number)
+.decl ArrayUsedInLoop(array: Var, indexVar: Var, loopHead: Instruction)
+.decl ArrayDimIterated(array: Var, dim: number, indexVar: Var, loopHead: Instruction)
+.decl ArrayInitializedInLoop(array: Var, loopHead: Instruction, value: AccessPath)
+.decl OUT_ArrayInitialized(array: Var, value: symbol)
+.decl ArrayWrite_AUX(ap: AccessPath)
+.decl OUT_ArrayWrite(out: symbol)
+
+.output MainArrayVar
+.output ArrayDims
+.output OUT_ArrayInitialized
+.output OUT_ArrayWrite
+
+MainArrayVar(array, name, types) :-
+	AllocArray(stmt, array, types),
+	InterestingStmt(stmt),
+	Var_SimpleName(array, name),
+	!ASTORE(_, _, array).
+
+// Array Allocation
+ArrayDims(array, 0, size) :-
+	AllocArray(stmt, array, _),
+	InterestingStmt(stmt),
+	IVALUE_ArraySize_EXT(stmt, size).
+
+// Allocation of intermediate arrays (for multidimensional arrays)
+ArrayDims(baseArray, dim + 1, size) :-
+	ASTORE(stmt, baseArray, array),
+	InterestingStmt(stmt),
+	ArrayDims(array, dim, size).
+
+// Flows propagation
+ArrayDims(otherArray, dim, size) :-
+	ArrayDims(array, dim, size),
+	Flows(array, otherArray).
+
+// Propagate backwards (after flow propagation)
+ArrayDims(toArray, dim - 1, size) :-
+	ALOAD(stmt, toArray, baseArray),
+	InterestingStmt(stmt),
+	ArrayDims(baseArray, dim, size), dim > 0.
+
+// array.length
+IVALUE_Var(to, size) :-
+	InterestingStmt(stmt),
+	UNOP(stmt, to, "len"),
+	OPERAND_VAR(stmt, 1, array),
+	ArrayDims(array, 0, size).
+
+//// to = from[index]
+//// Due to SSA, `to` will appear only once
+//ArrayLoad(to, from, index) :-
+//	ALOAD(stmt, to, from),
+//	InterestingStmt(stmt),
+//	IVALUE_ArrayIndex(stmt, index).
+//
+//// to[index] = value
+//ArrayStore(to, index, value) :-
+//	ASTORE(stmt, to, valueVar),
+//	InterestingStmt(stmt),
+//	IVALUE_ArrayIndex(stmt, index),
+//	IVALUE_Var(valueVar, value).
+
+ArrayUsedInLoop(array, indexVar, loopHead) :-
+	StmtInStructuredLoop(stmt, loopHead),
+	(ALOAD_VAR(stmt, _, array, indexVar) ;
+	 ASTORE_VAR(stmt, array, indexVar, _)).
+
+// [0..size)
+ArrayDimIterated(array, 0, indexVar, loopHead) :-
+	ArrayUsedInLoop(array, indexVar, loopHead),
+	InductionVariable(indexVar, loopHead),
+	ArrayDims(array, 0, size),
+	LoopInitialValue(indexVar, 0, loopHead),
+	(LoopExitCond(indexVar, "<", size, loopHead);
+	 LoopExitCond(indexVar, "<=", size - 1, loopHead)).
+
+// (size..0]
+ArrayDimIterated(array, 0, indexVar, loopHead) :-
+	ArrayUsedInLoop(array, indexVar, loopHead),
+	InductionVariable(indexVar, loopHead),
+	ArrayDims(array, 0, size),
+	LoopInitialValue(indexVar, size - 1, loopHead),
+	LoopExitCond(indexVar, ">=", 0, loopHead).
+
+// toArray = baseArray[..]
+ArrayDimIterated(baseArray, dim + 1, indexVar, loopHead) :-
+	ArrayDimIterated(toArray, dim, indexVar, loopHead),
+	ALOAD(_, toArray, baseArray).
+
+ArrayInitializedInLoop(array, loopHead, [nil, val]) :-
+	ArrayDimIterated(array, _, indexVar, loopHead),
+	ASTORE_VAR(stmt, array, indexVar, fromVar),
+	StmtInStructuredLoop(stmt, loopHead),
+	VarSymbolicValue(fromVar, val).
+
+ArrayInitializedInLoop(baseArray, loopHead, ap) :-
+	ArrayInitializedInLoop(array, innerLoopHead, ap),
+	ALOAD_VAR(stmt, array, baseArray, indexVar),
+	StmtInStructuredLoop(stmt, innerLoopHead),
+	ContainsInnerStructuredLoop(loopHead, innerLoopHead),
+	ArrayDimIterated(baseArray, _, indexVar, loopHead).
+
+OUT_ArrayInitialized(array, out) :-
+	ArrayInitializedInLoop(someArray, _, ap),
+	AccessPathStr(ap, out),
+	Flows_EXT(array, someArray),
+	MainArrayVar(array, _, _).
+
+
+VarHasAP(var, [nil, array]) :-
+	Flows_EXT(array, var),
+	MainArrayVar(array, _, _).
+
+VarHasAP(array, [rest, valStr]) :-
+	((ALOAD_NUM(stmt, array, fromArray, val), valStr = to_string(val)) ;
+	 (ALOAD_VAR(stmt, array, fromArray, index), VarSymbolicValue(index, valStr))),
+	InterestingStmt(stmt),
+	VarHasAP(fromArray, rest).
+
+ArrayWrite_AUX([[rest, valStr], fromValueStr]) :-
+	((ASTORE_NUM(stmt, array, val, from), valStr = to_string(val)) ;
+	 (ASTORE_VAR(stmt, array, index, from), VarSymbolicValue(index, valStr))),
+	InterestingStmt(stmt),
+	VarHasAP(array, rest),
+	VarSymbolicValue(from, fromValueStr).
+
+isAccessPath(ap) :- ArrayWrite_AUX(ap).
+isAccessPath(ap) :- ArrayInitializedInLoop(_, _, ap).
+
+OUT_ArrayWrite(out) :- ArrayWrite_AUX(ap), AccessPathStr(ap, out).

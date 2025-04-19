@@ -1,0 +1,49 @@
+plugins {
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+    id 'java-library'
+}
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+String asmVersion = '9.7'
+
+// WARNING: dependencies below should be minimal, since every
+// dependency will be included as-is *in each* fact generator "fat" JAR.
+dependencies {
+    api("com.github.plast-lab:clue-common:${clueCommonVersion}") {
+        exclude group: 'com.google.code.gson', module: 'gson'
+        exclude group: 'org.apache.ivy', module: 'ivy'
+        exclude group: 'org.apache.groovy', module: 'groovy-all'
+    }
+    api "com.github.clyze:metadata-model:${metadataVersion}",
+        "com.github.plast-lab:native-scanner:0.6.5",
+        "log4j:log4j:${log4jVersion}"            // Logging implementation
+    implementation "org.ow2.asm:asm-tree:${asmVersion}",    // Java bytecode library
+                    "org.ow2.asm:asm-util:${asmVersion}",
+                    "org.smali:dexlib2:2.5.2",                // Dexlib2: library for reading/modifying/writing Android dex files
+                    "net.dongliu:apk-parser:2.6.10",          // needed for reading binary XML entries from APK inputs
+                    "org.antlr:antlr4-runtime:${antlrVersion}",
+                    "org.apache.commons:commons-collections4:4.3"
+}
+
+compileJava {
+    options.compilerArgs << '-Xlint:unchecked'
+    options.compilerArgs << '-Xlint:deprecation'
+}
+
+// The Shadow JAR plugin ensures that the dexlib dependency does not
+// pollute the namespace for the fact generators or other code using
+// Doop as a library.
+shadowJar {
+    configurations = [project.configurations.compileClasspath]
+    dependencies {
+        exclude(dependency('com.google.code.gson:gson'))
+        exclude(dependency('org.apache.ivy:ivy'))
+        exclude(dependency('org.codehaus.groovy:groovy-all'))
+    }
+    relocate 'org.jf', 'org.clyze.doop.common.org.jf'
+}

@@ -12,6 +12,7 @@ class Instance():
         self.confidence = None
         self.static_features = None
         self.trace_features = None
+        self.ground_truth = None
 
     def get_id(self):
 
@@ -61,3 +62,8 @@ class Instance():
 
         self.trace_features = trace_features
 
+    def set_ground_truth(self, value):
+        self.ground_truth = value
+
+    def get_ground_truth(self):
+        return self.ground_truth
