@@ -11,7 +11,8 @@ import argparse
 
 
 
-WALA_DRIVER = "/home/mohammad/projects/CallGraphPruner/scripts/trace-generation/driver/wala-project_scg/target/wala-project_scg-1.0-SNAPSHOT-jar-with-dependencies.jar"
+WALA_DRIVER_1_5_9 = "/home/mohammad/projects/CallGraphPruner/scripts/trace-generation/driver/wala-project_scg/target/wala-project_scg-1.0-SNAPSHOT-jar-with-dependencies.jar"
+WALA_DRIVER = "/home/mohammad/projects/CallGraphPruner/scripts/trace-generation/driver/wala-project_scg_1.5.5/target/wala-project_scg_1.5.5-1.0-SNAPSHOT-jar-with-dependencies.jar"
 data_folder = '/home/mohammad/projects/CallGraphPruner_data'  
 NJR1_DATASET_FOLDER = f'{data_folder}/njr-1_dataset/june2020_dataset'
 PROGRAM_FILES = '/home/mohammad/projects/CallGraphPruner/data/programs/all_programs.txt'
@@ -32,10 +33,13 @@ def get_jar_file(program):
 def run_wala(program):
 	
 	print(program)
+
+	if program != 'url0e7d57473a_kyorohiro_HetimaUtil_tgz-pJ8-net_hetimatan_net_http_HttpServer3xxJ8':
+		return
 		
 	mainclass = get_mainclass(program)
 	jar_file = get_jar_file(program)
-	output_file = f'/home/mohammad/projects/CallGraphPruner/data/static-cgs/{program}/walarta.csv'
+	output_file = f'/home/mohammad/projects/CallGraphPruner/data/static-cgs/wala_1.5.5/{program}/wala0cfa_all.csv'
 
 	# command = [
 	# 	'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java',
@@ -48,7 +52,7 @@ def run_wala(program):
 	# 	'-output', output_file
 	# ]
 
-	command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -jar {WALA_DRIVER} -classpath {jar_file} -mainclass {mainclass} -output {output_file} -resolveinterfaces true -reflection false -analysis rta '
+	command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -jar {WALA_DRIVER} -classpath {jar_file} -mainclass {mainclass} -output {output_file} -resolveinterfaces true -reflection false -analysis 0cfa '
 
 
 	os.system(command)

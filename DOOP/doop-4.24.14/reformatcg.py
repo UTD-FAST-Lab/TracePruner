@@ -15,6 +15,11 @@ stdlib_patterns = [
 ]
 stdlib_regex = re.compile(r"^(?:" + "|".join(stdlib_patterns) + r")")
 
+# === Analysis types ===
+analysis_types = [
+    'context-insensitive',
+    '1-call-site-sensitive'
+]
 
 
 def java_type_to_descriptor(jtype):
@@ -94,19 +99,68 @@ def parse_callgraph_line(line):
     return method_sig, offset, target_sig
 
 
+def parse_1cfa_callgraph_line(line):
+    parts = line.strip().split('\t')
+    if len(parts) != 4:
+        return None
+
+    caller_field = parts[1]  # e.g. <class: sig>/some.site/42
+    callee_field = parts[3]  # e.g. <class: sig>
+
+    # Extract the method part and the offset
+    if '/' not in caller_field:
+        return None
+
+    sig_part, offset = caller_field.rsplit('/', 1)
+
+    # Find the real closing '>' of the signature
+    paren_close = sig_part.find(')')
+    if paren_close == -1:
+        return None
+    gt_index = sig_part.find('>', paren_close)
+    if gt_index == -1:
+        return None
+
+    method_sig = sig_part[1:gt_index]  # remove angle brackets
+    target_sig = callee_field.strip('<>')
+
+    method_sig = format_signature_wala(method_sig)
+    target_sig = format_signature_wala(target_sig)
+
+    return method_sig, offset, target_sig
+
+
+
 
 
 
 def main():
 
-    analysis_type = 'context-insensitive'  # or '1-call-site-sensitive'
+    # analysis_type = analysis_types[1]  
+
+    data_dir = '/home/mohammad/projects/CallGraphPruner/data/static-cgs/doop'
 
     for program_dir in os.listdir('results'):
         if not os.path.isdir(os.path.join('results', program_dir)):
             continue
 
-        input_file = os.path.join('results', program_dir, analysis_type, 'java_8', program_dir, 'CallGraphEdge.csv')  #fix naming
-        output_file = os.path.join('results', program_dir, f'doop_{analysis_type}.csv')
+        program_output_path = os.path.join(data_dir, program_dir)
+        if not os.path.exists(program_output_path):
+            os.makedirs(program_output_path)
+
+        
+        # if analysis_type == 'context-insensitive':
+        #     input_file = os.path.join('results', program_dir, analysis_type, 'java_8', program_dir, 'CallGraphEdge.csv')
+        # elif analysis_type == '1-call-site-sensitive':
+        #     input_file = os.path.join('results', program_dir, analysis_type, 'java_8', f'{program_dir}_1cfa', 'CallGraphEdge.csv')
+
+
+
+        # context insensitive 
+
+        analysis_type = 'context-insensitive'
+        input_file = os.path.join('results', program_dir, analysis_type, 'java_8', program_dir, 'CallGraphEdge.csv')
+        output_file = os.path.join(program_output_path, f'doop_{analysis_type}.csv')
 
         if not os.path.exists(input_file):
             print(f"Warning: Input file {input_file} does not exist.")
@@ -120,13 +174,47 @@ def main():
             continue
 
 
-        # === Main Processing ===
+        # === Main Processing context insensitive ===
         with open(input_file, 'r') as fin, open(output_file, 'w', newline='') as fout:
             writer = csv.writer(fout)
             writer.writerow(['method', 'offset', 'target'])
 
             for line in fin:
                 parsed = parse_callgraph_line(line)
+                if parsed:
+                    method, offset, target = parsed
+                    caller_class = method.split('.')[0]
+                    target_class = target.split('.')[0]
+                    if stdlib_regex.match(caller_class) or stdlib_regex.match(target_class):
+                        continue
+                    writer.writerow([method, offset, target])
+
+        print(f"[✓] WALA-style call graph written to {output_file}")
+        
+        
+        # 1-call-site sensitive
+        analysis_type = '1-call-site-sensitive'
+        input_file = os.path.join('results', program_dir, analysis_type, 'java_8', f'{program_dir}_1cfa', 'CallGraphEdge.csv')
+        output_file = os.path.join(program_output_path, f'doop_{analysis_type}.csv')
+
+        if not os.path.exists(input_file):
+            print(f"Warning: Input file {input_file} does not exist.")
+            continue
+
+        print(f"[+] Processing {input_file}...")
+
+        # Check if the output file already exists
+        if os.path.exists(output_file):
+            print(f"Output file {output_file} already exists. Skipping...")
+            continue
+
+        # === Main Processing context sensitive===
+        with open(input_file, 'r') as fin, open(output_file, 'w', newline='') as fout:
+            writer = csv.writer(fout)
+            writer.writerow(['method', 'offset', 'target'])
+
+            for line in fin: 
+                parsed = parse_1cfa_callgraph_line(line)
                 if parsed:
                     method, offset, target = parsed
                     caller_class = method.split('.')[0]

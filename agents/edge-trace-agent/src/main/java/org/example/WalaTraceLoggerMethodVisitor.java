@@ -1,0 +1,79 @@
+package org.example;
+
+import org.objectweb.asm.MethodVisitor;
+import org.objectweb.asm.Opcodes;
+
+import org.objectweb.asm.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
+
+
+
+public class WalaTraceLoggerMethodVisitor extends MethodVisitor {
+
+    private final WalaTraceLoggerAgent.AgentLevel agentLevel;
+    private final WalaTraceLoggerAgent.LogLevel logLevel;
+    private final String programDirPath;
+
+    private String methodName;
+    private String className;
+    private String desc;
+    private int ifStatementCounter = 0;
+    
+
+    public WalaTraceLoggerMethodVisitor(MethodVisitor mv, String name, String className, String desc, WalaTraceLoggerAgent.AgentLevel agentLevel, WalaTraceLoggerAgent.LogLevel logLevel, String programDirPath) {
+        super(Opcodes.ASM5, mv);
+        this.agentLevel = agentLevel;
+        this.logLevel = logLevel;
+
+        this.methodName = name;
+        this.className = className;
+        this.desc = desc;
+        this.programDirPath = programDirPath;
+    }
+
+
+    @Override
+    public void visitMethodInsn(int opcode, String owner, String name, String descriptor, boolean isInterface) {
+        
+
+        if (name.equals("visitInvokeInternal")) {
+            mv.visitVarInsn(Opcodes.ALOAD, 1);  // Load `instruction` 
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/InvocationLogger", "addInstruction",
+                "(Ljava/lang/Object;)V",false);
+
+
+        } else if (name.equals("processResolvedCall")){
+            mv.visitVarInsn(Opcodes.ALOAD, 2);  // Load `instruction` 
+            mv.visitVarInsn(Opcodes.ALOAD, 1);  // Load `src node` 
+            mv.visitVarInsn(Opcodes.ALOAD, 3);  // Load 'Target node'
+            mv.visitLdcInsn(programDirPath);
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/InvocationLogger", "writeTrace",
+                "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;)V",false);
+        }
+
+
+        if (owner.contains("wala")){
+
+
+            // Load the individual parameters onto the stack
+            mv.visitLdcInsn(className); // className
+            mv.visitLdcInsn(methodName); // methodName
+            mv.visitLdcInsn(desc);       // method descriptor
+            mv.visitLdcInsn(owner);      // owner class
+            mv.visitLdcInsn(name);       // method name being called
+            mv.visitLdcInsn(descriptor); // method descriptor being called
+
+
+            // Call the static logging method with the parameters
+            mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/InvocationLogger", "addLineToTrace",
+                            "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V",
+                            false);
+        }
+        
+        super.visitMethodInsn(opcode, owner, name, descriptor, isInterface);
+    }
+
+}

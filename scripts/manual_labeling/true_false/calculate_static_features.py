@@ -5,7 +5,7 @@ from pathlib import Path
 
 # Paths
 program_list_file = '/home/mohammad/projects/CallGraphPruner/data/programs/all_programs.txt'  # Path to the list of program names
-base_directory = Path('/home/mohammad/projects/CallGraphPruner/data/static-cgs')
+base_directory = Path('/home/mohammad/projects/CallGraphPruner/data/static-cgs/wala_1.5.9')
 
 
 
@@ -91,10 +91,10 @@ def main():
 
     for program in program_names:
 
-        input_csv = base_directory / program / 'walarta.csv'
+        input_csv = base_directory / program / 'wala0cfa_filtered.csv'
         output_dir = base_directory / program / 'static_featuers'
         output_dir.mkdir(exist_ok=True)
-        output_csv = output_dir / 'walarta.csv'
+        output_csv = output_dir / 'wala0cfa_filtered.csv'
 
         edges = read_callgraph(input_csv)
         G = build_graph(edges)

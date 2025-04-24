@@ -124,13 +124,13 @@ class RandomForestBaseline:
 
         if not self.raw_baseline:
             # res_path = f"{self.output_dir}/rf_results_{self.threshold}_only_labeled_balanced.csv"
-            metrics_path = f"{self.output_dir}/rf_fold_metrics_{self.threshold}_only_labeled_balanced_gt.csv"
+            metrics_path = f"{self.output_dir}/rf_fold_metrics_{self.threshold}_downsample_1-1.csv"
         else:
             # res_path = f"{self.output_dir}/rf_raw_results_{self.threshold}.csv"
             metrics_path = f"{self.output_dir}/rf_raw_fold_metrics_{self.threshold}.csv"
 
         # write_results_to_csv(all_eval, res_path)
-        write_metrics_to_csv(all_metrics, metrics_path)
+        # write_metrics_to_csv(all_metrics, metrics_path)
         
 
 

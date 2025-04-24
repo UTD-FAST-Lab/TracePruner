@@ -25,7 +25,8 @@ agents = (
         '/home/mohammad/projects/CallGraphPruner/agents/call-graph-j8/target/call-graph-j8-1.0-SNAPSHOT-jar-with-dependencies.jar',
         '/home/mohammad/projects/CallGraphPruner/agents/variable-j8/target/variables-1.0-SNAPSHOT-jar-with-dependencies.jar',
         '/home/mohammad/projects/CallGraphPruner/agents/integrated-j8/target/integrated-j8-1.0-SNAPSHOT-jar-with-dependencies.jar',
-        '/home/mohammad/projects/CallGraphPruner/agents/integrated-edge-seperate-j8/target/integrated-edge-seperate-j8-1.0-SNAPSHOT-jar-with-dependencies.jar' 
+        '/home/mohammad/projects/CallGraphPruner/agents/integrated-edge-seperate-j8/target/integrated-edge-seperate-j8-1.0-SNAPSHOT-jar-with-dependencies.jar',
+        '/home/mohammad/projects/CallGraphPruner/agents/edge-trace-agent/target/edge-trace-agent-1.0-SNAPSHOT-jar-with-dependencies.jar' 
 )
 
 agentLevel = (
@@ -47,10 +48,11 @@ def get_mainclass(tc):
 
 def run_wala(tc, mainclass):
 
-    command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agents[4]}=logLevel=method,agentLevel={agentLevel[0]} -jar {JCG_JAR} 0-CFA {tc} {mainclass} '
+    # command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agents[4]}=logLevel=method,agentLevel={agentLevel[0]} -jar {JCG_JAR} 0-CFA {tc} {mainclass} '
     # command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agents[2]} -jar {JCG_JAR} 0-CFA {tc} {mainclass} '
-    command += f' > /home/mohammad/projects/CallGraphPruner/data/traces/branches/updated_branch/{tc}.txt'
+    # command += f' > /home/mohammad/projects/CallGraphPruner/data/traces/branches/updated_branch/{tc}.txt'
 
+    command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -javaagent:{agents[5]} -jar {JCG_JAR} 0-CFA {tc} {mainclass} '
     os.system(command)
 
 
@@ -62,6 +64,7 @@ def main():
         if 'VC4' in tc and "N" not in tc:
             mainclass = get_mainclass(tc)
             run_wala(tc, mainclass)
+            break
 
 
 

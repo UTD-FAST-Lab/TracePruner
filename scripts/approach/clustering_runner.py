@@ -42,11 +42,11 @@ class ClusteringRunner:
             X_train_scaled = X_all[:len(X_train)]
             X_test_scaled = X_all[len(X_train):]
 
-            self.clusterer.fit(X_train_scaled) #hdbscan 
-            self.clusterer.label_clusters(train, self.clusterer.clusterer.labels_, self.labeler) #hdbscan {any_normal:y_trian, majority: train}
+            # self.clusterer.fit(X_train_scaled) #hdbscan 
+            # self.clusterer.label_clusters(train, self.clusterer.clusterer.labels_, self.labeler) #hdbscan {any_normal:y_trian, majority: train}
 
-            # self.clusterer.fit_smote(X_train_scaled, train) #mpckmeans
-            # self.clusterer.label_clusters(train, self.clusterer.clusterer.labels_, self.labeler) #mpckmeans
+            self.clusterer.fit_smote(X_train_scaled, train) #mpckmeans
+            self.clusterer.label_clusters(train, self.clusterer.clusterer.labels_, self.labeler) #mpckmeans
 
             if fold == 1:
                 self.print_cluster_distribution(train, self.clusterer.clusterer.labels_)
@@ -125,7 +125,7 @@ class ClusteringRunner:
 
 
         # write_results_to_csv(all_eval, f"{self.output_dir}/cluster_results.csv")
-        write_metrics_to_csv(all_metrics, f"{self.output_dir}/fold_metrics_hdbscan_dist1_gt.csv")
+        write_metrics_to_csv(all_metrics, f"{self.output_dir}/fold_metrics_smote.csv")
 
 
 

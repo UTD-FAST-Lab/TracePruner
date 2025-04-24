@@ -3,7 +3,7 @@ from pathlib import Path
 
 # Paths
 program_list_file = '/home/mohammad/projects/CallGraphPruner/data/programs/all_programs.txt'  # Path to the list of program names
-base_directory = Path('/home/mohammad/projects/CallGraphPruner/data/static-cgs')  # Replace this with the actual path to your programs
+base_directory = Path('/home/mohammad/projects/CallGraphPruner/data/static-cgs/wala_1.5.9')  # Replace this with the actual path to your programs
 # output_directory = Path('output_differences')
 # output_directory.mkdir(exist_ok=True)
 
@@ -13,9 +13,10 @@ with open(program_list_file, 'r') as file:
 
 for program in program_names:
     program_dir = base_directory / program
-    file_0cfa = program_dir / 'wala0cfa.csv'
-    # file_1cfa = program_dir / 'wala1cfa.csv'
-    file_1cfa = program_dir / 'wala1obj.csv'
+    file_0cfa = program_dir / 'wala0cfa_filtered.csv'
+    file_1cfa = program_dir / 'wala1cfa.csv'
+    # file_1cfa = program_dir / 'doop_1-call-site-sensitive.csv'
+    # file_0cfa = program_dir / 'doop_context-insensitive.csv'
 
     if not file_0cfa.exists() or not file_1cfa.exists():
         print(f"Skipping {program}: missing 0cfa.csv or 1cfa.csv")
@@ -53,4 +54,4 @@ for program in program_names:
 
     # Save to file if there are any differences
     if not diff.empty:
-        diff.to_csv(program_dir / f"diff_0cfa_1obj.csv", index=False)
+        diff.to_csv(program_dir / f"diff_0cfa_1cfa.csv", index=False)

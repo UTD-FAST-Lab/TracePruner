@@ -12,6 +12,7 @@ class Instance():
         self.confidence = None
         self.static_features = None
         self.trace_features = None
+        self.semantic_features = None
         self.ground_truth = None
 
     def get_id(self):
@@ -61,6 +62,12 @@ class Instance():
     def set_trace_features(self, trace_features):
 
         self.trace_features = trace_features
+
+    def get_semantic_features(self):
+        return self.semantic_features
+    
+    def set_semantic_features(self, semantic_features):
+        self.semantic_features = semantic_features
 
     def set_ground_truth(self, value):
         self.ground_truth = value
