@@ -148,3 +148,25 @@ def write_results_to_csv(instances, path):
 
 def write_metrics_to_csv(metrics, path):
     pd.DataFrame(metrics).to_csv(path, index=False)
+
+
+
+def evaluate(test):
+    y_true, y_pred, gt_y_true, gt_y_pred = [], [], [], []
+    true, false = 0, 0
+
+    for inst in test:
+        pred = int(inst.get_predicted_label())
+        if inst.is_known():
+            y_true.append(int(inst.get_label()))
+            y_pred.append(pred)
+        else:
+            true += pred
+            false += (1 - pred)
+            if inst.ground_truth is not None:
+                gt_y_true.append(int(inst.ground_truth))
+                gt_y_pred.append(pred)
+
+    eval_main = evaluate_fold(y_true, y_pred)
+    eval_gt = evaluate_fold(gt_y_true, gt_y_pred) if gt_y_true else {}
+    return eval_main, true, false, eval_gt

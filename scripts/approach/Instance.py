@@ -6,14 +6,19 @@ class Instance():
         self.src = src
         self.target = target
         self.offset = offset
+
         self.label = label
+        self.ground_truth = None
         self.is_unknown = is_unknown
+        
         self.predicted_label = None
         self.confidence = None
+        
         self.static_features = None
         self.trace_features = None
         self.semantic_features = None
-        self.ground_truth = None
+
+        self.trace_graph = None
 
     def get_id(self):
 
@@ -74,3 +79,10 @@ class Instance():
 
     def get_ground_truth(self):
         return self.ground_truth
+    
+
+    def set_trace_graph(self, trace_graph):
+        self.trace_graph = trace_graph
+
+    def get_trace_graph(self):
+        return self.trace_graph
