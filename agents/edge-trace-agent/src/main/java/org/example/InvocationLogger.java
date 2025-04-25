@@ -4,68 +4,12 @@ import java.io.BufferedWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.io.FileWriter;
+import java.io.File;
 import java.io.IOException;
 import java.lang.Object;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-
-
-// public class InvocationLogger {
-//     private static ArrayList<String> activeInstructions = new ArrayList<>();
-//     private static HashMap<String, ArrayList<String>> instruction2trace = new HashMap<>();
-//     private static int edgeCounter = 0;
-
-//     public static void addInstruction(Object instruction) {
-//         String instructionStr = instruction.toString();
-
-//         if (instructionStr.contains(", Ljava/lang")){
-//             return;
-//         }
-//         activeInstructions.add(instructionStr);
-//         ArrayList<String> trace = new ArrayList<>();
-//         instruction2trace.put(instructionStr, trace);
-//     }
-
-//     public static void writeTrace(Object instruction, Object src, Object target, String programPath) {
-
-//         System.out.println("Writing trace for instruction: " + instruction);
-
-//         // convert the instruction to string
-//         String instructionStr = instruction.toString();
-        
-//         // if instruction exists in the map, write the current trace of it to a file
-//         if (activeInstructions.contains(instructionStr)) {
-//             ArrayList<String> trace = instruction2trace.get(instructionStr);
-            
-//             // write each element of the trace in a line to the file in the program dir path/edgeCounter.txt
-//             try (BufferedWriter writer = new BufferedWriter(new FileWriter(programPath + "/" + edgeCounter++ + ".txt", true))) {
-//                 writer.write("Edge: " + src + "," + target);
-//                 writer.newLine();
-//                 for (String edge : trace) {
-//                     writer.write(edge);
-//                     writer.newLine();
-//                 }
-//             }
-//             catch (IOException e) {
-//                 e.printStackTrace();
-//             }
-//         }
-
-//         // if instruction is a staticinovke, remove instruction from the map
-//         if (instructionStr.contains("INVOKESTATIC")) {
-//             activeInstructions.remove(instructionStr);
-//         }
-//     }
-
-//     public static void addLineToTrace(String className, String methodName, String desc, String owner, String name, String descriptor) {
-//         // add the element to all of the traces of all the active instructions
-        
-
-//         for (String instruction : activeInstructions) {
-//             ArrayList<String> trace = instruction2trace.get(instruction);
-//             trace.add(className + "." + methodName + " " + desc + "," + owner + "." + name + " " + descriptor);
-//         }
-//     }
-// }
 
 
 public class InvocationLogger {
@@ -79,9 +23,34 @@ public class InvocationLogger {
     private static HashMap<String, Long> instruction2start = new HashMap<>();
     private static ArrayList<String> trace = new ArrayList<>();
     private static long lineCounter = -1;
-    
-    
     private static int edgeCounter = 0;
+
+
+    private static String reformatNodeString(String nodeString) {
+        String pattern = "Node: < (?:Primordial|Application), ([^,]+), ([^ ]+) >";
+        Pattern regex = Pattern.compile(pattern);
+        Matcher matcher = regex.matcher(nodeString);
+
+        if (matcher.find()) {
+            String className = matcher.group(1);
+            String methodSignature = matcher.group(2);
+
+            // Remove leading 'L' if present
+            if (className.startsWith("L")) {
+                className = className.substring(1);
+            }
+
+            // Split method signature at '('
+            int parenIndex = methodSignature.indexOf('(');
+            if (parenIndex != -1) {
+                String methodName = methodSignature.substring(0, parenIndex);
+                String params = methodSignature.substring(parenIndex + 1);
+                return className + "." + methodName + ":(" + params;
+            }
+        }
+
+        return null; // Format incorrect
+    }
 
 
 
@@ -98,6 +67,19 @@ public class InvocationLogger {
     public static void writeTrace(Object instruction, Object src, Object target, String programPath) {
 
         String instructionStr = instruction.toString();
+
+        // getting the program counter from the instruction.
+        Pattern pattern = Pattern.compile("@(\\d+)");
+        Matcher matcher = pattern.matcher(instructionStr);
+        int offset = -1;
+
+        if (matcher.find()) {
+            offset = Integer.parseInt(matcher.group(1));
+        }
+        else {
+            return; // No program counter found
+        }
+        
 
         // find the start of the instruction, if exists, depending if the instruction is for jdk or not put it in completeedges or exclude edges
         if (instruction2start.containsKey(instructionStr)) {
@@ -140,7 +122,7 @@ public class InvocationLogger {
 
                 // write each element of the trace in a line to the file in the program dir path/edgeCounter.txt
                 try (BufferedWriter writer = new BufferedWriter(new FileWriter(programPath + "/" + edgeCounter++ + ".txt", true))) {
-                    writer.write("Edge: " + src + "," + target);
+                    writer.write("Edge: " + src + "," + offset + "," + target);
                     writer.newLine();
                     for (String line : filteredTrace) {
                         writer.write(line);
@@ -150,6 +132,40 @@ public class InvocationLogger {
                 catch (IOException e) {
                     e.printStackTrace();
                 }
+                
+                String srcStr = src.toString();
+                String targetStr = target.toString();
+                if (srcStr.contains("fakeRootMethod") || srcStr.contains("fakeWorldClinit")) {
+                    srcStr = "<boot>";
+                    offset = 0;
+                }
+                else{
+                    // reformat the src and target string to the required format
+                    srcStr = reformatNodeString(srcStr);
+                }
+                targetStr = reformatNodeString(targetStr);
+                if (srcStr == null || targetStr == null) {
+                    return; // Format incorrect
+                }
+
+
+                // append the srcStr, target to a csv file with the correponding edge counter
+                File file = new File(programPath + "/edges.csv");
+                boolean fileExists = file.exists();
+
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, true))) {
+                    // Write header if the file is newly created
+                    if (!fileExists) {
+                        writer.write("edge_id,method,offset,target");
+                        writer.newLine();
+                    }
+
+                    // Append the edge row
+                    writer.write((edgeCounter - 1) + "," + srcStr + "," + offset + "," + targetStr);
+                    writer.newLine();
+                } catch (IOException e) {
+                    e.printStackTrace();
+}
 
                 completeEdges.add(edge);
             }
@@ -163,6 +179,21 @@ public class InvocationLogger {
         // add line to the trace, increament the line counter
         if (lineCounter != -1) {
             trace.add(className + "." + methodName + " " + desc + "," + owner + "." + name + " " + descriptor);
+            lineCounter++;  
+        }    
+    }
+
+    public static void addLineToTrace(String className, String methodName, String desc,  int ifCounter, boolean isIFBranch) {
+        // add line to the trace, increament the line counter
+        if (lineCounter != -1) {
+
+            String ifStatementId = className + "." + methodName + " " + desc;
+            if (isIFBranch)
+                ifStatementId +=  ":IF#" + ifCounter;
+            else
+                ifStatementId +=  ":ELSE#" + ifCounter;
+
+            trace.add(ifStatementId);
             lineCounter++;  
         }    
     }

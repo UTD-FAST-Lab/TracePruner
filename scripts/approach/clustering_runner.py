@@ -5,20 +5,39 @@ from approach.utils import evaluate_fold, write_results_to_csv, write_metrics_to
 from collections import defaultdict
 
 class ClusteringRunner:
-    def __init__(self, instances, clusterer, fallback, labeler, output_dir, use_trace=False, use_fallback=True, train_with_unknown=False):
+    def __init__(self, instances, clusterer, fallback, labeler, output_dir, use_trace=False, use_semantic=False, use_static=True, use_fallback=True, train_with_unknown=False):
         self.instances = instances
         self.clusterer = clusterer
         self.fallback = fallback
         self.labeler = labeler
         self.output_dir = output_dir
         self.use_trace = use_trace
+        self.use_semantic = use_semantic
+        self.use_static = use_static
         self.use_fallback = use_fallback
         self.train_with_unknown = train_with_unknown
         self.labeled = [i for i in self.instances if i.is_known()]
         self.unknown = [i for i in self.instances if not i.is_known()]
 
     def get_features(self, insts):
-        return np.array([inst.get_trace_features() if self.use_trace else inst.get_static_featuers() for inst in insts])
+        
+        feature_vecs = []
+
+        for inst in insts:
+            if self.use_semantic:
+                code = inst.get_semantic_features()
+                if code is None or len(code) != 768:
+                    code = [0.0] * 768
+                feature_vecs.append(code)
+            elif self.use_static:
+                struct = inst.get_static_featuers()
+                if struct is None or len(struct) != 11:
+                    struct = [0.0] * 11
+                feature_vecs.append(struct)
+
+            
+        return np.array(feature_vecs)
+            
 
     def run(self):
 
@@ -37,25 +56,36 @@ class ClusteringRunner:
             y_train = np.array([1 if i.get_label() else 0 for i in train])
             X_test = self.get_features(test)
 
-            scaler = StandardScaler()
-            X_all = scaler.fit_transform(np.vstack((X_train, X_test)))
-            X_train_scaled = X_all[:len(X_train)]
-            X_test_scaled = X_all[len(X_train):]
+            if self.use_static:
+                scaler = StandardScaler()
+                X_all = scaler.fit_transform(np.vstack((X_train, X_test)))
+                X_train_scaled = X_all[:len(X_train)]
+                X_test_scaled = X_all[len(X_train):]
+            
+            elif self.use_semantic:
+                # reduction of dimensions with pca
+                from sklearn.decomposition import PCA
+                pca = PCA(n_components=50)
+                X_all = pca.fit_transform(np.vstack((X_train, X_test)))
+                X_train_scaled = X_all[:len(X_train)]
+                X_test_scaled = X_all[len(X_train):]
 
-            # self.clusterer.fit(X_train_scaled) #hdbscan 
-            # self.clusterer.label_clusters(train, self.clusterer.clusterer.labels_, self.labeler) #hdbscan {any_normal:y_trian, majority: train}
 
-            self.clusterer.fit_smote(X_train_scaled, train) #mpckmeans
-            self.clusterer.label_clusters(train, self.clusterer.clusterer.labels_, self.labeler) #mpckmeans
 
-            if fold == 1:
-                self.print_cluster_distribution(train, self.clusterer.clusterer.labels_)
+            self.clusterer.fit(X_train_scaled) #hdbscan 
+            self.clusterer.label_clusters(y_train, self.clusterer.clusterer.labels_, self.labeler) #hdbscan {any_normal:y_trian, majority: train}
+
+            # self.clusterer.fit_smote(X_train_scaled, train) #mpckmeans
+            # self.clusterer.label_clusters(train, self.clusterer.clusterer.labels_, self.labeler) #mpckmeans
+
+            # if fold == 1:
+            #     self.print_cluster_distribution(train, self.clusterer.clusterer.labels_)
 
             cluster_ids, strengths = self.clusterer.predict(X_test_scaled)
 
             if self.use_fallback:
-                self.fallback.fit(X_train_scaled, y_train, self.clusterer.clusterer.labels_, self.clusterer.cluster_labels) #dist1
-                # self.fallback.fit(X_train_scaled, y_train) #dist2
+                # self.fallback.fit(X_train_scaled, y_train, self.clusterer.clusterer.labels_, self.clusterer.cluster_labels) #dist1
+                self.fallback.fit(X_train_scaled, y_train) #dist2
                 fallback_preds = self.fallback.predict(X_test_scaled)
                 fallback_conf = self.fallback.predict_proba(X_test_scaled)
 
@@ -125,7 +155,7 @@ class ClusteringRunner:
 
 
         # write_results_to_csv(all_eval, f"{self.output_dir}/cluster_results.csv")
-        write_metrics_to_csv(all_metrics, f"{self.output_dir}/fold_metrics_smote.csv")
+        write_metrics_to_csv(all_metrics, f"{self.output_dir}/fold_metrics_dist_plelog.csv")
 
 
 

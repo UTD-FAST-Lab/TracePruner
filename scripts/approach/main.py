@@ -28,33 +28,33 @@ clusterers = (
     MPCKMeansClusterer(n_clusters=2)
 )
 
-# runner = ClusteringRunner(
-#     instances=instances,
-#     clusterer=clusterers[1],
-#     fallback=CDistFallback(),
-#     labeler=RelativeMajorityHeuristic(),
-#     output_dir="results/mpckmeans/relative_majority",
-#     use_trace=False,
-#     use_semantic=False,
-#     use_static=False,
-#     use_fallback=False,
-#     train_with_unknown=True
-# )
+runner = ClusteringRunner(
+    instances=instances,
+    clusterer=clusterers[0],
+    fallback=CDistFallback2(),
+    labeler=AnyTrueLabelHeuristic(),
+    output_dir="results/hdbscan/semantics/any_normal",
+    use_trace=False,
+    use_semantic=True,
+    use_static=False,
+    use_fallback=True,
+    train_with_unknown=True
+)
 
 # cgpruner
 # runner = RandomForestBaseline(instances=instances, threshold=0.45, train_with_unknown=True, make_balance=False , raw_baseline=True, output_dir="results/rf_baseline")
 
 # autopruner
-runner = NeuralNetBaseline(
-    instances=instances,
-    raw_baseline=False,
-    train_with_unknown=False,
-    make_balance=False,
-    output_dir="results/nn_baseline",
-    use_trace=False,
-    use_semantic=False, 
-    use_static=True,
-)
+# runner = NeuralNetBaseline(
+#     instances=instances,
+#     raw_baseline=False,
+#     train_with_unknown=False,
+#     make_balance=False,
+#     output_dir="results/nn_baseline",
+#     use_trace=False,
+#     use_semantic=False, 
+#     use_static=True,
+# )
 
 
 
