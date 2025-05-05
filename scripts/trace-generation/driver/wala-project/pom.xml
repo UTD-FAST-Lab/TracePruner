@@ -55,7 +55,7 @@
   <repositories>
     <repository>
         <id>wala-local-repo</id>
-        <url>file:///home/mohammad/projects/CallGraphPruner/scripts/trace-generation/wala-jars/repository</url>
+        <url>file:///home/mohammad/projects/TracePruner/scripts/trace-generation/wala-jars/repository</url>
     </repository>
 
     <repository>

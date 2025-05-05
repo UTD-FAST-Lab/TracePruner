@@ -75,6 +75,15 @@ public class WalaTraceLoggerAgent {
             }
         }
 
+
+        // ✅ Initialize the logger
+        InvocationLogger.initialize(programPath);
+
+        // ✅ Register shutdown hook
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            System.out.println("Agent shutting down, closing trace logger.");
+            InvocationLogger.close();
+        }));
      
 
 

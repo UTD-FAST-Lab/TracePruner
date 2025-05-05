@@ -88,6 +88,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * This abstract base class provides the general algorithm for a call graph builder that relies on
@@ -101,6 +103,8 @@ import java.util.function.Consumer;
 public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGraphBuilder
     implements HeapModel {
   private static final boolean DEBUG = false;
+
+  private static final boolean VAR_INFO = true;
 
   private static final boolean DEBUG_MULTINEWARRAY = DEBUG | false;
 
@@ -1123,10 +1127,27 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
       visitInvokeInternal(instruction, new DefaultInvariantComputer());
     }
 
+    // Helper to escape JSON special characters like quotes
+    private static String escapeJson(String input) {
+      if (input == null) return "";
+      return input.replace("\\", "\\\\").replace("\"", "\\\"");
+    }
+
     // printing pointer info
-    private void printPointerInfo(final SSAAbstractInvokeInstruction instruction) {
+    private void printPointerInfo(final SSAAbstractInvokeInstruction instruction, CGNode node) {
       StringBuilder json = new StringBuilder();
-      json.append("AgentLogger|POINTER_INFO(visitInvoke): {");
+      json.append("AgentLogger|POINTER_INFO_visitInvoke: {");
+
+      // // Add instruction value at the beginning
+      // json.append("\"instruction\":\"")
+      // .append(escapeJson(instruction.toString()))
+      // .append("\",");
+
+      json.append("\"id\":\"")
+        .append(escapeJson(node.getMethod().getSignature()))
+        .append("@i")
+        .append(instruction.iIndex())
+        .append("\",");
       
       // Start with receiver info
       json.append("\"receiver\":");
@@ -1203,10 +1224,22 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
       
       System.err.println(json.toString());
     }
+
   
-    private void printCallGraphInfo() {
+    private void printCallGraphInfo(final SSAAbstractInvokeInstruction instruction, CGNode node) {
         StringBuilder json = new StringBuilder();
-        json.append("AgentLogger|CALL_GRAPH_INFO(visitInvoke): {");
+        json.append("AgentLogger|CALL_GRAPH_INFO_visitInvoke: {");
+
+        // // Add instruction value at the beginning
+        // json.append("\"instruction\":\"")
+        // .append(escapeJson(instruction.toString()))
+        // .append("\",");
+
+        json.append("\"id\":\"")
+          .append(escapeJson(node.getMethod().getSignature()))
+          .append("@i")
+          .append(instruction.iIndex())
+          .append("\",");
         
         // Get total number of nodes
         json.append("\"total_nodes\":").append(callGraph.getNumberOfNodes());
@@ -1235,8 +1268,10 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
       }
       // System.err.println("visitInvoke: " + instruction);
 
-      printPointerInfo(instruction);
-      printCallGraphInfo();
+      if (VAR_INFO){
+        printPointerInfo(instruction, node);
+        printCallGraphInfo(instruction, node);
+      }
 
       PointerKey uniqueCatch = null;
       if (hasUniqueCatchBlock(instruction, ir)) {
@@ -1285,8 +1320,10 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
       if (params.isEmpty()) {
         for (CGNode n : getBuilder().getTargetsForCall(node, instruction, invariantParameters)) {
 
-          getBuilder().printPointerInfoAddEdge(node, instruction);
-          getBuilder().printCallGraphInfoAddEdge(node);
+          // if (VAR_INFO){
+          //   getBuilder().printPointerInfoAddEdge(node, instruction);
+          //   getBuilder().printCallGraphInfoAddEdge(node, instruction);
+          // }
 
           getBuilder().processResolvedCall(node, instruction, n, invariantParameters, uniqueCatch);
           if (DEBUG) {
@@ -1313,8 +1350,10 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
         if (contentsAreInvariant(symbolTable, du, vns)) {
           for (CGNode n : getBuilder().getTargetsForCall(node, instruction, invariantParameters)) {
 
-            getBuilder().printPointerInfoAddEdge(node, instruction);
-            getBuilder().printCallGraphInfoAddEdge(node);
+            // if (VAR_INFO){
+            //   getBuilder().printPointerInfoAddEdge(node, instruction);
+            //   getBuilder().printCallGraphInfoAddEdge(node, instruction);
+            // }
 
             getBuilder()
                 .processResolvedCall(node, instruction, n, invariantParameters, uniqueCatch);
@@ -1720,8 +1759,10 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
             PointerKey uniqueCatch =
                 getBuilder().getPointerKeyForExceptionalReturnValue(callGraph.getFakeRootNode());
 
-            getBuilder().printPointerInfoAddEdge(callGraph.getFakeWorldClinitNode(), s);
-            getBuilder().printCallGraphInfoAddEdge(callGraph.getFakeWorldClinitNode());
+            // if (VAR_INFO){
+            //   getBuilder().printPointerInfoAddEdge(callGraph.getFakeWorldClinitNode(), s);
+            //   getBuilder().printCallGraphInfoAddEdge(callGraph.getFakeWorldClinitNode(), s);
+            // }
 
             getBuilder()
                 .processResolvedCall(
@@ -1737,11 +1778,71 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
     }
   }
 
+  private static String reformatNodeString(String nodeString) {
+    
+    Pattern NODE_PATTERN = Pattern.compile("Node: < (?:Primordial|Application), ([^,]+), ([^ ]+) >");
 
+    Matcher matcher = NODE_PATTERN.matcher(nodeString);
+    if (matcher.find()) {
+        String className = matcher.group(1);
+        String methodSignature = matcher.group(2);
+        if (className.startsWith("L")) className = className.substring(1);
+        int parenIndex = methodSignature.indexOf('(');
+        if (parenIndex != -1) {
+            String methodName = methodSignature.substring(0, parenIndex);
+            String params = methodSignature.substring(parenIndex + 1);
+            return className + "." + methodName + ":(" + params;
+        }
+      }
+      return null;
+  }
 
-  private void printPointerInfoAddEdge(CGNode caller, SSAAbstractInvokeInstruction instruction) {
+  private static int getOffsetFromInstruction(String instructionStr) {
+
+    Pattern OFFSET_PATTERN = Pattern.compile("@(\\d+)");
+    Matcher matcher = OFFSET_PATTERN.matcher(instructionStr);
+    if (matcher.find()) {
+        return Integer.parseInt(matcher.group(1));
+    }
+    return -1;
+  }
+
+  // Helper to escape JSON special characters like quotes
+  private static String escapeJsonAddEdge(String input) {
+    if (input == null) return "";
+    return input.replace("\\", "\\\\").replace("\"", "\\\"");
+  }
+
+  private void printPointerInfoAddEdge(CGNode caller, SSAAbstractInvokeInstruction instruction, CGNode target) {
+    
+    String instructionStr = instruction.toString();
+    if (instructionStr.contains(", Ljava/lang")) {
+        return;
+    }
+    
+    int offset = getOffsetFromInstruction(instructionStr);
+    if (offset == -1) {
+        return;
+    }
+
     StringBuilder json = new StringBuilder();
-    json.append("AgentLogger|POINTER_INFO(addEdge): {");
+    json.append("AgentLogger|POINTER_INFO_addEdge: {");
+
+    //  // Add instruction value at the beginning
+    //  json.append("\"instruction\":\"")
+    //  .append(escapeJsonAddEdge(instructionStr))
+    //  .append("\",");
+
+    json.append("\"id\":\"")
+      .append(escapeJsonAddEdge(caller.getMethod().getSignature()))
+      .append("@i")
+      .append(instruction.iIndex())
+      .append("\",");
+
+    //  add src and target node info
+    json.append("\"src_node\":\"").append(reformatNodeString(caller.toString())).append("\",");
+    json.append("\"target_node\":\"").append(reformatNodeString(target.toString())).append("\",");
+    json.append("\"offset\":\"").append(offset).append("\",");
     
     // Start with receiver info
     json.append("\"receiver\":");
@@ -1827,9 +1928,36 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
     System.err.println(json.toString());
   }
 
-  private void printCallGraphInfoAddEdge(CGNode caller) {
-      StringBuilder json = new StringBuilder();
-      json.append("AgentLogger|CALL_GRAPH_INFO(addEdge): {");
+  private void printCallGraphInfoAddEdge(CGNode caller, SSAAbstractInvokeInstruction instruction, CGNode target) {
+      
+    String instructionStr = instruction.toString();
+      if (instructionStr.contains(", Ljava/lang")) {
+          return;
+    }
+    
+    int offset = getOffsetFromInstruction(instructionStr);
+      if (offset == -1) {
+          return;
+    }
+    
+    StringBuilder json = new StringBuilder();
+      json.append("AgentLogger|CALL_GRAPH_INFO_addEdge: {");
+
+    //    // Add instruction value at the beginning
+    //  json.append("\"instruction\":\"")
+    //  .append(escapeJsonAddEdge(instruction.toString()))
+    //  .append("\",");
+
+    json.append("\"id\":\"")
+      .append(escapeJsonAddEdge(caller.getMethod().getSignature()))
+      .append("@i")
+      .append(instruction.iIndex())
+      .append("\",");
+
+      //  add src and target node info
+      json.append("\"src_node\":\"").append(reformatNodeString(caller.toString())).append("\",");
+      json.append("\"target_node\":\"").append(reformatNodeString(target.toString())).append("\",");
+      json.append("\"offset\":\"").append(offset).append("\",");
       
       // Get total number of nodes
       json.append("\"total_nodes\":").append(callGraph.getNumberOfNodes());
@@ -1876,8 +2004,10 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
       System.err.println("addTarget: " + caller + " ," + instruction + " , " + target);
     }
 
-    // printPointerInfo(caller, instruction);
-    // printCallGraphInfo(caller);
+    if (VAR_INFO) {
+      printPointerInfoAddEdge(caller, instruction, target);
+      printCallGraphInfoAddEdge(caller, instruction, target);
+    }
 
     // System.err.println("addTarget: " + caller + " ," + instruction + " , " + target);
     caller.addTarget(instruction.getCallSite(), target);
@@ -2057,8 +2187,10 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
                         if (target != null) {
                           changed.b = true;
 
-                          printPointerInfoAddEdge(node, call);
-                          printCallGraphInfoAddEdge(node);
+                          // if (VAR_INFO){
+                          //   printPointerInfoAddEdge(node, call);
+                          //   printCallGraphInfoAddEdge(node, call);
+                          // }
 
                           processResolvedCall(node, call, target, constParams, uniqueCatch);
                           if (!haveAlreadyVisited(target)) {
@@ -2387,9 +2519,11 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
             // process the newly discovered target for this call
             sideEffect.b = true;
 
-            printPointerInfoAddEdge(node, call);
-            printCallGraphInfoAddEdge(node);
-
+            // if (VAR_INFO){
+            //   printPointerInfoAddEdge(node, call);
+            //   printCallGraphInfoAddEdge(node, call);
+            // }
+            
             processResolvedCall(node, call, target, constParams, uniqueCatch);
             if (!haveAlreadyVisited(target)) {
               markDiscovered(target);

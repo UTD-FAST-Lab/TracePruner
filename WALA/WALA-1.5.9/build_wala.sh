@@ -9,8 +9,8 @@ echo "Transferring JAR files to script folders..."
 
 # Define the source and destination directories
 BASE_DIR=$(pwd) 
-DEST_DIR="$HOME/projects/CallGraphPruner/scripts/trace-generation/wala-jars/repository/com/ibm/wala"
-DRIVER_DIR="$HOME/projects/CallGraphPruner/scripts/trace-generation/driver/wala-project"
+DEST_DIR="$HOME/projects/TracePruner/scripts/trace-generation/wala-jars/repository/com/ibm/wala"
+DRIVER_DIR="$HOME/projects/TracePruner/scripts/trace-generation/driver/wala-project"
 
 # Ensure destination directories exist
 # mkdir -p "$DEST_DIR/core" "$DEST_DIR/util" "$DEST_DIR/shrike"

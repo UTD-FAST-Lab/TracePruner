@@ -11,12 +11,11 @@ import argparse
 
 
 
-WALA_DRIVER = "/home/mohammad/projects/CallGraphPruner/scripts/trace-generation/driver/wala-project/target/wala-project-1.0-SNAPSHOT-jar-with-dependencies.jar"
-data_folder = '/home/mohammad/projects/CallGraphPruner_data'  
-NJR1_DATASET_FOLDER = f'{data_folder}/njr-1_dataset/june2020_dataset'
-PROGRAM_FILES = '/home/mohammad/projects/CallGraphPruner/scripts/trace-generation/programs.txt'
+WALA_DRIVER = "/home/mohammad/projects/TracePruner/scripts/trace-generation/driver/wala-project/target/wala-project-1.0-SNAPSHOT-jar-with-dependencies.jar"
+NJR1_DATASET_FOLDER = '/20TB/mohammad/njr-1-dataset/june2020_dataset'
+PROGRAM_FILES = '/20TB/mohammad/data/programs.txt'
 
-agent = '/home/mohammad/projects/CallGraphPruner/agents/edge-trace-agent/target/edge-trace-agent-1.0-SNAPSHOT-jar-with-dependencies.jar' 
+agent = '/home/mohammad/projects/TracePruner/agents/edge-trace-agent/target/edge-trace-agent-1.0-SNAPSHOT-jar-with-dependencies.jar' 
 
 agentLevel = (
 	'cg', 
@@ -53,12 +52,13 @@ def run_wala(program, args):
 		agentType = agentLevel[0]
 		path = 'new_cgs'
 
-	output_dir = os.path.join('/home/mohammad/projects/CallGraphPruner/data', 'edge-traces', path, program)
+	output_dir = os.path.join('/20TB/mohammad/data', 'edge-traces-encode', path, program)
 	if not os.path.exists(output_dir):
 		os.makedirs(output_dir)
 
 	command = [
 		'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java',
+		'-Xmx128g',
 		f'-javaagent:{agent}=logLevel=method,agentLevel={agentType},output={output_dir}',
 		'-jar', WALA_DRIVER,
 		'-classpath', jar_file,
@@ -71,13 +71,31 @@ def run_wala(program, args):
 	command = ' '.join(command)
 	os.system(command)
 
+	# var_info_dir = os.path.join('/20TB/mohammad/data/variables', program)
+	# if not os.path.exists(var_info_dir):
+	# 	os.makedirs(var_info_dir)
+
+	# var_path = os.path.join(var_info_dir, 'var.txt')
+	# with open(var_path, 'w') as f:
+	# 	process = subprocess.Popen(command, stdout=f, stderr=f, text=True)
+	# 	process.communicate()
+
 
 def run_wala_in_parallel(num_threads, programs, args):
-	with ThreadPoolExecutor(max_workers=num_threads) as executor:
-		futures = []
-		for program in programs:		
-			future = executor.submit(run_wala, program, args)
+    with ThreadPoolExecutor(max_workers=num_threads) as executor:
+        future_to_program = {
+            executor.submit(run_wala, program, args): program
+            for program in programs
+        }
 
+        for future in as_completed(future_to_program):
+            program = future_to_program[future]
+            try:
+                future.result()
+            except Exception as e:
+                print(f"❌ Error processing {program}: {e}")
+            else:
+                print(f"✅ Finished processing {program}")
 
 def main(args):
 	
@@ -85,7 +103,7 @@ def main(args):
     with open(PROGRAM_FILES, 'r') as file:
         programs = [program.strip() for program in file.readlines()]
 		
-    run_wala_in_parallel(3, programs, args)
+    run_wala_in_parallel(10, programs, args)
 
 	
 

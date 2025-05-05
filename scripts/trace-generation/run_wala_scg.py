@@ -11,11 +11,11 @@ import argparse
 
 
 
-WALA_DRIVER_1_5_9 = "/home/mohammad/projects/CallGraphPruner/scripts/trace-generation/driver/wala-project_scg/target/wala-project_scg-1.0-SNAPSHOT-jar-with-dependencies.jar"
-WALA_DRIVER = "/home/mohammad/projects/CallGraphPruner/scripts/trace-generation/driver/wala-project_scg_1.5.5/target/wala-project_scg_1.5.5-1.0-SNAPSHOT-jar-with-dependencies.jar"
-data_folder = '/home/mohammad/projects/CallGraphPruner_data'  
-NJR1_DATASET_FOLDER = f'{data_folder}/njr-1_dataset/june2020_dataset'
-PROGRAM_FILES = '/home/mohammad/projects/CallGraphPruner/data/programs/all_programs.txt'
+WALA_DRIVER = "/home/mohammad/projects/TracePruner/scripts/trace-generation/driver/wala-project_scg/target/wala-project_scg-1.0-SNAPSHOT-jar-with-dependencies.jar"
+# WALA_DRIVER = "/home/mohammad/projects/CallGraphPruner/scripts/trace-generation/driver/wala-project_scg_1.5.5/target/wala-project_scg_1.5.5-1.0-SNAPSHOT-jar-with-dependencies.jar"
+# data_folder = '/home/mohammad/projects/CallGraphPruner_data'  
+NJR1_DATASET_FOLDER = f'/20TB/mohammad/njr-1-dataset/june2020_dataset'
+PROGRAM_FILES = '/home/mohammad/projects/TracePruner/data/programs.txt'
 
 
 
@@ -34,28 +34,36 @@ def run_wala(program):
 	
 	print(program)
 
-	if program != 'url0e7d57473a_kyorohiro_HetimaUtil_tgz-pJ8-net_hetimatan_net_http_HttpServer3xxJ8':
-		return
+	# if program != 'url0e7d57473a_kyorohiro_HetimaUtil_tgz-pJ8-net_hetimatan_net_http_HttpServer3xxJ8':
+	# 	return
 		
 	mainclass = get_mainclass(program)
 	jar_file = get_jar_file(program)
-	output_file = f'/home/mohammad/projects/CallGraphPruner/data/static-cgs/wala_1.5.5/{program}/wala0cfa_all.csv'
+	output_file = f'/20TB/mohammad/data/static_cgs/{program}/wala0cfa.csv'
 
-	# command = [
-	# 	'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java',
-	# 	'-jar', WALA_DRIVER,
-	# 	'-classpath', jar_file,
-	# 	'-mainclass', mainclass,
-	# 	'-reflection', 'false',
-	# 	'-analysis', '0cfa',
-	# 	'-resolveinterfaces', 'true',
-	# 	'-output', output_file
-	# ]
+	command = [
+		'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java',
+		'-jar', WALA_DRIVER,
+		'-classpath', jar_file,
+		'-mainclass', mainclass,
+		'-reflection', 'false',
+		'-analysis', '0cfa',
+		'-resolveinterfaces', 'true',
+		'-output', output_file
+	]
 
-	command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -jar {WALA_DRIVER} -classpath {jar_file} -mainclass {mainclass} -output {output_file} -resolveinterfaces true -reflection false -analysis 0cfa '
+	# command = f'/usr/lib/jvm/java-1.8.0-openjdk-amd64/bin/java -jar {WALA_DRIVER} -classpath {jar_file} -mainclass {mainclass} -output {output_file} -resolveinterfaces true -reflection false -analysis 0cfa '
+	
+	var_info_dir = os.path.join('/20TB/mohammad/data/variables', program)
+	if not os.path.exists(var_info_dir):
+		os.makedirs(var_info_dir)
 
-
-	os.system(command)
+	var_path = os.path.join(var_info_dir, 'var.txt')
+	with open(var_path, 'w') as f:
+		process = subprocess.Popen(command, stdout=f, stderr=f, text=True)
+		process.communicate()
+	
+	# os.system(command)
 
 
 def run_wala_in_parallel(num_threads, programs):

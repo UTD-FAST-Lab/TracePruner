@@ -1,8 +1,5 @@
 package org.example;
 
-import org.objectweb.asm.MethodVisitor;
-import org.objectweb.asm.Opcodes;
-
 import org.objectweb.asm.*;
 
 import java.util.HashMap;
@@ -49,9 +46,8 @@ public class WalaTraceLoggerMethodVisitor extends MethodVisitor {
             mv.visitVarInsn(Opcodes.ALOAD, 2);  // Load `instruction` 
             mv.visitVarInsn(Opcodes.ALOAD, 1);  // Load `src node` 
             mv.visitVarInsn(Opcodes.ALOAD, 3);  // Load 'Target node'
-            mv.visitLdcInsn(programDirPath);
             mv.visitMethodInsn(Opcodes.INVOKESTATIC, "org/example/InvocationLogger", "writeTrace",
-                "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/String;)V",false);
+                "(Ljava/lang/Object;Ljava/lang/Object;Ljava/lang/Object;)V", false);
         }
 
 
