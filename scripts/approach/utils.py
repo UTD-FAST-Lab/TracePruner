@@ -4,6 +4,12 @@ from sklearn.model_selection import KFold
 from imblearn.over_sampling import SMOTE
 import numpy as np
 
+import matplotlib.pyplot as plt
+from sklearn.manifold import TSNE
+from sklearn.decomposition import PCA
+import seaborn as sns
+
+
 def balance_labeled_data_with_smote(instances, features):
     """
     Uses SMOTE to balance labeled (non-unknown) data.
@@ -170,3 +176,116 @@ def evaluate(test):
     eval_main = evaluate_fold(y_true, y_pred)
     eval_gt = evaluate_fold(gt_y_true, gt_y_pred) if gt_y_true else {}
     return eval_main, true, false, eval_gt
+
+
+
+
+
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn.manifold import TSNE
+from sklearn.decomposition import PCA
+
+def plot_points(instances, path, feature_type='static', method='tsne', plot_only_known=False):
+    """
+    Plots instances in 2D using TSNE/PCA:
+    - Green: known true
+    - Red: known false
+    - Gray (faint): unknown
+    - If `plot_only_known=True`, skips unknowns entirely
+    """
+
+    feature_list = []
+    colors = []
+    sizes = []
+    known_mask = []
+
+    for inst in instances:
+        if feature_type == 'static':
+            vec = inst.get_static_featuers()
+            expected_dim = 11
+        elif feature_type == 'semantic':
+            vec = inst.get_semantic_features()
+            expected_dim = 768
+        elif feature_type == 'trace':
+            vec = inst.get_trace_features()
+            expected_dim = 128
+        else:
+            raise ValueError("Invalid feature_type")
+
+        if vec is None or len(vec) != expected_dim:
+            print(f"Instance {inst} has invalid feature vector: {vec}")
+            continue
+
+        feature_list.append(vec)
+
+        if inst.is_known():
+            label = inst.get_label()
+            colors.append('green' if label else 'red')
+            sizes.append(5)
+            known_mask.append(True)
+        else:
+            colors.append('black')
+            sizes.append(2)
+            known_mask.append(False)
+
+    X = np.array(feature_list)
+    known_mask = np.array(known_mask)
+
+    # Reduce dimensionality
+    if method == 'tsne':
+        reducer = TSNE(n_components=2, random_state=42, perplexity=30)
+    elif method == 'pca':
+        reducer = PCA(n_components=2)
+    else:
+        raise ValueError("Invalid method: tsne or pca")
+
+    X_embedded = reducer.fit_transform(X)
+
+    # Split
+    X_known = X_embedded[known_mask]
+    known_colors = np.array(colors)[known_mask]
+    known_sizes = np.array(sizes)[known_mask]
+
+    plt.figure(figsize=(8, 6))
+
+    if not plot_only_known:
+        X_unknown = X_embedded[~known_mask]
+        unknown_colors = np.array(colors)[~known_mask]
+        unknown_sizes = np.array(sizes)[~known_mask]
+        plt.scatter(X_unknown[:, 0], X_unknown[:, 1], c=unknown_colors, s=unknown_sizes, alpha=0.3, label='Unknown')
+
+    plt.scatter(X_known[:, 0], X_known[:, 1], c=known_colors, s=known_sizes, alpha=0.6, label='Known')
+    plt.title(f"{feature_type.upper()} Features ({method.upper()})")
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(path)
+    plt.close()
+
+
+
+
+
+def plot_clusters_by_label(instances, features, cluster_ids, probs, save_path):
+    pca = PCA(n_components=2)
+    projection = pca.fit_transform(features)
+
+    color_palette = sns.color_palette('hls', len(set(cluster_ids)))
+    cluster_colors = [color_palette[x] if x >= 0 else (0.6, 0.6, 0.6) for x in cluster_ids]
+
+    plt.figure(figsize=(10, 7))
+
+    for i, inst in enumerate(instances):
+        color = cluster_colors[i]
+        marker = 'o' if inst.is_known() and inst.get_label() else \
+                 'x' if inst.is_known() and not inst.get_label() else \
+                 '.'
+        plt.scatter(projection[i, 0], projection[i, 1],
+                    c=[color], s=20,
+                    marker=marker,
+                    alpha=probs[i] if cluster_ids[i] != -1 else 0.3,
+                    edgecolor='k' if marker != '.' else 'none', linewidth=0.2)
+
+    plt.title("Cluster Visualization (shape=label, color=cluster)")
+    plt.savefig(save_path)
+    plt.close()

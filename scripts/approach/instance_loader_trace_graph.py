@@ -1,63 +1,57 @@
 from approach.Instance import Instance
+from approach.preprocessing.utils import load_trace_graph
+
 import pandas as pd
 import os
 
 
-import os
-import pandas as pd
+def get_manual_gt_map(manual_gt_path):
+    manual_gt_map = {}
+    if os.path.exists(manual_gt_path):
+        manual_gt_df = pd.read_csv(manual_gt_path)
+        for _, row in manual_gt_df.iterrows():
+            key = (row['program'], row['method'], row['offset'], row['target'])
+            manual_gt_map[key] = int(row['label'])
+    return manual_gt_map
+
 
 
 def load_instances(dataset="njr"):
     assert dataset == "njr", "Only njr dataset is currently supported."
     
     programs_path = '/home/mohammad/projects/CallGraphPruner/data/programs/all_programs.txt' 
-    manual_gt_path = '/home/mohammad/projects/CallGraphPruner/data/manual/manual_unknown_labels.csv'
-    
     static_cg_dir = '/home/mohammad/projects/CallGraphPruner/data/static-cgs/wala_1.5.9'
-    semantic_features_dir = '/home/mohammad/projects/CallGraphPruner/data/semantic_embeddings/semantic_embeddings'
-    trace_features_dir = '/home/mohammad/projects/CallGraphPruner/data/trace-embeddings/n2v/sum/tfidf2'   # n2v
-    # trace_features_dir = '/home/mohammad/projects/CallGraphPruner/data/trace-embeddings/gnn/cg_embeddings_dgi_weighted'   # gnn
+    manual_gt_path = '/home/mohammad/projects/CallGraphPruner/data/manual/manual_unknown_labels.csv'
+    traces_path = '/home/mohammad/projects/CallGraphPruner/data/edge-traces/new_cgs'
+
     
     with open(programs_path, 'r') as f:
         program_names = [line.strip() for line in f if line.strip()]
 
     # Load manually labeled unknowns
-    manual_gt_map = {}
-    if os.path.exists(manual_gt_path):
-        manual_gt_df = pd.read_csv(manual_gt_path)
-        for _, row in manual_gt_df.iterrows():
-            key = (row['program'], row['method'], row['offset'], row['target'])
-            manual_gt_map[key] = int(row['label'])  # 0 or 1
+    manual_gt_map = get_manual_gt_map(manual_gt_path)
 
-    
+
     instances = []
     for program in program_names:
         program_dir_path = os.path.join(static_cg_dir, program)
         true_path = os.path.join(program_dir_path, 'true_edges.csv')
         false_path = os.path.join(program_dir_path, 'diff_0cfa_1cfa.csv')
         all_edges_path = os.path.join(program_dir_path, 'wala0cfa_filtered.csv')
-        
         static_features_path = os.path.join(program_dir_path, 'static_featuers', 'wala0cfa_filtered.csv')
-        trace_features_path = os.path.join(trace_features_dir, f'{program}.csv')
-        semantic_features_path = os.path.join(semantic_features_dir, f'{program}.csv')
 
-        if not os.path.exists(true_path) or not os.path.exists(all_edges_path) or not os.path.exists(static_features_path):
+        # load traces mapping
+        trace_mapping_path = os.path.join(traces_path, program, 'edges.csv')
+        
+
+        if not os.path.exists(true_path) or not os.path.exists(all_edges_path) or not os.path.exists(static_features_path) or not os.path.exists(trace_mapping_path):
             continue
 
         true_df = pd.read_csv(true_path)
         false_df = pd.read_csv(false_path) if os.path.exists(false_path) else pd.DataFrame(columns=['method', 'offset', 'target'])
         all_df = pd.read_csv(all_edges_path)
         static_features_df = pd.read_csv(static_features_path).set_index(['method', 'offset', 'target'])
-
-        semantic_features_df = pd.read_csv(semantic_features_path)
-        semantic_features_df = semantic_features_df.drop_duplicates(subset=['method', 'offset', 'target'])
-        semantic_features_df = semantic_features_df.set_index(['method', 'offset', 'target'])
-        
-        
-        trace_features_df = pd.read_csv(trace_features_path)
-        # trace_features_df.drop(columns=['edge_id'], inplace=True)
-        trace_features_df = trace_features_df.drop_duplicates(subset=['method', 'offset', 'target'])
-        trace_features_df = trace_features_df.set_index(['method', 'offset', 'target'])
+        trace_mapping_df = pd.read_csv(trace_mapping_path).set_index(['method', 'offset', 'target'])
 
         all_df = all_df[~all_df['method'].str.startswith('java/') & ~all_df['target'].str.startswith('java/')]
 
@@ -72,24 +66,13 @@ def load_instances(dataset="njr"):
             key = (row['method'], row['offset'], row['target'])
             if key in static_features_df.index:
                 inst = Instance(program, *key, is_unknown, label=label)
-                static = static_features_df.loc[key]
-                static = static.squeeze().values.tolist()
-                inst.set_static_features(static)
+                inst.set_static_features(static_features_df.loc[key])
 
-                # Set trace features if available
-                trace_key = (row['method'], row['offset'], row['target'])
-                if trace_key in trace_features_df.index:
-                    trace = trace_features_df.loc[trace_key]
-                    trace = trace.squeeze().values.tolist()
-                    inst.set_trace_features(trace)
-                
-                # Set semantic features if available
-                if key in semantic_features_df.index:
-                    semantic = semantic_features_df.loc[key]
-                    semantic = semantic.squeeze().values.tolist()
-                    inst.set_semantic_features(semantic)
-      
-                
+                # set trace features
+                if key in trace_mapping_df.index:
+                    edge_id = trace_mapping_df.loc[key]['edge_id']
+                    inst.set_trace_graph(load_trace_graph(program, edge_id))
+
                  # Set GT if exists
                 gt_key = (program, row['method'], row['offset'], row['target'])
                 if gt_key in manual_gt_map:

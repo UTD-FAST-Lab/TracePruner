@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import KFold
 from approach.utils import evaluate_fold, write_results_to_csv, write_metrics_to_csv, split_folds
@@ -22,7 +23,7 @@ class ClusteringRunner:
     def get_features(self, insts):
         
         feature_vecs = []
-
+        all = 0
         for inst in insts:
             if self.use_semantic:
                 code = inst.get_semantic_features()
@@ -34,8 +35,18 @@ class ClusteringRunner:
                 if struct is None or len(struct) != 11:
                     struct = [0.0] * 11
                 feature_vecs.append(struct)
+            elif self.use_trace:
+                trace = inst.get_trace_features()
+                if trace is None or len(trace) != 128:   # n2v
+                    all += 1
+                    trace = [0.0] * 128
+                # if trace is None or len(trace) != 64:  #gnn
+                #     all += 1
+                #     trace = [0.0] * 64
 
-            
+                feature_vecs.append(trace)
+
+        print("all: ", all)
         return np.array(feature_vecs)
             
 
@@ -62,11 +73,11 @@ class ClusteringRunner:
                 X_train_scaled = X_all[:len(X_train)]
                 X_test_scaled = X_all[len(X_train):]
             
-            elif self.use_semantic:
+            elif self.use_semantic or self.use_trace:
                 # reduction of dimensions with pca
-                from sklearn.decomposition import PCA
-                pca = PCA(n_components=50)
-                X_all = pca.fit_transform(np.vstack((X_train, X_test)))
+                from sklearn.decomposition import FastICA
+                ica = FastICA(n_components=50)
+                X_all = ica.fit_transform(np.vstack((X_train, X_test)))
                 X_train_scaled = X_all[:len(X_train)]
                 X_test_scaled = X_all[len(X_train):]
 
@@ -78,8 +89,8 @@ class ClusteringRunner:
             # self.clusterer.fit_smote(X_train_scaled, train) #mpckmeans
             # self.clusterer.label_clusters(train, self.clusterer.clusterer.labels_, self.labeler) #mpckmeans
 
-            # if fold == 1:
-            #     self.print_cluster_distribution(train, self.clusterer.clusterer.labels_)
+            if fold == 1:
+                self.print_cluster_distribution(train, self.clusterer.clusterer.labels_)
 
             cluster_ids, strengths = self.clusterer.predict(X_test_scaled)
 
@@ -155,7 +166,7 @@ class ClusteringRunner:
 
 
         # write_results_to_csv(all_eval, f"{self.output_dir}/cluster_results.csv")
-        write_metrics_to_csv(all_metrics, f"{self.output_dir}/fold_metrics_dist_plelog.csv")
+        write_metrics_to_csv(all_metrics, f"{self.output_dir}/fold_metrics_dist_plelog_n2v_sum_regular.csv")
 
 
 
@@ -209,7 +220,7 @@ class ClusteringRunner:
             cluster_2_data[cid].append(inst)
         
 
-        with open(f'{self.output_dir}/cluster_distibution_balanced.txt', 'w') as f:
+        with open(f'{self.output_dir}/cluster_distibution_balanced_n2v_sum_regular.txt', 'w') as f:
             for cid, val in cluster_2_data.items():
                 true = 0
                 false = 0

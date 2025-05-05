@@ -6,3 +6,4 @@
 /SOOT
 /WALA/WALA-1.5.5
 scripts/venv
+/scripts/approach/*.pkl
