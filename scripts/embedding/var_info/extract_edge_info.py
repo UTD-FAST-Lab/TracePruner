@@ -262,14 +262,18 @@ for program in os.listdir(base_dir):
             'parameters_add': json.dumps(pointer_add.get('parameters')),
 
             # visitInvoke CALLGRAPH info
-            'call_visit_method': visit['callgraph'].get('current_node', {}).get('method'),
+            # 'call_visit_method': visit['callgraph'].get('current_node', {}).get('method'),
             'call_visit_out': visit['callgraph'].get('current_node', {}).get('out_edges'),
             'call_visit_in': visit['callgraph'].get('current_node', {}).get('in_edges'),
+            'call_visit_total_nodes': visit['callgraph'].get('total_nodes', 0),
+            'call_visit_total_edges': visit['callgraph'].get('total_edges', 0),
 
             # addEdge CALLGRAPH info
-            'call_add_method': callgraph_add.get('current_node', {}).get('method'),
+            # 'call_add_method': callgraph_add.get('current_node', {}).get('method'),
             'call_add_out': callgraph_add.get('current_node', {}).get('out_edges'),
             'call_add_in': callgraph_add.get('current_node', {}).get('in_edges'),
+            'call_add_total_nodes': callgraph_add.get('total_nodes', 0),
+            'call_add_total_edges': callgraph_add.get('total_edges', 0),
         }
 
         rows.append(row)

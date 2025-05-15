@@ -103,15 +103,17 @@ public class WalaCallgraph {
     String resolveinterfaces = p.getProperty("resolveinterfaces");
     //resolveinterfaces = false results in an analysis which does not resolve an interface edge to its actual possible targets
 
-    String fileName = "wala-exclusion.txt"; // Example file in src/main/resources
-    File exclusion = null;
-    // Get the resource URL
-    URL resourceUrl = WalaCallgraph.class.getClassLoader().getResource(fileName);
-    if (resourceUrl != null) {
-      exclusion = new File(resourceUrl.getFile());
-    }
+    // String fileName = "wala-exclusion.txt"; // Example file in src/main/resources
+    // File exclusion = null;
+    // // Get the resource URL
+    // URL resourceUrl = WalaCallgraph.class.getClassLoader().getResource(fileName);
+    // if (resourceUrl != null) {
+    //   exclusion = new File(resourceUrl.getFile());
+    // }
 
-    AnalysisScope scope = AnalysisScopeReader.instance.makeJavaBinaryAnalysisScope(classpath, exclusion);
+    // AnalysisScope scope = AnalysisScopeReader.instance.makeJavaBinaryAnalysisScope(classpath, exclusion);
+
+    AnalysisScope scope = AnalysisScopeReader.instance.makeJavaBinaryAnalysisScope(classpath, null);
     ClassHierarchy cha = ClassHierarchyFactory.make(scope);
 
     Iterable<Entrypoint> entrypoints = Util.makeMainEntrypoints(cha, "L" + mainclass.replaceAll("\\.","/"));

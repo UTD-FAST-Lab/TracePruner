@@ -104,7 +104,7 @@ public abstract class SSAPropagationCallGraphBuilder extends PropagationCallGrap
     implements HeapModel {
   private static final boolean DEBUG = false;
 
-  private static final boolean VAR_INFO = true;
+  private static final boolean VAR_INFO = false;
 
   private static final boolean DEBUG_MULTINEWARRAY = DEBUG | false;
 
