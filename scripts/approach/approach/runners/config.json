@@ -1,0 +1,48 @@
+
+{
+    "cgPruner": 
+    {
+        "train_with_unknown_as_false": [true, false],
+        "evaluate_with_unknown_as_false": [true, false],
+        "threshold": [0.45, 0.50],
+        "balance": {
+            "basic": ["none"], 
+            "random": {
+                "undersample": [1.0, 0.75, 0.5, 0.25, 0.20, 0.10],
+                "oversample": [1.0, 0.75, 0.5, 0.25, 0.20, 0.10],
+                "smote": [1.0, 0.75, 0.5, 0.25, 0.20, 0.10]
+            }
+            
+        }
+    },
+    "autoPruner": 
+    {
+        "train_with_unknown_as_false": [true, false],
+        "evaluate_with_unknown_as_false": [true, false],
+        "use_static": [true, false],
+        "balance": {
+            "basic": ["none"], 
+            "random": {
+                "undersample": [1.0, 0.75, 0.5, 0.25, 0.20, 0.10],
+                "oversample": [1.0, 0.75, 0.5, 0.25, 0.20, 0.10],
+                "smote": [1.0, 0.75, 0.5, 0.25, 0.20, 0.10]
+            }
+            
+        }
+    },
+    "ml4cgp": 
+    {
+        "train_with_unknown_as_false": [true, false],
+        "evaluate_with_unknown_as_false": [true, false],
+        "model": ["codeT5", "codeT5+"],
+        "balance": {
+            "basic": ["none"], 
+            "random": {
+                "undersample": [1.0, 0.75, 0.5, 0.25, 0.20, 0.10],
+                "oversample": [1.0, 0.75, 0.5, 0.25, 0.20, 0.10],
+                "smote": [1.0, 0.75, 0.5, 0.25, 0.20, 0.10]
+            }
+            
+        }
+    }
+}
