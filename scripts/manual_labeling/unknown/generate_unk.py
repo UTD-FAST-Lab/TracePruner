@@ -17,11 +17,9 @@ for program in program_names:
     program_dir_path = os.path.join(static_cg_dir, program)
     program_dir_path_2 = os.path.join(static_cg_dir_2, program)
     true_path = os.path.join(program_dir_path, 'true_edges.csv')
-    false_path = os.path.join(program_dir_path_2, 'diff_0cfa_1cfa.csv')
+    false_path = os.path.join(program_dir_path_2, 'diff_0cfa_1obj.csv')
     all_edges_path = os.path.join(program_dir_path, 'wala0cfa_filtered.csv')
     
-    static_features_path = os.path.join(program_dir_path, 'static_featuers', 'wala0cfa_filtered.csv')
-
 
     true_df = pd.read_csv(true_path)
     false_df = pd.read_csv(false_path) if os.path.exists(false_path) else pd.DataFrame(columns=['method', 'offset', 'target'])

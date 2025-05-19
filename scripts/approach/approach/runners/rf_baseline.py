@@ -168,14 +168,16 @@ class RandomForestBaseline:
                 y_true.append(int(inst.get_label()))
                 y_pred.append(pred)
             else:
-                if pred == 1:
-                    true += 1
-                elif pred == 0:
-                    false += 1
 
                 if inst.ground_truth is not None:
                     gt_y_true.append(int(inst.ground_truth))
                     gt_y_pred.append(pred)
+                else:
+                    if pred == 1:
+                        true += 1
+                    elif pred == 0:
+                        false += 1
+
             
         
         print("all: ", true+false)

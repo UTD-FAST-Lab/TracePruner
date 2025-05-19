@@ -220,11 +220,12 @@ class NeuralNetBaseline:
                 y_true.append(int(inst.get_label()))
                 y_pred.append(pred)
             else:
-                true += pred
-                false += (1 - pred)
                 if inst.ground_truth is not None:
                     gt_y_true.append(int(inst.ground_truth))
                     gt_y_pred.append(pred)
+                else:   
+                    true += pred
+                    false += (1 - pred)
 
         eval_main = evaluate_fold(y_true, y_pred)
         eval_gt = evaluate_fold(gt_y_true, gt_y_pred) if gt_y_true else {}

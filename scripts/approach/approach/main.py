@@ -1,34 +1,94 @@
 import torch
 from torch.utils.data import DataLoader
+
+import json, os
+import itertools
+from concurrent.futures import ThreadPoolExecutor
+
 from approach.models.prediction_attn_model import ConfidenceWeightedNN, InstanceDataset, train_model, evaluate_model
 from approach.data_representation.instance_loader import load_instances
 from approach.clustering.flat_clustering_runner import FlatClusteringRunner
 from approach.models.hdbscan_model import HDBSCANClusterer
-from approach.utils import split_folds_instances, evaluate_fold, write_metrics_to_csv, custom_collate, scale_features
+from approach.utils import split_folds_instances, evaluate_fold, write_metrics_to_csv, custom_collate, scale_features, balance_training_set
 
 
+def load_config(config_path):
+    with open(config_path, 'r') as f:
+        config = json.load(f)
+    return config
 
 
-def run_clustering(instances, fold_idx):
+def run_clustering(instances, fold_idx, cluster_feature_type='static', only_true=True):
     print(f"Running clustering for fold {fold_idx}...")
 
-    runner = FlatClusteringRunner(
-        instances=instances,
-        clusterer=HDBSCANClusterer(min_cluster_size=5),
-        only_true=True,
-        output_dir="results/hdbscan/flat/trace/any_normal",
-        use_trace=False,
-        use_semantic=False,
-        use_static=True,
-        run_from_main=False,
-    )
+
+    # Initialize the clustering algorithm
+    if cluster_feature_type == 'static':
+        options = load_config('approach/utils/best_config.json')['clustering']['struct']
+        clusterer = HDBSCANClusterer(
+            min_cluster_size=options['min_cluster_size'],
+            min_samples=options['min_samples'],
+            metric=options['metric'],
+            cluster_selection_method=options['cluster_selection_method'],
+            alpha=options['alpha'],
+        )
+
+        runner = FlatClusteringRunner(
+            instances=instances,
+            clusterer=clusterer,
+            only_true=only_true,
+            output_dir="",
+            use_trace=False,
+            use_semantic=False,
+            use_static=True,
+            run_from_main=False,
+        )
+    elif cluster_feature_type == 'trace':
+        options = load_config('approach/utils/best_config.json')['clustering']['trace']
+        clusterer = HDBSCANClusterer(
+            min_cluster_size=options['min_cluster_size'],
+            min_samples=options['min_samples'],
+            metric=options['metric'],
+            cluster_selection_method=options['cluster_selection_method'],
+            alpha=options['alpha'],
+        )
+
+        runner = FlatClusteringRunner(
+            instances=instances,
+            clusterer=clusterer,
+            only_true=only_true,
+            output_dir="",
+            use_trace=True,
+            use_semantic=False,
+            use_static=False,
+            run_from_main=False,
+        )
+    elif cluster_feature_type == 'semantic':
+        options = load_config('approach/utils/best_config.json')['clustering']['semantic_raw']
+        clusterer = HDBSCANClusterer(
+            min_cluster_size=options['min_cluster_size'],
+            min_samples=options['min_samples'],
+            metric=options['metric'],
+            cluster_selection_method=options['cluster_selection_method'],
+            alpha=options['alpha'],
+        )
+
+        runner = FlatClusteringRunner(
+            instances=instances,
+            clusterer=clusterer,
+            only_true=only_true,
+            output_dir="",
+            use_trace=False,
+            use_semantic=True,
+            use_static=False,
+            run_from_main=False,
+        )
 
     # Run clustering
     runner.run()
-    # Assuming the clustering algorithm modifies the instances in place
 
 
-def main(instances, num_folds=5, feature_type='static', input_dim=11, hidden_dim=8, num_layers=2, dropout=0.3, batch_size=32, num_epochs=10, lr=1e-4, device='cuda'):
+def main(instances, num_folds=5, cluster_feature_type='static', only_true=True, feature_type='static', balance_type=None, input_dim=11, hidden_dim=8, num_layers=2, dropout=0.3, batch_size=32, num_epochs=10, lr=1e-4, apply_attention=True, device='cuda'):
 
     all_metrics = []
     all_eval = []
@@ -40,10 +100,14 @@ def main(instances, num_folds=5, feature_type='static', input_dim=11, hidden_dim
         print(f"Processing Fold {fold_idx}...")
 
         # Run clustering to get labels and confidence scores
-        run_clustering(train_instances, fold_idx)
+        run_clustering(train_instances, fold_idx, cluster_feature_type=cluster_feature_type, only_true=only_true)
 
         # scale the features
-        scale_features(train_instances + test_instances)
+        scale_features(train_instances + test_instances, feature_type=feature_type)
+
+        # balance the dataset
+        if balance_type is not None:
+            train_instances = balance_training_set(train_instances, method=balance_type)
 
         # Prepare data loaders
         train_dataset = InstanceDataset(train_instances, feature_type=feature_type)
@@ -58,7 +122,7 @@ def main(instances, num_folds=5, feature_type='static', input_dim=11, hidden_dim
 
         # Train the model
         print(f"Training Fold {fold_idx}...")
-        train_model(model, train_loader, optimizer, num_epochs=num_epochs, device=device)
+        train_model(model, train_loader, optimizer, num_epochs=num_epochs, device=device, apply_attention=apply_attention)
 
         # Evaluate the model
         print(f"Evaluating Fold {fold_idx}...")
@@ -86,10 +150,10 @@ def main(instances, num_folds=5, feature_type='static', input_dim=11, hidden_dim
 
 
     # Overall evaluation
-    print_overal_eval(instances, all_metrics, unk_labeled_true, unk_labeled_false)
+    print_overal_eval(instances, all_metrics, unk_labeled_true, unk_labeled_false, apply_attention=apply_attention, feature_type=feature_type, cluster_feature_type=cluster_feature_type, only_true=only_true, balance_type=balance_type)
 
 
-def print_overal_eval(instances, all_metrics, unk_labeled_true, unk_labeled_false):
+def print_overal_eval(instances, all_metrics, unk_labeled_true, unk_labeled_false, apply_attention=True, feature_type='static', cluster_feature_type='static', only_true=True, balance_type=None):
     # Overall
 
     labeled = [i for i in instances if i.is_known()]
@@ -100,15 +164,6 @@ def print_overal_eval(instances, all_metrics, unk_labeled_true, unk_labeled_fals
     overall["unk_labeled_true"] = unk_labeled_true
     overall["unk_labeled_false"] = unk_labeled_false
     overall["unk_labeled_all"] = unk_labeled_false + unk_labeled_true
-    
-    # Add evaluation on manually labeled unknowns
-    # gt_instances = [i for i in instances if i.ground_truth is not None and not i.is_known()]
-    # gt_y_true = [int(i.ground_truth) for i in gt_instances]
-    # gt_y_pred = [int(i.get_predicted_label()) for i in gt_instances]
-    # gt_metrics = evaluate_fold(gt_y_true, gt_y_pred) if gt_y_true else {}
-
-    # for k, v in gt_metrics.items():
-    #     overall[f"gt_{k}"] = v
 
     # calculate the mean of all the gt metrics
     for metric in all_metrics:
@@ -121,9 +176,6 @@ def print_overal_eval(instances, all_metrics, unk_labeled_true, unk_labeled_fals
         if k.startswith("gt_"):
             overall[k] =  round(overall[k]/len(all_metrics),3)
 
-    # # overall["gt_count"] = len(gt_y_true)
-    # print(" ==== manual labeling ====")
-    # print(gt_metrics)
     
     overall["fold"] = "overall"
     all_metrics.append(overall)
@@ -132,8 +184,16 @@ def print_overal_eval(instances, all_metrics, unk_labeled_true, unk_labeled_fals
     print(f"Precision: {overall['precision']:.3f}, Recall: {overall['recall']:.3f}, F1: {overall['f1']:.3f}")
     print(f"TP: {overall['TP']} | FP: {overall['FP']} | TN: {overall['TN']} | FN: {overall['FN']}")
 
-    write_metrics_to_csv(all_metrics, f"approach/results/prediction/struct-struct-attn.csv")
-
+    if only_true:
+        if apply_attention:
+            write_metrics_to_csv(all_metrics, f"approach/results/prediction/{cluster_feature_type}_only_true_{feature_type}_{balance_type}_attn.csv")
+        else:
+            write_metrics_to_csv(all_metrics, f"approach/results/prediction/{cluster_feature_type}_only_true_{feature_type}_{balance_type}.csv")
+    else:
+        if apply_attention:
+            write_metrics_to_csv(all_metrics, f"approach/results/prediction/{cluster_feature_type}_true_false_{feature_type}_{balance_type}_attn.csv")
+        else:
+            write_metrics_to_csv(all_metrics, f"approach/results/prediction/{cluster_feature_type}_true_false_{feature_type}_{balance_type}.csv")
 
 def evaluate(test):
     y_true = []
@@ -153,14 +213,15 @@ def evaluate(test):
             y_true.append(int(inst.get_label()))
             y_pred.append(pred)
         else:
-            if pred == 1:
-                true += 1
-            elif pred == 0:
-                false += 1
-
             if inst.ground_truth is not None:
                 gt_y_true.append(int(inst.ground_truth))
                 gt_y_pred.append(pred)
+            else:
+                if pred == 1:
+                    true += 1
+                elif pred == 0:
+                    false += 1
+
         
     
     print("all: ", true+false)
@@ -179,8 +240,147 @@ def evaluate(test):
 
 
 
+
+
+def run_main_task(config, instances, cluster_feature_type, feature_type, only_true_val, balance_type, attention):
+    # Extract the correct hyperparameters based on feature type
+    if feature_type == 'static':
+        params = config['struct']
+    elif feature_type == 'trace':
+        params = config['trace']
+    elif feature_type == 'semantic':
+        params = config['semantic_raw']
+    else:
+        raise ValueError(f"Unknown feature type: {feature_type}")
+
+    # Run the main function
+    main(
+        instances,
+        num_layers=params['num_layers'],
+        input_dim=params['input_dim'],
+        hidden_dim=params['hidden_dim'],
+        dropout=params['dropout'],
+        feature_type=feature_type,
+        num_epochs=params['num_epochs'],
+        lr=params['lr'],
+        batch_size=params['batch_size'],
+        apply_attention=attention,
+        cluster_feature_type=cluster_feature_type,
+        only_true=only_true_val,
+        balance_type=balance_type,
+        device='cuda' if torch.cuda.is_available() else 'cpu'
+    )
+
+
+def main_parallel(config, instances, clustering_feature_types, feature_types, only_true, balance_types, apply_attention, max_workers=8):
+    # Create a ThreadPoolExecutor
+    with ThreadPoolExecutor(max_workers=max_workers) as executor:
+        # Create all possible parameter combinations
+        tasks = itertools.product(
+            clustering_feature_types,
+            feature_types,
+            only_true,
+            balance_types,
+            apply_attention
+        )
+
+        # Submit each combination as a separate task
+        futures = [
+            executor.submit(
+                run_main_task,
+                config,
+                instances,
+                cluster_feature_type,
+                feature_type,
+                only_true_val,
+                balance_type,
+                attention
+            )
+            for cluster_feature_type, feature_type, only_true_val, balance_type, attention in tasks
+        ]
+
+        # Wait for all tasks to complete
+        for future in futures:
+            try:
+                future.result()
+            except Exception as e:
+                print(f"Error occurred: {e}")
+
+
+
+
+
 if __name__ == '__main__':
     instances = load_instances('njr')
     print(f"Total instances: {len(instances)}")
-    main(instances, device='cuda' if torch.cuda.is_available() else 'cpu')
+
+    config = load_config('approach/utils/best_config.json')['prediction']
+
+    feature_types = ['static', 'trace', 'semantic']
+    clustering_feature_types = ['static', 'trace', 'semantic']
+    only_true = [True, False]
+    apply_attention = [True, False]
+    balance_types = [None, 'undersample', 'oversample']
+
+    main_parallel(
+        config,
+        instances,
+        clustering_feature_types=clustering_feature_types,
+        feature_types=feature_types,
+        only_true=only_true,
+        balance_types=balance_types,
+        apply_attention=apply_attention,
+        max_workers=8
+    )
+
+    # for cluster_feature_type in clustering_feature_types:
+    #     for feature_type in feature_types:
+    #         for only_true_val in only_true:
+    #             for balance_type in balance_types:
+    #                 for attention in apply_attention:
+
+    #                     if feature_type == 'static':
+    #                         input_dim = config['struct']['input_dim']
+    #                         hidden_dim = config['struct']['hidden_dim']
+    #                         num_layers = config['struct']['num_layers']
+    #                         dropout = config['struct']['dropout']
+    #                         batch_size = config['struct']['batch_size']
+    #                         num_epochs = config['struct']['num_epochs']
+    #                         lr = config['struct']['lr']
+    #                     elif feature_type == 'trace':
+    #                         input_dim = config['trace']['input_dim']
+    #                         hidden_dim = config['trace']['hidden_dim']
+    #                         num_layers = config['trace']['num_layers']
+    #                         dropout = config['trace']['dropout']
+    #                         batch_size = config['trace']['batch_size']
+    #                         num_epochs = config['trace']['num_epochs']
+    #                         lr = config['trace']['lr']
+    #                     elif feature_type == 'semantic':
+    #                         input_dim = config['semantic_raw']['input_dim']
+    #                         hidden_dim = config['semantic_raw']['hidden_dim']
+    #                         num_layers = config['semantic_raw']['num_layers']
+    #                         dropout = config['semantic_raw']['dropout']
+    #                         batch_size = config['semantic_raw']['batch_size']
+    #                         num_epochs = config['semantic_raw']['num_epochs']
+    #                         lr = config['semantic_raw']['lr']
+
+    #                     main(
+    #                         instances,
+    #                         num_layers=num_layers,
+    #                         input_dim=input_dim,
+    #                         hidden_dim=hidden_dim,
+    #                         dropout=dropout,
+    #                         feature_type=feature_type,
+    #                         num_epochs=num_epochs,
+    #                         lr=lr,
+    #                         batch_size=batch_size,
+    #                         apply_attention=attention,
+    #                         cluster_feature_type=cluster_feature_type,
+    #                         only_true=only_true_val,
+    #                         balance_type=balance_type,
+    #                         device='cuda' if torch.cuda.is_available() else 'cpu'
+    #                     )
+
+
+
 

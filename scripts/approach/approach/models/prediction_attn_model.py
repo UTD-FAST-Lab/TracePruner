@@ -80,10 +80,16 @@ class InstanceDataset(Dataset):
             features = instance.get_static_featuers()
         elif self.feature_type == 'trace':
             features = instance.get_trace_features()
+            if features is None:
+                features = [0.0] * 128
         elif self.feature_type == 'semantic':
             features = instance.get_semantic_features()
+            if features is None:
+                features = [0.0] * 768  # Default to zero vector if None
         elif self.feature_type == 'var':
             features = instance.get_var_features()
+            if features is None:
+                features = [0.0] * 64
         else:
             raise ValueError(f"Unsupported feature type: {self.feature_type}")
         
@@ -97,7 +103,7 @@ class InstanceDataset(Dataset):
         return torch.tensor(features, dtype=torch.float32), label, confidence, instance
 
 
-def train_model(model, train_loader, optimizer, num_epochs=10, device='cuda'):
+def train_model(model, train_loader, optimizer, num_epochs=10, device='cuda', apply_attention=True):
     model.train()
     for epoch in range(num_epochs):
         total_loss = 0.0
@@ -107,8 +113,10 @@ def train_model(model, train_loader, optimizer, num_epochs=10, device='cuda'):
             optimizer.zero_grad()
             outputs = model(features)
 
-            loss = confidence_weighted_loss(outputs, labels, confidences)
-            # loss = standard_binary_cross_entropy(outputs, labels)
+            if apply_attention:
+                loss = confidence_weighted_loss(outputs, labels, confidences)
+            else:
+                loss = standard_binary_cross_entropy(outputs, labels)
 
             loss.backward()
             optimizer.step()

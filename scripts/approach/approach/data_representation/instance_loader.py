@@ -7,8 +7,9 @@ import os
 # CONFIGURATION
 LOAD_TRACE = True
 LOAD_VAR = False
+LOAD_SEMANTIC_INCORRECT_FINETUNED = False
 LOAD_SEMANTIC_FINETUNED = False
-LOAD_SEMANTIC = True
+LOAD_SEMANTIC_RAW = True
 IGNORE_LIBS = True
 
 
@@ -21,12 +22,15 @@ def load_instances(dataset="njr"):
     static_cg_dir = '/home/mohammad/projects/CallGraphPruner/data/static-cgs/wala_1.5.9'
     static_cg_dir_false = '/home/mohammad/projects/CallGraphPruner/data/static-cgs/static_cgs_no_exlusion'
 
-    if LOAD_SEMANTIC:
+    if LOAD_SEMANTIC_RAW:
         semantic_features_dir = '/home/mohammad/projects/CallGraphPruner/data/semantic_embeddings/semantic_embeddings'
 
-    elif LOAD_SEMANTIC_FINETUNED:
+    elif LOAD_SEMANTIC_INCORRECT_FINETUNED:
         semantic_features_dir = '/home/mohammad/projects/CallGraphPruner_data/autoPruner'
         semantic_feature_map = load_finetuned_semantic_features(semantic_features_dir)
+
+    elif LOAD_SEMANTIC_FINETUNED:
+        semantic_features_dir = '/home/mohammad/projects/CallGraphPruner/data/semantic_embeddings/semantic_finetuned'
 
     var_features_dir = '/home/mohammad/projects/CallGraphPruner/data/trace-embeddings/var_embeddings/var_embeddings'   # varinfo
     trace_features_dir = '/home/mohammad/projects/CallGraphPruner/data/trace-embeddings/n2v/sum/tfidf'   # n2v
@@ -64,7 +68,7 @@ def load_instances(dataset="njr"):
         var_features_path = os.path.join(var_features_dir, f'{program}_full_info.csv_features.csv')  #var
         trace_features_path = os.path.join(trace_features_dir, f'{program}.csv')  #cg
 
-        if LOAD_SEMANTIC:
+        if LOAD_SEMANTIC_RAW or LOAD_SEMANTIC_FINETUNED:
             semantic_features_path = os.path.join(semantic_features_dir, f'{program}.csv')
 
         if not os.path.exists(true_path) or not os.path.exists(all_edges_path) or not os.path.exists(static_features_path):
@@ -84,7 +88,7 @@ def load_instances(dataset="njr"):
         static_features_df = pd.read_csv(static_features_path).set_index(['method', 'offset', 'target'])
 
         # Load semantic features
-        if LOAD_SEMANTIC:
+        if LOAD_SEMANTIC_RAW or LOAD_SEMANTIC_FINETUNED:
             semantic_features_df = pd.read_csv(semantic_features_path)
             semantic_features_df = semantic_features_df.drop_duplicates(subset=['method', 'offset', 'target'])
             semantic_features_df = semantic_features_df.set_index(['method', 'offset', 'target'])
@@ -128,14 +132,14 @@ def load_instances(dataset="njr"):
                         inst.set_var_features(var)
                 
                 # Set semantic features if available
-                if LOAD_SEMANTIC:
+                if LOAD_SEMANTIC_RAW or LOAD_SEMANTIC_FINETUNED:
                     if key in semantic_features_df.index:
                         semantic = semantic_features_df.loc[key]
                         semantic = semantic.squeeze().values.tolist()
                         inst.set_semantic_features(semantic)
 
                 # Set finetuned semantic features if available
-                if LOAD_SEMANTIC_FINETUNED:
+                if LOAD_SEMANTIC_INCORRECT_FINETUNED:
                     semantic_key = (program, row['method'], row['offset'], row['target'])
                     if semantic_key in semantic_feature_map:
                         inst.set_semantic_features(semantic_feature_map[semantic_key])

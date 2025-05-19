@@ -17,6 +17,7 @@ for program in os.listdir(unknown_dir):
 combined_df = pd.concat(all_unknown, ignore_index=True)
 combined_df = combined_df[['program', 'method', 'offset', 'target']]
 combined_df.drop_duplicates(inplace=True)
+print(f"✅ Saved {len(combined_df)} unknown edges to unknowns.csv")
 
 # Load all batch edges
 all_batches = []

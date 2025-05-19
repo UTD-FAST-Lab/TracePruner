@@ -12,7 +12,7 @@ from approach.utils import evaluate_fold, write_metrics_to_csv, plot_clusters_by
 
 
 class FlatClusteringRunner:
-    def __init__(self, instances, clusterer, output_dir, run_from_main, only_true=True, use_trace=False, use_semantic=False, use_static=True, use_var=False):
+    def __init__(self, instances, clusterer, output_dir, run_from_main, only_true=True, use_trace=False, use_semantic=False, use_static=True, use_var=False, option=None):
         self.instances = instances
         self.clusterer = clusterer
         self.only_true = only_true
@@ -22,6 +22,7 @@ class FlatClusteringRunner:
         self.use_semantic = use_semantic
         self.use_static = use_static
         self.use_var = use_var
+        self.option = option
 
 
         self.labeled = [i for i in instances if i.is_known()]
@@ -172,7 +173,7 @@ class FlatClusteringRunner:
                 labeler = "true_false"
 
             if self.use_trace:
-                write_metrics_to_csv([metrics], f'{self.output_dir}/{labeler}/trace.csv' )
+                write_metrics_to_csv([metrics], f'{self.output_dir}/{labeler}/trace_tuning/trace_{self.option}.csv' )
             elif self.use_semantic:
                 write_metrics_to_csv([metrics], f'{self.output_dir}/{labeler}/semantic.csv' )
             elif self.use_static:
@@ -219,14 +220,15 @@ class FlatClusteringRunner:
                 y_true.append(int(inst.get_label()))
                 y_pred.append(pred)
             else:
-                if pred == 1:
-                    true += 1
-                elif pred == 0:
-                    false += 1
-
                 if inst.ground_truth is not None:
                     gt_y_true.append(int(inst.ground_truth))
                     gt_y_pred.append(pred)
+                else:
+                    if pred == 1:
+                        true += 1
+                    elif pred == 0:
+                        false += 1
+
             
         
         print("all: ", true+false)
