@@ -17,6 +17,7 @@ model.eval()
 BENCHMARK_CALLGRAPHS = "/20TB/mohammad/baselines/autopruner/replication_package/raw_data"      # contains <program>/wala0cfa.csv
 PROCESSED_DATA = "/20TB/mohammad/baselines/autopruner/replication_package/processed_data/wala"      # contains <program>/code.csv
 PROGRAM_LIST_FILE = "/20TB/mohammad/data/programs.txt"    # or training list
+
 OUTPUT_DIR = "/20TB/mohammad/data/semantic_embeddings"                  # where program-wise CSVs go
 
 os.makedirs(OUTPUT_DIR, exist_ok=True)
