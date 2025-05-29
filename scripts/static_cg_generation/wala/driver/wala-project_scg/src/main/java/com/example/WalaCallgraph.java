@@ -11,7 +11,6 @@ import java.util.Set;
 import java.util.Arrays;
 
 import java.net.URL;
-import java.nio.channels.Selector;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -98,21 +97,18 @@ public class WalaCallgraph {
     String classpath = p.getProperty("classpath");
     String mainclass = p.getProperty("mainclass");
     String outputfile = p.getProperty("output");
+    String resolveinterfaces = p.getProperty("resolveinterfaces");
     String exclude = p.getProperty("exclude");
+
+
     String analysis = p.getProperty("analysis");
     String reflection = p.getProperty("reflection"); 
-    String resolveinterfaces = p.getProperty("resolveinterfaces");
-    //resolveinterfaces = false results in an analysis which does not resolve an interface edge to its actual possible targets
-
-    // String fileName = "wala-exclusion.txt"; // Example file in src/main/resources
-    // File exclusion = null;
-    // // Get the resource URL
-    // URL resourceUrl = WalaCallgraph.class.getClassLoader().getResource(fileName);
-    // if (resourceUrl != null) {
-    //   exclusion = new File(resourceUrl.getFile());
-    // }
-
-    // AnalysisScope scope = AnalysisScopeReader.instance.makeJavaBinaryAnalysisScope(classpath, exclusion);
+    String handleStaticInit = p.getProperty("handleStaticInit");
+    String useConstantSpecificKeys = p.getProperty("useConstantSpecificKeys");
+    String handleZeroLengthArray = p.getProperty("handleZeroLengthArray");
+    String useLexicalScopingForGlobals = p.getProperty("useLexicalScopingForGlobals");
+    String useStacksForLexicalScoping = p.getProperty("useStacksForLexicalScoping");
+   
 
     AnalysisScope scope = AnalysisScopeReader.instance.makeJavaBinaryAnalysisScope(classpath, null);
     ClassHierarchy cha = ClassHierarchyFactory.make(scope);
@@ -120,27 +116,121 @@ public class WalaCallgraph {
     Iterable<Entrypoint> entrypoints = Util.makeMainEntrypoints(cha, "L" + mainclass.replaceAll("\\.","/"));
     AnalysisOptions options = new AnalysisOptions(scope, entrypoints);
 
-    /* Choose the correct reflection option */
-    if (reflection.equalsIgnoreCase("true")){
-        options.setReflectionOptions(AnalysisOptions.ReflectionOptions.NO_FLOW_TO_CASTS_APPLICATION_GET_METHOD);
-    } else {
-        options.setReflectionOptions(AnalysisOptions.ReflectionOptions.NONE);
+    /* Choose the reflection option */
+    switch (reflection){
+        case "NONE":
+            options.setReflectionOptions(AnalysisOptions.ReflectionOptions.NONE);
+            break;
+        case "FULL":
+            options.setReflectionOptions(AnalysisOptions.ReflectionOptions.FULL);
+            break;
+        case "APPLICATION_GET_METHOD":
+            options.setReflectionOptions(AnalysisOptions.ReflectionOptions.APPLICATION_GET_METHOD);
+            break;
+        case "NO_FLOW_TO_CASTS":
+            options.setReflectionOptions(AnalysisOptions.ReflectionOptions.NO_FLOW_TO_CASTS);
+            break;
+        case "NO_FLOW_TO_CASTS_APPLICATION_GET_METHOD":
+            options.setReflectionOptions(AnalysisOptions.ReflectionOptions.NO_FLOW_TO_CASTS_APPLICATION_GET_METHOD);
+            break;
+        case "NO_METHOD_INVOKE":
+            options.setReflectionOptions(AnalysisOptions.ReflectionOptions.NO_METHOD_INVOKE);
+            break;
+        case "NO_FLOW_TO_CASTS_NO_METHOD_INVOKE":
+            options.setReflectionOptions(AnalysisOptions.ReflectionOptions.NO_FLOW_TO_CASTS_NO_METHOD_INVOKE);
+            break;
+        case "ONE_FLOW_TO_CASTS_NO_METHOD_INVOKE":
+            options.setReflectionOptions(AnalysisOptions.ReflectionOptions.ONE_FLOW_TO_CASTS_NO_METHOD_INVOKE);
+            break;
+        case "ONE_FLOW_TO_CASTS_APPLICATION_GET_METHOD":
+            options.setReflectionOptions(AnalysisOptions.ReflectionOptions.ONE_FLOW_TO_CASTS_APPLICATION_GET_METHOD);
+            break;
+        case "MULTI_FLOW_TO_CASTS_APPLICATION_GET_METHOD":
+            options.setReflectionOptions(AnalysisOptions.ReflectionOptions.MULTI_FLOW_TO_CASTS_APPLICATION_GET_METHOD);
+            break;
+        case "NO_STRING_CONSTANTS":
+            options.setReflectionOptions(AnalysisOptions.ReflectionOptions.NO_STRING_CONSTANTS);
+            break;
+        case "STRING_ONLY":
+            options.setReflectionOptions(AnalysisOptions.ReflectionOptions.STRING_ONLY);
+            break;
     }
-    
+
+    // set other options
+
+    if (handleStaticInit.equalsIgnoreCase("True")){
+        options.setHandleStaticInit(true);
+    } else {
+        options.setHandleStaticInit(false);
+    }
+    if (useConstantSpecificKeys.equalsIgnoreCase("True")){
+        options.setUseConstantSpecificKeys(true);
+    } else {
+        options.setUseConstantSpecificKeys(false);
+    }
+    if (handleZeroLengthArray.equalsIgnoreCase("True")){
+        options.setHandleZeroLengthArray(true);
+    } else {
+        options.setHandleZeroLengthArray(false);
+    }
+    if (useLexicalScopingForGlobals.equalsIgnoreCase("True")){
+        options.setUseLexicalScopingForGlobals(true);
+    } else {
+        options.setUseLexicalScopingForGlobals(false);
+    }
+    if (useStacksForLexicalScoping.equalsIgnoreCase("True")){
+        options.setUseStacksForLexicalScoping(true);
+    } else {
+        options.setUseStacksForLexicalScoping(false);
+    }
+
     /* Choose the correct analysis option */
     CallGraphBuilder builder;
     switch(analysis) {
         case "0cfa":
             builder = Util.makeZeroCFABuilder(Language.JAVA, options, new AnalysisCacheImpl(), cha);
             break;
+        case "ZERO_CONTAINER_CFA":
+            builder = Util.makeZeroContainerCFABuilder(options, new AnalysisCacheImpl(), cha);
+            break;
+        case "ZEROONE_CFA":
+            builder = Util.makeZeroOneCFABuilder(Language.JAVA, options, new AnalysisCacheImpl(), cha);
+            break;
+        case "VANILLA_ZEROONECFA":
+            builder = Util.makeVanillaZeroOneCFABuilder(Language.JAVA, options, new AnalysisCacheImpl(), cha);
+            break;
+        case "ZEROONE_CONTAINER_CFA":
+            builder = Util.makeZeroOneContainerCFABuilder(options, new AnalysisCacheImpl(), cha);
+            break;
+        case "VANILLA_ZEROONE_CONTAINER_CFA":
+            builder = Util.makeVanillaZeroOneContainerCFABuilder(options, new AnalysisCacheImpl(), cha);
+            break;
         case "1cfa":
             builder = Util.makeNCFABuilder(1, options, new AnalysisCacheImpl(), cha);
             break;
-        case "rta":
-            builder = Util.makeRTABuilder(options, new AnalysisCacheImpl(), cha);
+        case "VANILLA_1cfa":
+            builder = Util.makeVanillaNCFABuilder(1, options, new AnalysisCacheImpl(), cha);
+            break;
+        case "2cfa":
+            builder = Util.makeNCFABuilder(2, options, new AnalysisCacheImpl(), cha);
+            break;
+        case "VANILLA_2cfa":
+            builder = Util.makeVanillaNCFABuilder(2, options, new AnalysisCacheImpl(), cha);
             break;
         case "1obj":
             builder = Util.makeNObjBuilder(1, options, new AnalysisCacheImpl(), cha);
+            break;
+        case "VANILLA_1obj":
+            builder = Util.makeVanillaNObjBuilder(1, options, new AnalysisCacheImpl(), cha);
+            break;
+        case "2obj":
+            builder = Util.makeNObjBuilder(2, options, new AnalysisCacheImpl(), cha);
+            break;
+        case "VANILLA_2obj":
+            builder = Util.makeVanillaNObjBuilder(2, options, new AnalysisCacheImpl(), cha);
+            break;
+        case "rta":
+            builder = Util.makeRTABuilder(options, new AnalysisCacheImpl(), cha);
             break;
         default:
             System.out.println("-----Invalid analysis option----");
