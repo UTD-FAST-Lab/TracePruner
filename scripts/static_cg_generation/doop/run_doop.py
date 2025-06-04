@@ -11,7 +11,7 @@ benchmark_path = '/benchmark'
 
 
 def read_configurations():
-    config_path = 'configs/doop_1change_configs_v2.csv'
+    config_path = 'configs/doop_1change_configs_v3.csv'
     # config_path = 'doop_pairwise_testcases.csv'
     return pd.read_csv(config_path).to_dict(orient='records')
 
@@ -49,9 +49,9 @@ def run_doop(program_name, jar_file, config, config_id):
     try:
         subprocess.run(cmd_parts, timeout=60*60*3, check=True)
     except subprocess.TimeoutExpired:
-        print(f"❌ Timeout in config {config_id} for program {program_name}")
+        print(f"Timeout in config {config_id} for program {program_name}")
     except subprocess.CalledProcessError:
-        print(f"❌ DOOP failed for config {config_id} for program {program_name}")
+        print(f"DOOP failed for config {config_id} for program {program_name}")
 
 def run_doop_parallel(num_threads):
 

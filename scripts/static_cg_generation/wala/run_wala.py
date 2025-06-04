@@ -6,8 +6,8 @@ import subprocess
 
 # Paths
 WALA_DRIVER = "/home/mohammad/projects/TracePruner/scripts/static_cg_generation/wala/driver/wala-project_scg/target/wala-project_scg-1.0-SNAPSHOT-jar-with-dependencies.jar"
-CONFIG_PATH = "/home/mohammad/projects/TracePruner/scripts/static_cg_generation/wala/configs/wala_1change_configs_v2.csv"
-
+CONFIG_PATH = "/home/mohammad/projects/TracePruner/scripts/static_cg_generation/wala/configs/wala_1change_configs_v3.csv"
+config_version = 'v3'
 # Jar file map
 jar_files = {
     'axion': '/20TB/mohammad/xcorpus-total-recall/jarfiles/axion/final.jar',
@@ -26,7 +26,7 @@ def run_wala(program_name, jar_file, config, config_id):
     
     # Build unique output name from config
     config_suffix = "_".join(f"{k}_{config[k]}" for k in sorted(config))
-    output_file = f'/20TB/mohammad/xcorpus-total-recall/static_cgs/wala/v2/{program_name}/wala_{config_id}.csv'
+    output_file = f'/20TB/mohammad/xcorpus-total-recall/static_cgs/wala/{config_version}/{program_name}/wala_{config_id}.csv'
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
     # Build command
@@ -44,9 +44,9 @@ def run_wala(program_name, jar_file, config, config_id):
     try:
         subprocess.run(cmd_parts, timeout=60*60*3, check=True)  # 3-hour timeout
     except subprocess.TimeoutExpired:
-        print(f"❌ Timeout in config {config_id} for program {program_name}")
+        print(f"Timeout in config {config_id} for program {program_name}")
     except subprocess.CalledProcessError:
-        print(f"❌ WALA failed for config {config_id} for program {program_name}")
+        print(f"WALA failed for config {config_id} for program {program_name}")
 
 def run_wala_in_parallel(num_threads):
     configs = read_configurations()

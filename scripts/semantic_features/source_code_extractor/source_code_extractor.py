@@ -147,7 +147,6 @@ def find_method_source_code(project_dir, class_path, method_name, descriptor):
     inner_class_name = class_name_parts[1] if len(class_name_parts) > 1 else None
 
     param_types, return_type = parse_descriptor(descriptor)
-    print(return_type)
 
     for root, _, files in os.walk(project_dir):
         for file in files:
@@ -225,8 +224,9 @@ def extract_method_source(filepath, method_node):
 # === Example usage ===
 
 if __name__ == "__main__":
+    # TODO: read all of the rows of a single csv file and extract the source code for each method and target and save it in a new csv file with the input signature as the key
     project_root = "/20TB/mohammad/xcorpus-total-recall/source_codes/axion-1.0-M2/src"
-    input_signature = "org/axiondb/engine/BaseRow.getIdentifier:()I"
+    input_signature = "org/axiondb/engine/BaseRow.getIdentifier:([BII)I"
 
     class_path, method_sig = input_signature.split('.')
     method_name, descriptor = method_sig.split(':')

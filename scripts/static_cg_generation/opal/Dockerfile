@@ -10,7 +10,8 @@ RUN apt-get update && \
     dpkg-reconfigure -f noninteractive tzdata 
 
 ## package update
-RUN apt-get update && apt-get upgrade -y && apt-get install -y apt-utils git openjdk-11-jdk maven && \ 
+RUN apt-get update && apt-get upgrade -y && \
+    apt-get install -y apt-utils git openjdk-8-jdk maven && \
     apt-get install -y python3 python3-pip && \
     pip3 install --no-cache-dir pandas && \
     apt-get clean && \

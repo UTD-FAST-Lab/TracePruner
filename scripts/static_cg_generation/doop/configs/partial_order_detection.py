@@ -1,10 +1,7 @@
 
 
-static_cgs_dir = '/20TB/mohammad/xcorpus-total-recall/static_cgs/doop'
-config_csv = "/home/mohammad/projects/TracePruner/scripts/static_cg_generation/doop/configs/doop_default_1change_configs_v1.csv"
-config_file_version = "v1"
+static_cgs_dir = '/20TB/mohammad/xcorpus-total-recall/static_cgs/doop/final'
 json_file = "/home/mohammad/projects/TracePruner/scripts/static_cg_generation/doop/configs/doop_config.json"
-
 output_dir = '/20TB/mohammad/xcorpus-total-recall/compare'
 
 programs = [
@@ -13,6 +10,16 @@ programs = [
     'batik',
     'xerces'
 ]
+
+# === Config CSVs ===
+config_files = [
+    "doop_default_1change_configs_v1.csv",
+    "doop_1change_configs_v2.csv",
+    "doop_1change_configs_v3.csv",
+]
+config_file_versions = ["v1", "v2", "v3"]  # Must match order
+
+config_dir = "/home/mohammad/projects/TracePruner/scripts/static_cg_generation/doop/configs"
 
 
 import os
@@ -23,99 +30,91 @@ import numpy as np
 
 
 def has_partial_order(orders, analysis1, analysis2):
-    """
-    Check if the two analyses have a partial order.
-    """
-
     for order in orders:
         if order["left"] == analysis2 and order["right"] == analysis1:
-            # print(f"Found partial order: {analysis2} < {analysis1}")
+            print(f"Found partial order: {analysis2} < {analysis1}")
             return True
-        
     return False
 
 
-def find_diff(config1_id, config2_id):
-    """
-    Find the differences between the static call graphs of two configurations.
-    """
+def find_diff(version1, id1, version2, id2):
 
-    scgs_dir = os.path.join(static_cgs_dir, config_file_version, 'reformatted')
+    for program in os.listdir(static_cgs_dir):
+        file1 = os.path.join(static_cgs_dir, program, f"doop_{version1}_{id1}.csv")
+        file2 = os.path.join(static_cgs_dir, program, f"doop_{version2}_{id2}.csv")
 
-    for program in programs:
+        if not os.path.exists(file1) or not os.path.exists(file2):
+            print(f"Missing: {file1} or {file2}")
+            return
+        print(f"Comparing {file1} and {file2}")
+        df1 = pd.read_csv(file1)
+        df2 = pd.read_csv(file2)
 
-        scg1_path = os.path.join(scgs_dir, f'{program}_{config1_id}', 'CallGraphEdge.csv')
-        
-        if not os.path.exists(scg1_path):
-            # print(f"Static call graph for config {config1_id} not found in {program}. Skipping.")
+        print("loadded dfs")
+
+        key_cols = ["method", "offset", "target"]
+
+        # Convert rows to sets of tuples for comparison
+        df1_keys = set(map(tuple, df1[key_cols].values))
+        df2_keys = set(map(tuple, df2[key_cols].values))
+
+        # Compute set difference
+        diff_keys = df1_keys - df2_keys
+
+        # Create a DataFrame from diff_keys
+        if diff_keys:
+            df_only_in_df1 = pd.DataFrame(list(diff_keys), columns=key_cols)
+        else:
+            df_only_in_df1 = pd.DataFrame(columns=key_cols)
+
+        print("computed diff")
+        if not df_only_in_df1.empty:
+            print("righting to file")
+            diff_dir = os.path.join(output_dir, 'doop', 'final', program)
+            os.makedirs(diff_dir, exist_ok=True)
+            name = f"{version1}_{id1}__{version2}_{id2}_diff.csv"
+            df_only_in_df1.to_csv(os.path.join(diff_dir, name), index=False)
+
+
+def configs_match_except_analysis(config1, config2):
+
+    for key in config1:
+        if key == 'analysis' or key == 'config_id' or key == 'config_version':
             continue
-        scg2_path = os.path.join(scgs_dir, f'{program}_{config2_id}', 'CallGraphEdge.csv')
-        if not os.path.exists(scg2_path):
-            # print(f"Static call graph for config {config2_id} not found in {program}. Skipping.")
-            continue
-        # Read the static call graphs
-        scg1 = pd.read_csv(scg1_path)
-        scg2 = pd.read_csv(scg2_path)
-       
-
-        if scg1 is not None and scg2 is not None:
-            # datapoints in scg1 but not in scg2
-            # Ensure the columns exist
-            key_cols = ["method", "offset", "target"]
-
-            # Filter rows in df1 that are not in df2 on those columns
-            diff_df = scg1.merge(scg2[key_cols], on=key_cols, how='left', indicator=True)
-            df_only_in_df1 = diff_df[diff_df['_merge'] == 'left_only'].drop(columns=['_merge'])
-
-            if not df_only_in_df1.empty:
-                write_diff_to_csv(program, config1_id, config2_id, df_only_in_df1)
-        
-
-def write_diff_to_csv(program, config1_id, config2_id, diff):
-    """
-    Write the differences to a CSV file.
-    """
-    diff_dir = os.path.join(output_dir, 'doop', config_file_version, program)
-    os.makedirs(diff_dir, exist_ok=True)
-
-    # Create a filename based on the configuration IDs and version
-    diff_filename = f"{config1_id}_{config2_id}_diff.csv"
-    diff_file = os.path.join(diff_dir, diff_filename)
-    diff.to_csv(diff_file, index=False)
-
-
-def configs_match_except_analysis(config, config_compare):
-    for key in config:
-        if key == 'analysis':
-            continue
-        if config.get(key) != config_compare.get(key):
+        if config1.get(key) != config2.get(key):
             return False
     return True
 
 
-def main():
-    configs = pd.read_csv(config_csv).to_dict(orient="records")
-    # json_partial = pd.read_json(json_file, orient="records").to_dict(orient="records")
-    with open(json_file, 'r') as f:
-        json_partial = json.load(f)
-    for option in json_partial['options']:
-        if option['name'] == 'analysis':
-            orders = option['orders']
-            break
+def read_all_configs():
+    all_configs = []
+    for file, version in zip(config_files, config_file_versions):
+        path = os.path.join(config_dir, file)
+        df = pd.read_csv(path)
+        df["config_id"] = df.index
+        df["config_version"] = version
+        all_configs.extend(df.to_dict(orient="records"))
+    return all_configs
 
+def main():
+    with open(json_file, 'r') as f:
+        orders = next(opt["orders"] for opt in json.load(f)['options'] if opt["name"] == "analysis")
+
+    configs = read_all_configs()
     diff_pairs = []
+
     for i, config in enumerate(configs):
         for j, config_compare in enumerate(configs):
-            if config == config_compare:
+            if i == j:
                 continue
             if configs_match_except_analysis(config, config_compare):
                 if has_partial_order(orders, config["analysis"], config_compare["analysis"]):
-                    diff_pairs.append((i, j))
+                    diff_pairs.append((config, config_compare))
 
-    print(f"Found {len(diff_pairs)} pairs with partial order.")
+    print(f"Found {len(diff_pairs)} config pairs with partial order.")
 
-    for config1_id, config2_id in diff_pairs:
-        find_diff(config1_id, config2_id)
+    for c1, c2 in diff_pairs:
+        find_diff(c1["config_version"], c1["config_id"], c2["config_version"], c2["config_id"])
 
 
 if __name__ == "__main__":

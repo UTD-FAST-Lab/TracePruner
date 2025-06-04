@@ -29,7 +29,7 @@ def run_opal(program_name, jar_file, config, config_id):
     mainclass = 'Entrypoint'
     
     # Build unique output name from config
-    output_file = f'/data/{program_name}/opal_{config_id}.json'
+    output_file = f'/data/v1/{program_name}/opal_{config_id}.json'
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
 
 
@@ -46,11 +46,11 @@ def run_opal(program_name, jar_file, config, config_id):
     ]
 
     try:
-        subprocess.run(cmd_parts, timeout=60, check=True)
+        subprocess.run(cmd_parts, timeout=60 * 60 * 3, check=True)
     except subprocess.TimeoutExpired:
-        print(f"❌ Timeout in OPAL config {config_id} for program {program_name}")
+        print(f"Timeout in OPAL config {config_id} for program {program_name}")
     except subprocess.CalledProcessError:
-        print(f"❌ OPAL failed for config {config_id} for program {program_name}")
+        print(f"OPAL failed for config {config_id} for program {program_name}")
 
 
 def run_opal_in_parallel(num_threads):
@@ -59,8 +59,8 @@ def run_opal_in_parallel(num_threads):
     with ThreadPoolExecutor(max_workers=num_threads) as executor:
         futures = []
         for program_name, jar_file in jar_files.items():
-            for config_id, config in enumerate(configs):
-                futures.append(executor.submit(run_opal, program_name, jar_file, config, config_id))
+                for config_id, config in enumerate(configs):
+                    futures.append(executor.submit(run_opal, program_name, jar_file, config, config_id))
 
         for future in futures:
             future.result()
