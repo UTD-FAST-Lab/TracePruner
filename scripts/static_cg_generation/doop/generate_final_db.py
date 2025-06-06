@@ -6,7 +6,7 @@ input_dir = "/20TB/mohammad/xcorpus-total-recall/static_cgs/doop"
 for version in os.listdir(input_dir):
     if version.startswith("v"):
         print(f"Processing version: {version}")
-        version_dir = os.path.join(input_dir, version, "reformatted")
+        version_dir = os.path.join(input_dir, version, "reformatted-v2")
         for program_config in os.listdir(version_dir):
             program, config_id = program_config.split('_')
             program_config_dir = os.path.join(version_dir, program_config)
