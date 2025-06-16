@@ -1,0 +1,8 @@
+Total unknown edges for axion: 121426
+Total unknown edges intersection for axion: 32
+Total unknown edges for batik: 472297
+Total unknown edges intersection for batik: 140
+Total unknown edges for xerces: 231073
+Total unknown edges intersection for xerces: 2576
+Total unknown edges for jasml: 8769
+Total unknown edges intersection for jasml: 549

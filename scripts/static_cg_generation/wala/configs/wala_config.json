@@ -1,0 +1,355 @@
+{
+  "name": "WALA",
+  "options": [
+    {
+      "name": "reflectionSetting",
+      "levels": [
+        "FULL",
+        "APPLICATION_GET_METHOD",
+        "NO_FLOW_TO_CASTS",
+        "NO_FLOW_TO_CASTS_APPLICATION_GET_METHOD",
+        "NO_METHOD_INVOKE",
+        "NO_FLOW_TO_CASTS_NO_METHOD_INVOKE",
+        "ONE_FLOW_TO_CASTS_NO_METHOD_INVOKE",
+        "ONE_FLOW_TO_CASTS_APPLICATION_GET_METHOD",
+        "MULTI_FLOW_TO_CASTS_APPLICATION_GET_METHOD",
+        "NO_STRING_CONSTANTS",
+        "STRING_ONLY",
+        "NONE"
+      ],
+      "default": "FULL",
+      "orders": [
+        {
+          "left": "FULL",
+          "order": "MST",
+          "right": "APPLICATION_GET_METHOD"
+        },
+        {
+          "left": "FULL",
+          "order": "MST",
+          "right": "NO_FLOW_TO_CASTS"
+        },
+        {
+          "left": "NO_FLOW_TO_CASTS",
+          "order": "MST",
+          "right": "NO_FLOW_TO_CASTS_APPLICATION_GET_METHOD"
+        },
+        {
+          "left": "FULL",
+          "order": "MST",
+          "right": "NO_METHOD_INVOKE"
+        },
+        {
+          "left": "NO_FLOW_TO_CASTS",
+          "order": "MST",
+          "right": "NO_FLOW_TO_CASTS_NO_METHOD_INVOKE"
+        },
+        {
+          "left": "NO_METHOD_INVOKE",
+          "order": "MST",
+          "right": "ONE_FLOW_TO_CASTS_NO_METHOD_INVOKE"
+        },
+        {
+          "left": "ONE_FLOW_TO_CASTS_NO_METHOD_INVOKE",
+          "order": "MST",
+          "right": "NO_FLOW_TO_CASTS_NO_METHOD_INVOKE"
+        },
+        {
+          "left": "MULTI_FLOW_TO_CASTS_APPLICATION_GET_METHOD",
+          "order": "MST",
+          "right": "ONE_FLOW_TO_CASTS_APPLICATION_GET_METHOD"
+        },
+        {
+          "left": "APPLICATION_GET_METHOD",
+          "order": "MST",
+          "right": "MULTI_FLOW_TO_CASTS_APPLICATION_GET_METHOD"
+        },
+        {
+          "left": "FULL",
+          "order": "MST",
+          "right": "NO_STRING_CONSTANTS"
+        },
+        {
+          "left": "NO_FLOW_TO_CASTS",
+          "order": "MST",
+          "right": "STRING_ONLY"
+        },
+        {
+          "left": "NO_FLOW_TO_CASTS_APPLICATION_GET_METHOD",
+          "order": "MST",
+          "right": "STRING_ONLY"
+        },
+        {
+          "left": "NO_FLOW_TO_CASTS_NO_METHOD_INVOKE",
+          "order": "MST",
+          "right": "STRING_ONLY"
+        },
+        {
+          "left": "STRING_ONLY",
+          "order": "MST",
+          "right": "NONE"
+        }
+      ]
+    },
+    {
+      "name": "handleStaticInit",
+      "levels": ["TRUE", "FALSE"],
+      "default": "FALSE",
+      "orders": [
+        {
+          "left": "TRUE",
+          "order": "MST",
+          "right": "FALSE"
+        }
+      ]
+    },
+    {
+      "name": "useConstantSpecificKeys",
+      "levels": ["TRUE","FALSE"],
+      "default": "FALSE",
+      "orders": [
+        {
+          "left": "TRUE",
+          "order": "MPT",
+          "right": "FALSE"
+        }
+      ]
+    },
+    {
+      "name": "cgalgo",
+      "levels": [
+        "NCFA",
+        "NOBJ",
+        "VANILLA_NCFA",
+        "VANILLA_NOBJ",
+        "RTA",
+        "ZERO_CFA",
+        "ZEROONE_CFA",
+        "VANILLA_ZEROONECFA",
+        "ZEROONE_CONTAINER_CFA",
+        "VANILLA_ZEROONE_CONTAINER_CFA",
+        "ZERO_CONTAINER_CFA"
+      ],
+      "default": "ZERO_CFA",
+      "orders": [
+        {
+          "left": "1cfa",
+          "order": "MPT",
+          "right": "0cfa"
+        },
+        {
+          "left": "1cfa",
+          "order": "MPT",
+          "right": "ZEROONE_CFA"
+        },
+        {
+          "left": "1obj",
+          "order": "MPT",
+          "right": "0cfa"
+        },
+        {
+          "left": "1obj",
+          "order": "MPT",
+          "right": "ZEROONE_CFA"
+        },
+        {
+          "left": "2cfa",
+          "order": "MPT",
+          "right": "0cfa"
+        },
+        {
+          "left": "2cfa",
+          "order": "MPT",
+          "right": "1cfa"
+        },
+        {
+          "left": "2cfa",
+          "order": "MPT",
+          "right": "ZEROONE_CFA"
+        },
+        {
+          "left": "2obj",
+          "order": "MPT",
+          "right": "0cfa"
+        },
+        {
+          "left": "2obj",
+          "order": "MPT",
+          "right": "1obj"
+        },
+        {
+          "left": "2obj",
+          "order": "MPT",
+          "right": "ZEROONE_CFA"
+        },
+        {
+          "left": "VANILLA_1cfa",
+          "order": "MPT",
+          "right": "0cfa"
+        },
+        {
+          "left": "VANILLA_1cfa",
+          "order": "MPT",
+          "right": "1cfa"
+        },
+        {
+          "left": "VANILLA_1cfa",
+          "order": "MPT",
+          "right": "ZEROONE_CFA"
+        },
+        {
+          "left": "VANILLA_1obj",
+          "order": "MPT",
+          "right": "0cfa"
+        },
+        {
+          "left": "VANILLA_1obj",
+          "order": "MPT",
+          "right": "1obj"
+        },
+        {
+          "left": "VANILLA_1obj",
+          "order": "MPT",
+          "right": "ZEROONE_CFA"
+        },
+        {
+          "left": "VANILLA_2cfa",
+          "order": "MPT",
+          "right": "0cfa"
+        },
+        {
+          "left": "VANILLA_2cfa",
+          "order": "MPT",
+          "right": "1cfa"
+        },
+        {
+          "left": "VANILLA_2cfa",
+          "order": "MPT",
+          "right": "2cfa"
+        },
+        {
+          "left": "VANILLA_2cfa",
+          "order": "MPT",
+          "right": "VANILLA_1cfa"
+        },
+        {
+          "left": "VANILLA_2cfa",
+          "order": "MPT",
+          "right": "ZEROONE_CFA"
+        },
+        {
+          "left": "VANILLA_2obj",
+          "order": "MPT",
+          "right": "0cfa"
+        },
+        {
+          "left": "VANILLA_2obj",
+          "order": "MPT",
+          "right": "1obj"
+        },
+        {
+          "left": "VANILLA_2obj",
+          "order": "MPT",
+          "right": "2obj"
+        },
+        {
+          "left": "VANILLA_2obj",
+          "order": "MPT",
+          "right": "VANILLA_1obj"
+        },
+        {
+          "left": "VANILLA_2obj",
+          "order": "MPT",
+          "right": "ZEROONE_CFA"
+        },
+        {
+          "left": "VANILLA_ZEROONE_CONTAINER_CFA",
+          "order": "MPT",
+          "right": "0cfa"
+        },
+        {
+          "left": "VANILLA_ZEROONE_CONTAINER_CFA",
+          "order": "MPT",
+          "right": "ZEROONE_CFA"
+        },
+        {
+          "left": "VANILLA_ZEROONE_CONTAINER_CFA",
+          "order": "MPT",
+          "right": "ZEROONE_CONTAINER_CFA"
+        },
+        {
+          "left": "VANILLA_ZEROONE_CONTAINER_CFA",
+          "order": "MPT",
+          "right": "ZERO_CONTAINER_CFA"
+        },
+        {
+          "left": "ZEROONE_CFA",
+          "order": "MPT",
+          "right": "0cfa"
+        },
+        {
+          "left": "ZEROONE_CONTAINER_CFA",
+          "order": "MPT",
+          "right": "0cfa"
+        },
+        {
+          "left": "ZEROONE_CONTAINER_CFA",
+          "order": "MPT",
+          "right": "ZEROONE_CFA"
+        },
+        {
+          "left": "ZEROONE_CONTAINER_CFA",
+          "order": "MPT",
+          "right": "ZERO_CONTAINER_CFA"
+        },
+        {
+          "left": "ZERO_CONTAINER_CFA",
+          "order": "MPT",
+          "right": "0cfa"
+        }
+      ]
+    },
+    {
+      "name": "useContextInsensitive",
+      "levels": ["TRUE", "FALSE"],
+      "default": "FALSE",
+      "orders": [
+        {
+          "left": "TRUE",
+          "order": "MPT",
+          "right": "FALSE"
+        }
+      ]
+    },
+    {
+      "name": "useContextSensitive",
+      "levels": ["TRUE", "FALSE"],
+      "default": "TRUE",
+      "orders": [
+        {
+          "left": "TRUE",
+          "order": "MPT",
+          "right": "FALSE"
+        }
+      ]
+    },
+    {
+      "name": "sensitivity",
+      "default": "1",
+      "minValue": "1",
+      "maxValue": "999",
+      "type": "integer",
+      "levels": [
+        "i",
+        "i-1"
+      ],
+      "orders": [
+        {
+          "left": "i",
+          "order": "MPT",
+          "right": "i-1"
+        }
+      ]
+    }
+  ]
+}

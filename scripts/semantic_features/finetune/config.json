@@ -1,0 +1,6 @@
+{
+    "BENCHMARK_CALLGRAPHS": "/20TB/mohammad/xcorpus-total-recall/test",
+    "PROCESSED_DATA": "/20TB/mohammad/xcorpus-total-recall/features/semantic/source_code",
+    "TRAINING_PROGRAMS_LIST": "/20TB/mohammad/xcorpus-total-recall/features/semantic/train_programs.txt",
+    "TEST_PROGRAMS_LIST": "/20TB/mohammad/xcorpus-total-recall/features/semantic/test_programs.txt"
+}
