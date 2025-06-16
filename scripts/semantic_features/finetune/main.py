@@ -5,6 +5,9 @@ import torch
 from torch import nn
 import torch.optim as optim
 import json
+import time
+
+start_time = time.time()
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -39,4 +42,5 @@ for epoch in range(2):
     print(f"Epoch {epoch} completed")
 
 # Save the finetuned model
-torch.save(model.state_dict(), "finetuned_codebert.pth")
+torch.save(model.state_dict(), "finetuned_codebert_test_xcorp.pth")
+print('time:', time.time() - start_time)

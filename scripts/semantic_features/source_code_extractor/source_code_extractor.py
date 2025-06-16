@@ -1,6 +1,35 @@
 import os
 import javalang
 import re
+import pandas as pd
+import csv
+
+
+
+dataset_dir = "/20TB/mohammad/xcorpus-total-recall/dataset"
+output_dir = '/20TB/mohammad/xcorpus-total-recall/features/semantic/source_code' 
+project_roots = {
+    'axion': "/20TB/mohammad/xcorpus-total-recall/source_codes/axion-1.0-M2/src",
+    'batik': "/20TB/mohammad/xcorpus-total-recall/source_codes/batik-1.7/sources",
+    'xerces': "/20TB/mohammad/xcorpus-total-recall/source_codes/xerces-2.10.0/src",
+    'jasml': "/20TB/mohammad/xcorpus-total-recall/source_codes/jasml-0.10/src",
+    'jvm': '/20TB/mohammad/xcorpus-total-recall/source_codes/jvm'
+}
+
+programs = [
+    'axion',
+    'batik',
+    'xerces',
+    'jasml'
+]
+
+tools = [
+    'wala',
+    'doop',
+    'opal'
+]
+
+
 
 # === Descriptor parsing ===
 
@@ -164,16 +193,24 @@ def find_method_source_code(project_dir, class_path, method_name, descriptor):
                             class_node = find_nested_class(class_node, inner_class_name)
                             if not class_node:
                                 continue
-
                         methods = class_node.methods
                         if method_name == "<init>":
                             methods = class_node.constructors
 
                         for method in methods:
+                            # method_param_types = [
+                            #     # p.type.name if (isinstance(p.type, javalang.tree.ReferenceType) or isinstance(p.type, javalang.tree.BasicType)) else p.type
+                            #     p.type.name if isinstance(p.type, javalang.tree.ReferenceType) else p.type
+                            #     for p in method.parameters
+                            # ]
+
+                            if method_name != "<init>" and method.name != method_name:
+                                continue
+
                             method_param_types = [
-                                p.type.name if isinstance(p.type, javalang.tree.ReferenceType) else p.type
+                                p.type.name + ''.join('[]' for _ in p.type.dimensions)
                                 for p in method.parameters
-                            ]
+                            ]   
                             if method_param_types != [p.split('.')[-1] for p in param_types]:
                                 continue
                             if method_name != "<init>":
@@ -221,21 +258,76 @@ def extract_method_source(filepath, method_node):
 
     return ''.join(annotation_lines + method_lines)
 
+
+def main():
+
+    # open the csv file and read the input signature
+    for program in programs:
+        code_dict = {}
+        for tool in tools:
+            for scg_dir in os.listdir(os.path.join(dataset_dir, tool, 'without_jdk', program)):
+                scg_path = os.path.join(dataset_dir, tool, 'without_jdk', program, scg_dir, 'total_edges.csv')
+                with open(scg_path, 'r') as f:
+                    reader = csv.reader(f)
+                    # Skip the header row
+                    next(reader, None)  # Skip header
+                    for row in reader:
+                        for i in [0,2]:
+                            input_signature = row[i]
+                            if input_signature in code_dict:
+                                # If the code is already extracted, skip it
+                                continue
+                            if len(input_signature.split('.')) < 2:
+                                # Skip if the input signature is not in the expected format
+                                continue
+                            
+                            print(f"Processing input signature: {input_signature}")
+                            class_path, method_sig = input_signature.split('.')
+                            method_name, descriptor = method_sig.split(':')
+
+                            source = find_method_source_code(project_roots[program], class_path, method_name, descriptor)
+                            if source:
+                                code_dict[input_signature] = source
+                            else:
+                                # try in jvm project_root
+                                source = find_method_source_code(project_roots['jvm'], class_path, method_name, descriptor)
+                                if source:
+                                    code_dict[input_signature] = source
+                                else:
+                                    code_dict[input_signature] = ''
+
+
+        # write the code_dict to a new csv file
+        output_path = os.path.join(output_dir,  program, 'code.csv')
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        with open(output_path, 'w', newline='') as f:
+            writer = csv.writer(f)
+            writer.writerow(['signature', 'code'])
+            for signature, code in code_dict.items():
+                writer.writerow([signature, code])
+
+
 # === Example usage ===
 
+
+
+
+
 if __name__ == "__main__":
-    # TODO: read all of the rows of a single csv file and extract the source code for each method and target and save it in a new csv file with the input signature as the key
-    project_root = "/20TB/mohammad/xcorpus-total-recall/source_codes/axion-1.0-M2/src"
-    input_signature = "org/axiondb/engine/BaseRow.getIdentifier:([BII)I"
+    main()
+    # project_root = project_roots['jvm']
+    # # project_root = "/20TB/mohammad/xcorpus-total-recall/source_codes/axion-1.0-M2/src"
+    # input_signature = "java/io/PrintWriter.println:(Ljava/lang/String;)V"
 
-    class_path, method_sig = input_signature.split('.')
-    method_name, descriptor = method_sig.split(':')
 
-    print(f"Searching for method: {method_name} with descriptor: {descriptor} in class: {class_path}")
+    # class_path, method_sig = input_signature.split('.')
+    # method_name, descriptor = method_sig.split(':')
 
-    source = find_method_source_code(project_root, class_path, method_name, descriptor)
-    if source:
-        print("[✓] Method found:")
-        print(source)
-    else:
-        print("[!] Method not found.")
+    # print(f"Searching for method: {method_name} with descriptor: {descriptor} in class: {class_path}")
+
+    # source = find_method_source_code(project_root, class_path, method_name, descriptor)
+    # if source:
+    #     print("[✓] Method found:")
+    #     print(source)
+    # else:
+    #     print("[!] Method not found.")

@@ -52,6 +52,8 @@ def main():
     with ThreadPoolExecutor(max_workers=8) as executor:
         futures = []
         for program_dir in programs:
+            if program_dir != 'jasml_39':
+                continue
             futures.append(executor.submit(process_program, input_programs_dir, output_dir, program_dir))
 
         for future in futures:

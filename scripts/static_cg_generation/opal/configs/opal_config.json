@@ -1,0 +1,63 @@
+{
+    "name": "OPAL",
+    "options": [
+      {
+        "name": "analysis",
+        "default": "0cfa",
+        "levels": [
+            "0cfa",
+            "10cfa",
+            "01cfa",
+            "11cfa",
+            "CHA",
+            "RTA",
+            "XTA",
+            "MTA",
+            "FTA",
+            "CTA"
+        ],
+        "orders": [
+            {
+            "left": "01cfa",
+            "order": "MPT",
+            "right": "0cfa"
+            },
+            {
+            "left": "10cfa",
+            "order": "MPT",
+            "right": "01cfa"
+            },
+            {
+            "left": "10cfa",
+            "order": "MPT",
+            "right": "0cfa"
+            },
+            {
+            "left": "11cfa",
+            "order": "MPT",
+            "right": "01cfa"
+            },
+            {
+            "left": "11cfa",
+            "order": "MPT",
+            "right": "0cfa"
+            },
+            {
+            "left": "11cfa",
+            "order": "MPT",
+            "right": "10cfa"
+            },
+            {
+            "left": "FTA",
+            "order": "MPT",
+            "right": "CTA"
+            },
+            {
+            "left": "MTA",
+            "order": "MPT",
+            "right": "CTA"
+            }
+        ]
+     }
+    ]
+}

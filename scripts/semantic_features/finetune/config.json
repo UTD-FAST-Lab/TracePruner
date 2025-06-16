@@ -1,6 +1,6 @@
 {
-    "BENCHMARK_CALLGRAPHS": "/20TB/mohammad/my-dataset/no_libs",
-    "PROCESSED_DATA": "/20TB/mohammad/baselines/autopruner/replication_package/processed_data/wala",
-    "TRAINING_PROGRAMS_LIST": "/20TB/mohammad/baselines/autopruner/replication_package/info_data/train_programs.txt",
-    "TEST_PROGRAMS_LIST": "/20TB/mohammad/baselines/autopruner/replication_package/info_data/test_programs.txt"
+    "BENCHMARK_CALLGRAPHS": "/20TB/mohammad/xcorpus-total-recall/test",
+    "PROCESSED_DATA": "/20TB/mohammad/xcorpus-total-recall/features/semantic/source_code",
+    "TRAINING_PROGRAMS_LIST": "/20TB/mohammad/xcorpus-total-recall/features/semantic/train_programs.txt",
+    "TEST_PROGRAMS_LIST": "/20TB/mohammad/xcorpus-total-recall/features/semantic/test_programs.txt"
 }
