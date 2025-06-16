@@ -12,6 +12,8 @@ false_trans = 0
 true_direct = 0
 false_direct = 0
 
+unique_direct = 0
+
 for dir in os.listdir(data_dir):
     if not dir.startswith('.'):
         csv_path = os.path.join(data_dir, dir, 'wala0cfa.csv')
@@ -37,6 +39,9 @@ for dir in os.listdir(data_dir):
         true_direct += df[(df['wiretap'] == 1) & (df['wala-cge-0cfa-noreflect-intf-direct'] == 1)].shape[0]
         false_direct += df[(df['wiretap'] == 0) & (df['wala-cge-0cfa-noreflect-intf-direct'] == 1)].shape[0]
 
+        # Count unique direct edges and not transitive
+        unique_direct += df[(df['wala-cge-0cfa-noreflect-intf-direct'] == 1) & (df['wala-cge-0cfa-noreflect-intf-trans'] == 0)].shape[0]
+
 # Print summary
 print(f"Total transitive edges: {transitive}")
 print(f"Total direct edges: {direct}")
@@ -44,3 +49,5 @@ print(f"True transitive edges: {true_trans}")
 print(f"False transitive edges: {false_trans}")
 print(f"True direct edges: {true_direct}")
 print(f"False direct edges: {false_direct}")
+
+print(f"Unique direct edges (not transitive): {unique_direct}")

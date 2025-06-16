@@ -1,0 +1,70 @@
+{
+    "clustering": {
+        "struct":{
+            "min_cluster_size": 20,
+            "min_samples": 5,
+            "cluster_selection_method": "eom",
+            "metric": "hamming",
+            "alpha": 1.5
+        },
+        "semantic_raw":{
+            "min_cluster_size": 20,
+            "min_samples": 5,
+            "cluster_selection_method": "eom",
+            "metric": "hamming",
+            "alpha": 1.5
+        },
+        "semantic_finetuned":{
+            "min_cluster_size": 20,
+            "min_samples": 5,
+            "cluster_selection_method": "eom",
+            "metric": "hamming",
+            "alpha": 1.5
+        },
+        "trace":{
+            "min_cluster_size": 20,
+            "min_samples": 5,
+            "cluster_selection_method": "eom",
+            "metric": "hamming",
+            "alpha": 1.5
+        }
+    },
+    "prediction": {
+        "struct":{
+            "input_dim":11,
+            "hidden_dim":8,
+            "num_layers":2,
+            "dropout": 0.3,
+            "batch_size":32,
+            "num_epochs":10, 
+            "lr":1e-4
+        },
+        "semantic_raw":{
+            "input_dim":768,
+            "hidden_dim":128,
+            "num_layers":2,
+            "dropout": 0.3,
+            "batch_size":32,
+            "num_epochs":10, 
+            "lr":1e-4
+        },
+        "semantic_finetuned":{
+            "input_dim":768,
+            "hidden_dim":128,
+            "num_layers":2,
+            "dropout": 0.3,
+            "batch_size":32,
+            "num_epochs":10, 
+            "lr":1e-4
+        },
+        "trace":{
+            "input_dim":128,
+            "hidden_dim":64,
+            "num_layers":2,
+            "dropout": 0.3,
+            "batch_size":32,
+            "num_epochs":10, 
+            "lr":1e-4
+        }
+    }
+}

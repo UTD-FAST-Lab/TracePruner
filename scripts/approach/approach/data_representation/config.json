@@ -1,0 +1,53 @@
+{
+    "data": [
+        {
+            "tool": "doop",
+            "version": "v1",
+            "config_id": "39",
+            "programs": ["axion", "baltik", "xerces", "jasml"]
+        },
+        {
+            "tool": "doop",
+            "version": "v3",
+            "config_id": "5",
+            "programs": ["axion", "baltik", "xerces", "jasml"]
+        },
+        {
+            "tool": "doop",
+            "version": "v2",
+            "config_id": "0",
+            "programs": ["axion", "baltik", "jasml"]
+        },
+        {
+            "tool": "wala",
+            "version": "v1",
+            "config_id": "19",
+            "programs": ["axion", "baltik", "jasml"]
+        },
+        {
+            "tool": "wala",
+            "version": "v3",
+            "config_id": "0",
+            "programs": ["axion", "baltik", "jasml"]
+        },
+        {
+            "tool": "wala",
+            "version": "v1",
+            "config_id": "23",
+            "programs": ["axion", "baltik", "jasml"]
+        },
+        {
+            "tool": "opal",
+            "version": "v1",
+            "config_id": "0",
+            "programs": ["axion", "baltik", "jasml", "xerces"]
+        }        
+    ],
+    "comparison":{
+        "programs":[
+            "axion",
+            "baltik",
+            "jasml"
+        ]
+    }
+}
