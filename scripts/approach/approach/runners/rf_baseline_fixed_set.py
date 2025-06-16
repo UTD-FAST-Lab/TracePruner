@@ -2,9 +2,9 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import KFold
-from approach.utils import evaluate_fold, write_results_to_csv, write_metrics_to_csv, split_folds, balance_training_set, split_folds_programs
+from approach.utils import evaluate_fold, write_results_to_csv, write_metrics_to_csv, split_folds, balance_training_set, split_folds_programs, split_fixed_set
 
-class RandomForestBaseline:
+class RandomForestBaselineFixedSet:
 
     def __init__(self, instances, output_dir, train_with_unknown=True, make_balance=False, threshold=0.5, raw_baseline=False, use_trace=False):
         self.instances = instances
@@ -24,7 +24,7 @@ class RandomForestBaseline:
     def run(self):
 
         # folds = split_folds(self.labeled, self.unknown, self.train_with_unknown)
-        folds = split_folds_programs(self.instances, self.train_with_unknown)
+        folds = split_fixed_set(self.instances, self.train_with_unknown)
         all_metrics = []
         all_eval = []
         unk_labeled_true = 0
@@ -97,13 +97,17 @@ class RandomForestBaseline:
             print(f"RF Fold {fold} - F1: {metrics['f1']:.3f}, Precision: {metrics['precision']:.3f}, Recall: {metrics['recall']:.3f}")
             print(f"TP: {metrics['TP']} | FP: {metrics['FP']} | TN: {metrics['TN']} | FN: {metrics['FN']}")
 
+
+        test_instances = [i for i in folds[0][1]]
+        test_labeled = [i for i in test_instances if i.is_known()] 
+
         # Overall
         if not self.raw_baseline:
-            y_all_true = [1 if inst.get_label() else 0 for inst in self.labeled]
-            y_all_pred = [1 if inst.get_predicted_label() else 0 for inst in self.labeled]
+            y_all_true = [1 if inst.get_label() else 0 for inst in test_labeled]
+            y_all_pred = [1 if inst.get_predicted_label() else 0 for inst in test_labeled]
         else:
-            y_all_true = [1 if inst.get_label() else 0 for inst in self.instances]
-            y_all_pred = [1 if inst.get_predicted_label() else 0 for inst in self.instances]
+            y_all_true = [1 if inst.get_label() else 0 for inst in test_instances]
+            y_all_pred = [1 if inst.get_predicted_label() else 0 for inst in test_instances]
 
         overall = evaluate_fold(y_all_true, y_all_pred)
         overall["unk_labeled_true"] = unk_labeled_true
@@ -111,7 +115,7 @@ class RandomForestBaseline:
         overall["unk_labeled_all"] = unk_labeled_false + unk_labeled_true
 
         # Add evaluation on manually labeled unknowns
-        gt_instances = [i for i in self.instances if i.ground_truth is not None and not i.is_known()]
+        gt_instances = [i for i in test_instances if i.ground_truth is not None and not i.is_known()]
         gt_y_true = [int(i.ground_truth) for i in gt_instances]
         gt_y_pred = [int(i.get_predicted_label()) for i in gt_instances]
         gt_metrics = evaluate_fold(gt_y_true, gt_y_pred) if gt_y_true else {}

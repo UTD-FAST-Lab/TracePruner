@@ -9,8 +9,8 @@ class Instance():
 
         self.label = label
         self.ground_truth = None
-        self.is_unknown = is_unknown
-        
+        self.is_unknown = is_unknown   
+             
         self.cluster_label = None
         self.confidence = None
         self.predicted_label = None

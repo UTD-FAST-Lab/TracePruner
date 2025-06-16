@@ -1,4 +1,5 @@
 
+import os
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
@@ -106,7 +107,8 @@ class FlatClusteringRunner:
 
         # 50% seeding
         true_labeled, _ = train_test_split(true_instances, test_size=0.5, random_state=42)
-        false_labeled, _ = train_test_split(false_instances, test_size=0.5, random_state=42)
+        if len(false_instances) > 2:
+            false_labeled, _ = train_test_split(false_instances, test_size=0.5, random_state=42)
 
         # Build y_seed based on labeling mode
         y_seed = np.full(len(instances), -1)
@@ -150,7 +152,10 @@ class FlatClusteringRunner:
             instances[i].set_confidence(confidence)
 
 
-        res = self.evaluate(instances)
+        evaluated_instatnces = [inst for inst in instances if inst not in true_labeled]
+        # remove instances that are in the true seeds
+        
+        res = self.evaluate(evaluated_instatnces)
         metrics = res[0]
         metrics["unk_labeled_true"] = res[1]
         metrics["unk_labeled_false"] = res[2]
@@ -177,7 +182,9 @@ class FlatClusteringRunner:
             elif self.use_semantic:
                 write_metrics_to_csv([metrics], f'{self.output_dir}/{labeler}/semantic.csv' )
             elif self.use_static:
-                write_metrics_to_csv([metrics], f'{self.output_dir}/{labeler}/struct.csv' )
+                program_output_dir = f'{self.output_dir}/{labeler}'
+                os.makedirs(program_output_dir, exist_ok=True)
+                write_metrics_to_csv([metrics], f'{program_output_dir}/struct.csv' )
 
 
 
@@ -267,4 +274,63 @@ class FlatClusteringRunner:
                         else:
                             false += 1
                 
-                f.write(f"cid: {cid} -> true: {true}\t false: {false}\t unk: {unk}\n ")          
+                f.write(f"cid: {cid} -> true: {true}\t false: {false}\t unk: {unk}\n ")
+
+
+
+if __name__ == "__main__":
+
+    outdir = "approach/results/clustering/programwise"
+    all_dfs = []
+    for program in os.listdir(outdir):
+        program_dir = os.path.join(outdir, program, 'only_true', 'struct.csv')
+        
+        
+        df = pd.read_csv(program_dir)
+        all_dfs.append(df)
+        # if (df['total_false'] > 0).any():
+        #     print(f"Program {program} has false instances")
+        #     os.system(f'code {program_dir}')
+
+    # calculate the mean of precision, recall, f1 and sum of tp, tn, fp, fn
+    all_dfs = pd.concat(all_dfs, ignore_index=True)
+    mean_metrics = all_dfs[['precision', 'recall', 'f1', 'gt_precision', 'gt_recall', 'gt_f1']].mean().to_dict()
+    sum_metrics = all_dfs[['TP', 'TN', 'FP', 'FN', 'gt_TP', 'gt_TN', 'gt_FP', 'gt_FN']].sum().to_dict()
+    print(mean_metrics, sum_metrics)
+
+    # from approach.models.hdbscan_model import HDBSCANClusterer
+    # from approach.data_representation.instance_loader import load_instances
+
+    # instances = load_instances("njr")
+
+    # clusterer = HDBSCANClusterer(min_cluster_size=5, metric='hamming', alpha=0.5)
+
+
+    # # seperate instances by thrir program
+    # program_instances = defaultdict(list)
+    # for inst in instances:
+    #     program_instances[inst.program].append(inst)
+    
+    # # For each program, run the clustering
+    # for program, insts in program_instances.items():
+    #     print(f"Running clustering for program: {program} with {len(insts)} instances")
+    #     if len(insts) < 5:
+    #         print(f"Skipping program {program} due to insufficient instances ({len(insts)})")
+    #         continue
+    #     output_dir = f"approach/results/clustering/programwise/{program}"
+
+    #     # Create a runner for each program
+    #     runner = FlatClusteringRunner(
+    #         instances=insts,
+    #         clusterer=clusterer,
+    #         output_dir=output_dir,
+    #         run_from_main=True,
+    #         only_true=True,
+    #         use_trace=False,
+    #         use_var=False,
+    #         use_semantic=False,
+    #         use_static=True,
+    #     )
+        
+    #     # Run the clustering
+    #     runner.run()

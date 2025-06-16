@@ -224,6 +224,61 @@ def split_folds(labeled_instances, unknown_instances=None, train_with_unknown=Tr
     return folds
 
 
+def split_folds_programs(instances, train_with_unknown=True, n_splits=5):
+    ''' Splits instances into folds based on the programs they belong to'''
+
+    from collections import defaultdict
+    program_instances = defaultdict(list)
+    for inst in instances:
+        program_instances[inst.program].append(inst)
+    program_list = list(program_instances.keys())
+    kf = KFold(n_splits=n_splits, shuffle=True, random_state=42)
+    program_splits = list(kf.split(program_list))
+    folds = []
+    for train_idx, test_idx in program_splits:
+        train_programs = [program_list[i] for i in train_idx]
+        test_programs = [program_list[i] for i in test_idx]
+
+        train_instances = []
+        test_instances = []
+
+        for program in train_programs:
+            if train_with_unknown:
+                train_instances.extend(program_instances[program])
+            else:
+                # Only include known instances in training
+                train_instances.extend([inst for inst in program_instances[program] if inst.is_known()])
+        
+        for program in test_programs:
+            test_instances.extend(program_instances[program])
+ 
+        folds.append((train_instances, test_instances))
+    return folds
+
+
+def split_fixed_set(instances, train_with_unknown=True):
+    
+
+    with open('/home/mohammad/projects/CallGraphPruner/data/programs/train_programs.txt', 'r') as f:
+        training_programs = [line.strip() for line in f.readlines()]
+
+    train_instances = []
+    test_instances = []
+
+    fold = []
+
+    for inst in instances:
+        if inst.program in training_programs:
+            if train_with_unknown or inst.is_known():
+                train_instances.append(inst)
+        else:
+            test_instances.append(inst)
+
+    fold.append((train_instances, test_instances))
+
+    return fold
+
+
 def evaluate_fold(y_true, y_pred):
     precision = precision_score(y_true, y_pred, zero_division=0)
     recall    = recall_score(y_true, y_pred, zero_division=0)

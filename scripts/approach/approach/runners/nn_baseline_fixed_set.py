@@ -9,7 +9,7 @@ from approach.models.nn_models import NNClassifier_Combine, NNClassifier_Semanti
 import torch.nn.functional as F
 from tqdm import tqdm
 
-class NeuralNetBaseline:
+class NeuralNetBaselineFixedSet:
     def __init__(self, instances, output_dir, train_with_unknown=True, make_balance=False, threshold=0.5, raw_baseline=False,
                  use_trace=False, use_semantic=False, use_static=False, hidden_size=32, batch_size=100, lr=5e-6, epochs=5):
         self.instances = instances
@@ -68,7 +68,8 @@ class NeuralNetBaseline:
 
     def run(self):
         # folds = split_folds(self.labeled, self.unknown, self.train_with_unknown)
-        folds = split_folds_programs(self.instances, self.train_with_unknown)
+        # folds = split_folds_programs(self.instances, self.train_with_unknown)
+        folds = split_fixed_set(self.instances, self.train_with_unknown)
         all_metrics = []
         unk_labeled_true = 0
         unk_labeled_false = 0
@@ -119,13 +120,16 @@ class NeuralNetBaseline:
             print(f"NN Fold {fold} - F1: {metrics['f1']:.3f}, Precision: {metrics['precision']:.3f}, Recall: {metrics['recall']:.3f}")
             print(f"TP: {metrics['TP']} | FP: {metrics['FP']} | TN: {metrics['TN']} | FN: {metrics['FN']}")
         
+
+        test_instances = [i for i in folds[0][1]]
+        test_labeled = [i for i in test_instances if i.is_known()] 
         # Overall
         if not self.raw_baseline:
-            y_all_true = [1 if inst.get_label() else 0 for inst in self.labeled]
-            y_all_pred = [1 if inst.get_predicted_label() else 0 for inst in self.labeled]
+            y_all_true = [1 if inst.get_label() else 0  for inst in test_labeled]
+            y_all_pred = [1 if inst.get_predicted_label() else 0 for inst in test_labeled]
         else:
-            y_all_true = [1 if inst.get_label() else 0 for inst in self.instances]
-            y_all_pred = [1 if inst.get_predicted_label() else 0 for inst in self.instances]
+            y_all_true = [1 if inst.get_label() else 0 for inst in test_instances]
+            y_all_pred = [1 if inst.get_predicted_label() else 0 for inst in test_instances]
 
         overall = evaluate_fold(y_all_true, y_all_pred)
         overall["unk_labeled_true"] = unk_labeled_true
@@ -133,7 +137,7 @@ class NeuralNetBaseline:
         overall["unk_labeled_all"] = unk_labeled_false + unk_labeled_true
 
         # Add evaluation on manually labeled unknowns
-        gt_instances = [i for i in self.instances if i.ground_truth is not None and not i.is_known()]
+        gt_instances = [i for i in test_instances if i.ground_truth is not None and not i.is_known()]
         gt_y_true = [int(i.ground_truth) for i in gt_instances]
         gt_y_pred = [int(i.get_predicted_label()) for i in gt_instances]
         gt_metrics = evaluate_fold(gt_y_true, gt_y_pred) if gt_y_true else {}
