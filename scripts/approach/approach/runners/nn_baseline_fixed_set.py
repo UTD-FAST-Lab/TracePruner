@@ -67,8 +67,9 @@ class NeuralNetBaselineFixedSet:
         return np.array(code_vecs, dtype=np.float32), np.array(struct_vecs, dtype=np.float32)
 
     def run(self):
+
         # folds = split_folds(self.labeled, self.unknown, self.train_with_unknown)
-        # folds = split_folds_programs(self.instances, self.train_with_unknown)
+        # folds = split_folds_programs(self.instances, self.train_with_unknown, )
         folds = split_fixed_set(self.instances, self.train_with_unknown)
         all_metrics = []
         unk_labeled_true = 0

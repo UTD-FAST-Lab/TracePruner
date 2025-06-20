@@ -1,2 +1,0 @@
-MustPointTo[?v, SingleAllContext[], _] = ?val ->
-   VarPointsTo(_, ?val, _, ?v).

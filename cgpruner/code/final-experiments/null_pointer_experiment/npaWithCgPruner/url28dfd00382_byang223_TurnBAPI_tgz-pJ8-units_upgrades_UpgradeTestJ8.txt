@@ -1,4 +1,0 @@
-NPE_INV,com.golden.gamedev.object.Sprite.setImage(Ljava/awt/image/BufferedImage;)V,java.awt.image.BufferedImage.getWidth()I
-NPE_INV,com.golden.gamedev.object.Sprite.setImage(Ljava/awt/image/BufferedImage;)V,java.awt.image.BufferedImage.getHeight()I
-NPE_INV,observers.ObserverLose.notifyObserverTemplate(Lachiever/Achiever;)V,modes.GameMode.stopGame()V
-Done

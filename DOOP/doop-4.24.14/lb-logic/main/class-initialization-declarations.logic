@@ -1,8 +1,0 @@
-/**
- * Class initializer ?method of a ?type
- */
-ClassInitializer[?type] = ?method ->
-   Type(?type), Method(?method).
-
-InitializedClass(?classOrInterface) ->
-   Type(?classOrInterface).

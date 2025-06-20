@@ -1,9 +1,0 @@
-NPE_INV,org.apache.log4j.xml.DOMConfigurator.parse(Lorg/w3c/dom/Element;)V,org.apache.log4j.spi.LoggerRepository.setThreshold(Ljava/lang/String;)V
-NPE_INV,org.apache.log4j.xml.DOMConfigurator.parseCategory(Lorg/w3c/dom/Element;)V,org.apache.log4j.spi.LoggerRepository.getLogger(Ljava/lang/String;)Lorg/apache/log4j/Logger;
-NPE_INV,org.apache.log4j.xml.DOMConfigurator.parseRoot(Lorg/w3c/dom/Element;)V,org.apache.log4j.spi.LoggerRepository.getRootLogger()Lorg/apache/log4j/Logger;
-NPE_INV,org.apache.log4j.helpers.OptionConverter.substVars(Ljava/lang/String;Ljava/util/Properties;)Ljava/lang/String;,java.util.Properties.getProperty(Ljava/lang/String;)Ljava/lang/String;
-NPE_INV,org.apache.log4j.or.RendererMap.addRenderer(Lorg/apache/log4j/spi/RendererSupport;Ljava/lang/String;Ljava/lang/String;)V,org.apache.log4j.spi.RendererSupport.setRenderer(Ljava/lang/Class;Lorg/apache/log4j/or/ObjectRenderer;)V
-NPE_INV,org.apache.log4j.config.PropertySetter.getPropertyDescriptor(Ljava/lang/String;)Ljava/beans/PropertyDescriptor;,java.beans.FeatureDescriptor.getName()Ljava/lang/String;
-NPE_INV,org.apache.log4j.xml.DOMConfigurator.parseErrorHandler(Lorg/w3c/dom/Element;Lorg/apache/log4j/Appender;)V,org.apache.log4j.spi.LoggerRepository.getLogger(Ljava/lang/String;)Lorg/apache/log4j/Logger;
-NPE_INV,org.apache.log4j.xml.DOMConfigurator.parseErrorHandler(Lorg/w3c/dom/Element;Lorg/apache/log4j/Appender;)V,org.apache.log4j.spi.LoggerRepository.getRootLogger()Lorg/apache/log4j/Logger;
-Done

@@ -6,20 +6,36 @@ from approach.data_representation.instance_loader import load_instances
 
 class SVMBaseline:
 
-    def __init__(self, instances, output_dir, kernel="rbf", nu=0.1, gamma="scale"):
+    def __init__(self, instances, output_dir, kernel="rbf", nu=0.1, gamma="scale", just_three=False, use_semantic=False):
         self.instances = instances
         self.output_dir = output_dir
         self.kernel = kernel
         self.nu = nu
         self.gamma = gamma
+        self.just_three = just_three
+        self.use_semantic = use_semantic
         self.labeled = [i for i in instances if i.is_known()]
         self.unknown = [i for i in instances if not i.is_known()]
 
     def get_features(self, insts):
-        return np.array([inst.get_static_featuers() for inst in insts])
+        if self.use_semantic:
+            return np.array([inst.get_semantic_features() for inst in insts])
+        else:
+            return np.array([inst.get_static_featuers() for inst in insts])
 
     def run(self):
-        folds = split_folds_programs(self.instances, train_with_unknown=False)
+
+        if self.use_semantic:
+            # put 768*[0] for semantic features that are None
+            for inst in self.instances:
+                if inst.get_semantic_features() is None:
+                    inst.set_semantic_features(np.zeros(768, dtype=float))
+
+        if self.just_three:
+            n_sample = 4
+        else:
+            n_sample = 3
+        folds = split_folds_programs(self.instances, train_with_unknown=False, n_splits=n_sample)
         all_metrics = []
         all_eval = []
         unk_labeled_true = 0

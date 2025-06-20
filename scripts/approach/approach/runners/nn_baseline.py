@@ -11,7 +11,7 @@ from tqdm import tqdm
 
 class NeuralNetBaseline:
     def __init__(self, instances, output_dir, train_with_unknown=True, make_balance=False, threshold=0.5, raw_baseline=False,
-                 use_trace=False, use_semantic=False, use_static=False, hidden_size=32, batch_size=100, lr=5e-6, epochs=5):
+                 use_trace=False, use_semantic=False, use_static=False, hidden_size=32, batch_size=100, lr=5e-6, epochs=5, just_three=False):
         self.instances = instances
         self.raw_baseline = raw_baseline
         self.output_dir = output_dir
@@ -25,6 +25,7 @@ class NeuralNetBaseline:
         self.lr = lr
         self.epochs = epochs
         self.hidden_size = hidden_size
+        self.just_three = just_three
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         self.labeled = [i for i in instances if i.is_known()]
@@ -67,8 +68,14 @@ class NeuralNetBaseline:
         return np.array(code_vecs, dtype=np.float32), np.array(struct_vecs, dtype=np.float32)
 
     def run(self):
+
+        if self.just_three:
+            n_split = 4
+        else:
+            n_split = 3
+
         # folds = split_folds(self.labeled, self.unknown, self.train_with_unknown)
-        folds = split_folds_programs(self.instances, self.train_with_unknown)
+        folds = split_folds_programs(self.instances, self.train_with_unknown, n_splits=n_split)
         all_metrics = []
         unk_labeled_true = 0
         unk_labeled_false = 0

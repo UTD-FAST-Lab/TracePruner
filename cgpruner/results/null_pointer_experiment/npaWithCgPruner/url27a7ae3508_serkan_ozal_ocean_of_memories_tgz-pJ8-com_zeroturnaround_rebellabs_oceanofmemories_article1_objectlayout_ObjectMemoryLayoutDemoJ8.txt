@@ -1,6 +1,0 @@
-NPE_INV,org.apache.log4j.config.PropertySetter.setProperties(Ljava/util/Properties;Ljava/lang/String;)V,java.beans.PropertyDescriptor.getPropertyType()Ljava/lang/Class;
-NPE_INV,org.apache.log4j.config.PropertySetter.setProperties(Ljava/util/Properties;Ljava/lang/String;)V,java.beans.PropertyDescriptor.getWriteMethod()Ljava/lang/reflect/Method;
-NPE_INV,org.apache.log4j.config.PropertySetter.setProperties(Ljava/util/Properties;Ljava/lang/String;)V,java.beans.PropertyDescriptor.getPropertyType()Ljava/lang/Class;
-NPE_INV,org.apache.log4j.config.PropertySetter.setProperties(Ljava/util/Properties;Ljava/lang/String;)V,java.beans.PropertyDescriptor.getWriteMethod()Ljava/lang/reflect/Method;
-NPE_INV,org.apache.log4j.config.PropertySetter.getPropertyDescriptor(Ljava/lang/String;)Ljava/beans/PropertyDescriptor;,java.beans.FeatureDescriptor.getName()Ljava/lang/String;
-Done

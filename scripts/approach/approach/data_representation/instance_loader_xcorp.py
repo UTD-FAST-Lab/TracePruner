@@ -2,34 +2,34 @@ from approach.data_representation.Instance import Instance
 import pandas as pd
 import os
 import json
+from collections import defaultdict
 
 
 LOAD_SEMANTIC_FINETUNED = False
-LOAD_SEMANTIC_RAW = False
+LOAD_SEMANTIC_RAW = True
 
 
-static_cg_dir = ''
-features_dir = ''
-manual_labels_dir = ''
+static_cg_dir = '/20TB/mohammad/xcorpus-total-recall/dataset'
+features_dir = '/20TB/mohammad/xcorpus-total-recall/features'
+manual_labels_dir = '/20TB/mohammad/xcorpus-total-recall/manual_labeling'
 
 
 # config_data = (version, config_id)
 def load_instances(dataset="njr", tool=None, config_info=None, just_three=False):
     
-    with open("/home/mohammad/projects/CallGraphPruner/scripts/approach/approach/data_representation/config.json", 'r') as f:
+    with open("approach/data_representation/config.json", 'r') as f:
         conf_data = json.load(f)
 
-    if tool is None and config_info is not None:
+    if tool is None and config_info is None:
         data = conf_data.get('data', [])
 
-    elif config_info is None:
+    elif tool is not None and config_info is None:
         data = conf_data.get('data',[])
         data = [d for d in data if d['tool'] == tool]
 
     elif tool and config_info:
         data = [d for d in conf_data['data'] if d['tool'] == tool and d['config_id'] == config_info[1] and d['version'] == config_info[0]]
     
-
     instances = []
     for d in data:
         programs = d['programs'] if just_three else conf_data['comparison']['programs'] 
@@ -62,7 +62,7 @@ def load_instances(dataset="njr", tool=None, config_info=None, just_three=False)
     #         manual_gt_map[key] = int(row['label'])  # 0 or 1
 
     
-        
+        print(programs)
         for program in programs:
             program_dir_path = os.path.join(static_cg_dir, tool, 'without_jdk', program, f'{version}_{config_id}')
             
@@ -80,6 +80,7 @@ def load_instances(dataset="njr", tool=None, config_info=None, just_three=False)
                 semantic_features_path = os.path.join(features_dir, 'semantic', 'raw', program, f'semantic_{tool}_{version}_{config_id}.csv')
 
             if not os.path.exists(true_path) or not os.path.exists(all_edges_path) or not os.path.exists(static_features_path):
+                print(f"Skipping {program} in {tool} ({version}, {config_id}) due to missing files.")
                 continue
 
             true_df = pd.read_csv(true_path)
@@ -89,11 +90,11 @@ def load_instances(dataset="njr", tool=None, config_info=None, just_three=False)
 
             # Load manual ground truth labels
             manual_gt_map = {}
-            if os.path.exists(manual_gt_path):
-                manual_gt_df = pd.read_csv(manual_gt_path)       
-                for _, row in manual_gt_df.iterrows():
-                    key = (row['method'], row['offset'], row['target'])
-                    manual_gt_map[key] = int(row['label'])  # 0 or 1
+            # if os.path.exists(manual_gt_path):
+                # manual_gt_df = pd.read_csv(manual_gt_path)       
+                # for _, row in manual_gt_df.iterrows():
+                #     key = (row['method'], row['offset'], row['target'])
+                #     manual_gt_map[key] = int(row['label'])  # 0 or 1
 
             # load static features
             static_features_df = pd.read_csv(static_features_path).set_index(['method', 'offset', 'target'])
@@ -146,3 +147,12 @@ if __name__ == "__main__":
     # Example usage
     instances = load_instances(tool="doop", config_info=('v1', '39'), just_three=True)
     print(len(instances))
+    # program_instances = defaultdict(list)
+    # for inst in instances:
+    #     program_instances[inst.program].append(inst)
+    # program_list = list(program_instances.keys())
+    # print(f"Programs: {program_list}")
+
+    # # print len of each program's instances
+    # for program, insts in program_instances.items():
+    #     print(f"{program}: {len(insts)} instances")

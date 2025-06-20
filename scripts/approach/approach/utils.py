@@ -124,6 +124,7 @@ def balance_training_set(train_instances, method="undersample", ratio=1.0, rando
     if method == "undersample":
         # Calculate the target size based on the ratio
         target_size = int(len(minority) / ratio)
+        target_size = min(target_size, len(majority))  # Ensure we don't exceed majority size
         majority_resampled = resample(majority, replace=False, n_samples=target_size, random_state=random_state)
         balanced_instances = majority_resampled + minority
 
@@ -131,6 +132,7 @@ def balance_training_set(train_instances, method="undersample", ratio=1.0, rando
         # Oversample the minority class to the target size
         # Calculate the target size based on the ratio
         target_size = int(len(majority) * ratio)
+        target_size = max(target_size, len(minority))  # Ensure we don't undersample minority
         minority_resampled = resample(minority, replace=True, n_samples=target_size, random_state=random_state)
         balanced_instances = majority + minority_resampled
 
@@ -232,6 +234,7 @@ def split_folds_programs(instances, train_with_unknown=True, n_splits=5):
     for inst in instances:
         program_instances[inst.program].append(inst)
     program_list = list(program_instances.keys())
+    print(program_list)
     kf = KFold(n_splits=n_splits, shuffle=True, random_state=42)
     program_splits = list(kf.split(program_list))
     folds = []

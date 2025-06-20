@@ -1,4 +1,0 @@
-<boot>,0,org/jfree/chart/renderer/AbstractRenderer.<clinit>:()V
-<boot>,0,org/jfree/chart/LegendItem.<clinit>:()V
-<boot>,0,org/junit/runner/manipulation/Sorter.<clinit>:()V
-<boot>,0,org/jfree/chart/axis/NumberAxis.<clinit>:()V

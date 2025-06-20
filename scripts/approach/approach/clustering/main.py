@@ -2,6 +2,7 @@ import sys
 # sys.path.extend([".", ".."])
 
 import os, pickle
+from collections import defaultdict
 
 from approach.clustering.clustering_runner import ClusteringRunner
 from approach.clustering.flat_clustering_runner import FlatClusteringRunner
@@ -9,11 +10,14 @@ from approach.models.hdbscan_model import HDBSCANClusterer
 from approach.models.mpckmeans_model import MPCKMeansClusterer
 from approach.clustering.fallback import KNNFallback, CDistFallback, CDistFallback2
 from approach.clustering.label_heuristics import MajorityLabelHeuristic, AnyTrueLabelHeuristic, RelativeMajorityHeuristic
-from approach.data_representation.instance_loader import load_instances
+# from approach.data_representation.instance_loader import load_instances  #TODO: fix this mess
+from approach.data_representation.instance_loader_xcorp import load_instances
 
 from approach.utils import plot_points
 
-
+import argparse
+parser = argparse.ArgumentParser(description="Run baseline models")
+parser.add_argument("--exp", type=str, default="1", help="Type of experiment to run (1,2,3)")
 
 # plot_points(instances, "results/plots/struct.png", feature_type='static', plot_only_known=False, method='tsne')
 # plot_points(instances, "results/plots/tsne/trace_sum_tfidf1.png", feature_type='trace', plot_only_known=False, method='tsne')
@@ -102,5 +106,130 @@ def main():
         
    
 
+def main_xcorp(args):
+
+    clusterer = HDBSCANClusterer(min_cluster_size=5, metric='hamming', alpha=0.5)
+
+    if args.exp == "1":
+        params = [
+            ("doop",("v1", "39"),False),
+            ("doop",("v3", "5"),False),
+            ("doop",("v2", "0"),False),
+            ("wala",("v1", "19"),False),
+            ("wala",("v3", "0"),False),
+            ("wala",("v1", "23"),False),
+            ("opal",("v1", "0"),False),
+        ]
+
+        for param in params:
+            instances = load_instances(tool=param[0], config_info=param[1], just_three=True)
+             # seperate instances by thrir program
+            program_instances = defaultdict(list)
+            for inst in instances:
+                program_instances[inst.program].append(inst)
+            
+            # For each program, run the clustering
+            for program, insts in program_instances.items():
+                print(f"Running clustering for program: {program} with {len(insts)} instances")
+                if len(insts) < 5:
+                    print(f"Skipping program {program} due to insufficient instances ({len(insts)})")
+                    continue
+                output_dir = f"approach/results/clustering/programwise/{param[0]}/{param[1][0]}_{param[1][1]}/{program}"
+                os.makedirs(output_dir, exist_ok=True)
+
+                # Create a runner for each program
+                runner = FlatClusteringRunner(
+                    instances=insts,
+                    clusterer=clusterer,
+                    output_dir=output_dir,
+                    run_from_main=True,
+                    only_true=False,
+                    use_trace=False,
+                    use_var=False,
+                    use_semantic=False,
+                    use_static=True,
+                )
+                
+                # Run the clustering
+                runner.run()
+
+
+    elif args.exp == "2":
+        for tool in ['wala', 'doop']:
+            instances = load_instances(tool=tool, config_info=None, just_three=True)
+             # seperate instances by thrir program
+            program_instances = defaultdict(list)
+            for inst in instances:
+                program_instances[inst.program].append(inst)
+            
+            # For each program, run the clustering
+            for program, insts in program_instances.items():
+                print(f"Running clustering for program: {program} with {len(insts)} instances")
+                if len(insts) < 5:
+                    print(f"Skipping program {program} due to insufficient instances ({len(insts)})")
+                    continue
+                output_dir = f"approach/results/clustering/programwise/{tool}/{program}"
+                os.makedirs(output_dir, exist_ok=True)
+
+                # Create a runner for each program
+                runner = FlatClusteringRunner(
+                    instances=insts,
+                    clusterer=clusterer,
+                    output_dir=output_dir,
+                    run_from_main=True,
+                    only_true=False,
+                    use_trace=False,
+                    use_var=False,
+                    use_semantic=False,
+                    use_static=True,
+                )
+                
+                # Run the clustering
+                runner.run()
+
+    elif args.exp == "3":
+        instances = load_instances(tool=None, config_info=None, just_three=True)
+        # seperate instances by thrir program
+        program_instances = defaultdict(list)
+        for inst in instances:
+            program_instances[inst.program].append(inst)
+        
+        # For each program, run the clustering
+        for program, insts in program_instances.items():
+            print(f"Running clustering for program: {program} with {len(insts)} instances")
+            if len(insts) < 5:
+                print(f"Skipping program {program} due to insufficient instances ({len(insts)})")
+                continue
+            output_dir = f"approach/results/clustering/programwise/{program}"
+            os.makedirs(output_dir, exist_ok=True)
+
+            # Create a runner for each program
+            runner = FlatClusteringRunner(
+                instances=insts,
+                clusterer=clusterer,
+                output_dir=output_dir,
+                run_from_main=True,
+                only_true=False,
+                use_trace=False,
+                use_var=False,
+                use_semantic=False,
+                use_static=True,
+            )
+            
+            # Run the clustering
+            runner.run()
+
+    else:
+        raise ValueError("Invalid experiment type specified. Use 1, 2, or 3.")
+
+
+    
+   
+
+
+
+
+
 if __name__ == "__main__":
-    main()
+    # main() #njr
+    main_xcorp(parser.parse_args())

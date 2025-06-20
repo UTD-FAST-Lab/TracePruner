@@ -7,7 +7,18 @@
 /DOOP/doop-4.24.14/results
 /SOOT
 /WALA/WALA-1.5.5
+
+
+/WALA
+/DOOP
+/cgpruner
+/ml4cgp_study
+/PLELog
+/agents
+
 scripts/venv
 /scripts/approach/*.pkl
 
-*pth
+**/*.pyc
+__pycache__/
+**/*.pth

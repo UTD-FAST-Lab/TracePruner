@@ -1,5 +1,6 @@
 
 import numpy as np
+import os
 import pandas as pd
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import train_test_split
@@ -106,7 +107,10 @@ class FlatClusteringRunner:
 
         # 50% seeding
         true_labeled, _ = train_test_split(true_instances, test_size=0.5, random_state=42)
-        false_labeled, _ = train_test_split(false_instances, test_size=0.5, random_state=42)
+        if len(false_instances) > 0:
+            false_labeled, _ = train_test_split(false_instances, test_size=0.5, random_state=42)
+        else:
+            false_labeled = []
 
         # Build y_seed based on labeling mode
         y_seed = np.full(len(instances), -1)
@@ -173,11 +177,17 @@ class FlatClusteringRunner:
                 labeler = "true_false"
 
             if self.use_trace:
-                write_metrics_to_csv([metrics], f'{self.output_dir}/{labeler}/trace_tuning/trace_{self.option}.csv' )
+                output_file = f'{self.output_dir}/{labeler}/trace_tuning/trace_{self.option}.csv'
+                # write_metrics_to_csv([metrics], f'{self.output_dir}/{labeler}/trace_tuning/trace_{self.option}.csv' )
             elif self.use_semantic:
-                write_metrics_to_csv([metrics], f'{self.output_dir}/{labeler}/semantic.csv' )
+                output_file = f'{self.output_dir}/{labeler}/semantic.csv'
+                # write_metrics_to_csv([metrics], f'{self.output_dir}/{labeler}/semantic.csv' )
             elif self.use_static:
-                write_metrics_to_csv([metrics], f'{self.output_dir}/{labeler}/struct.csv' )
+                output_file = f'{self.output_dir}/{labeler}/struct.csv'
+                # write_metrics_to_csv([metrics], f'{self.output_dir}/{labeler}/struct.csv' )
+            
+            os.makedirs(os.path.dirname(output_file), exist_ok=True)
+            write_metrics_to_csv([metrics], output_file)
 
 
 
