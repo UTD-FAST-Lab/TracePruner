@@ -175,27 +175,29 @@ def run_autopruner(param=None):
             make_balance = False
 
         # runner = NeuralNetBaselineFixedSet(
-        runner = NeuralNetBaseline(
-            instances=instances,
-            raw_baseline=False,
-            train_with_unknown=False,
-            make_balance=make_balance,
-            # output_dir="{base}/baseline/autopruner_programwise/finetune_fix/",
-            output_dir=output_dir,
-            use_trace=False,
-            use_semantic=True, 
-            use_static=False,
-            just_three=param[2],
-            model_name='codebert',
-            random_split=False
-        )
-        all_runners.append(runner)
+        for i in range(2):
+            runner = NeuralNetBaseline(
+                instances=instances,
+                raw_baseline=False,
+                train_with_unknown=False,
+                make_balance=make_balance,
+                # output_dir="{base}/baseline/autopruner_programwise/finetune_fix/",
+                output_dir=output_dir,
+                use_trace=False,
+                use_semantic=True, 
+                use_static=False,
+                just_three=param[2],
+                model_name='codebert',
+                random_split=bool(i)
+            )
+            all_runners.append(runner)
 
     # run all the runners
     for runner in all_runners:
         runner.run()
 
 
+    return
     # codet5 experiments
     instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_semantic_features=True, model_name='codet5')
     all_runners = []
@@ -253,25 +255,27 @@ def run_finetuned(param=None):
         else:
             make_balance = False
 
-        runner = NeuralNetBaselineFineTuned(
-            instances=instances,
-            raw_baseline=False,
-            train_with_unknown=False,
-            make_balance=make_balance,
-            output_dir=output_dir,
-            use_trace=False,
-            use_semantic=True, 
-            use_static=False,
-            just_three=param[2],
-            model_name='codebert',
-            random_split=False
-        )
-        all_runners.append(runner)
+        for i in range(2):
+            runner = NeuralNetBaselineFineTuned(
+                instances=instances,
+                raw_baseline=False,
+                train_with_unknown=False,
+                make_balance=make_balance,
+                output_dir=output_dir,
+                use_trace=False,
+                use_semantic=True, 
+                use_static=False,
+                just_three=param[2],
+                model_name='codebert',
+                random_split=bool(i)
+            )
+            all_runners.append(runner)
 
     # run all the runners
     for runner in all_runners:
         runner.run()
 
+    return
     # codet5 experiments
     instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_tokens=True)
     all_runners = []
@@ -315,20 +319,31 @@ def run_svm(param=None):
         output_dir = f'{base}/baseline/svm/{param[0]}/{param[1][0]}_{param[1][1]}_{str(param[2])}'
     os.makedirs(output_dir, exist_ok=True)
 
-    # semantic codebert
-    instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_semantic_features=True, model_name='codebert')
-    svm_runner = SVMBaseline(instances, output_dir, kernel="rbf", nu=0.1, gamma='scale', just_three=param[2], use_semantic=True, model_name='codebert', random_split=False)
-    svm_runner.run()
+    all_runners = []
+    for i in range(2):
+        
+        # structured
+        instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2])
+        svm_runner = SVMBaseline(instances, output_dir, kernel="rbf", nu=0.1, gamma='scale', just_three=param[2], use_semantic=False, random_split=bool(i))
+        # svm_runner.run()
+        all_runners.append(svm_runner)
 
-    # semantic codet5
-    instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_semantic_features=True, model_name='codet5')
-    svm_runner = SVMBaseline(instances, output_dir, kernel="rbf", nu=0.1, gamma='scale', just_three=param[2], use_semantic=True, model_name='codet5', random_split=False)
-    svm_runner.run()
+        # semantic codebert
+        instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_semantic_features=True, model_name='codebert')
+        svm_runner = SVMBaseline(instances, output_dir, kernel="rbf", nu=0.1, gamma='scale', just_three=param[2], use_semantic=True, model_name='codebert', random_split=bool(i))
+        # svm_runner.run()
+        all_runners.append(svm_runner)
 
-    # structured
-    instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2])
-    svm_runner = SVMBaseline(instances, output_dir, kernel="rbf", nu=0.1, gamma='scale', just_three=param[2], use_semantic=False, random_split=False)
-    svm_runner.run()
+        
+        # # semantic codet5
+        # instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_semantic_features=True, model_name='codet5')
+        # svm_runner = SVMBaseline(instances, output_dir, kernel="rbf", nu=0.1, gamma='scale', just_three=param[2], use_semantic=True, model_name='codet5', random_split=bool(i))
+        # svm_runner.run()
+        # all_runners.append(svm_runner)
+
+    # run all the runners
+    for runner in all_runners:
+        runner.run()
 
 
 def main(args):

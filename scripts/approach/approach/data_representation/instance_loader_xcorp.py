@@ -80,10 +80,11 @@ def load_instances(dataset="njr", tool=None, config_info=None, just_three=False,
 
             if model_name == 'codebert':
                 semantic_features_path = os.path.join(features_dir, 'semantic', 'codebert', 'raw', program, f'semantic_{tool}_{version}_{config_id}.csv')
+                tokens_path = os.path.join(features_dir, 'semantic', 'codebert', 'tokens', program, f'token_{tool}_{version}_{config_id}.npz')
             else:
                 semantic_features_path = os.path.join(features_dir, 'semantic', 'codet5', 'raw', program, f'semantic_{tool}_{version}_{config_id}.csv')
+                tokens_path = os.path.join(features_dir, 'semantic', 'codet5', 'tokens', program, f'token_{tool}_{version}_{config_id}.npz')
 
-            tokens_path = os.path.join(features_dir, 'semantic', 'tokens', program, f'token_{tool}_{version}_{config_id}.npz')
 
 
             if not os.path.exists(true_path) or not os.path.exists(all_edges_path) or not os.path.exists(static_features_path):
@@ -112,7 +113,7 @@ def load_instances(dataset="njr", tool=None, config_info=None, just_three=False,
 
             if load_tokens:
                 data = np.load(tokens_path, allow_pickle=True)
-                tokens_data = data['data']
+                tokens_data = data['data'].tolist()
                 tokens_df = pd.DataFrame(tokens_data).set_index(['method', 'offset', 'target'])
 
 
@@ -135,8 +136,8 @@ def load_instances(dataset="njr", tool=None, config_info=None, just_three=False,
                     if load_tokens:
                         if key in tokens_df.index:
                             tokens_info = tokens_df.loc[key]
-                            tokens = tokens_info['tokens'].squeeze().tolist()
-                            masks = tokens_info['masks'].squeeze().tolist()
+                            tokens = tokens_info['tokens']
+                            masks = tokens_info['masks']
                             inst.set_tokens(tokens)
                             inst.set_masks(masks)
         
@@ -165,8 +166,13 @@ def load_instances(dataset="njr", tool=None, config_info=None, just_three=False,
 
 if __name__ == "__main__":
     # Example usage
-    instances = load_instances(tool="doop", config_info=('v1', '39'), just_three=True)
+    instances = load_instances(tool="doop", config_info=('v1', '39'), just_three=True, load_tokens=True, model_name='codebert')
     print(len(instances))
+    # print first 5 instances
+    for i in range(5):
+        print(instances[i].get_tokens())
+        print(instances[i].get_masks())
+
     # program_instances = defaultdict(list)
     # for inst in instances:
     #     program_instances[inst.program].append(inst)
