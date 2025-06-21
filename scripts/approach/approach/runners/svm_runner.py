@@ -122,9 +122,9 @@ class SVMBaseline:
         print(f"TP: {overall['TP']} | FP: {overall['FP']} | TN: {overall['TN']} | FN: {overall['FN']}")
 
         if not self.use_semantic:
-            metrics_path = f"{self.output_dir}/svm_{"random" if self.random_split else "programwise"}_{self.kernel}_nu{self.nu}.csv"
+            metrics_path = f"{self.output_dir}/svm_{'random' if self.random_split else 'programwise'}_{self.kernel}_nu{self.nu}.csv"
         else:
-            metrics_path = f"{self.output_dir}/svm_{"random" if self.random_split else "programwise"}_{self.model_name}_{self.kernel}_nu{self.nu}.csv"
+            metrics_path = f"{self.output_dir}/svm_{'random' if self.random_split else 'programwise'}_{self.model_name}_{self.kernel}_nu{self.nu}.csv"
 
         write_instances_to_file(self.instances, metrics_path.replace('.csv', '.pkl'))
         write_metrics_to_csv(all_metrics, metrics_path)

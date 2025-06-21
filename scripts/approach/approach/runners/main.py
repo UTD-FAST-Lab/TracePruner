@@ -244,7 +244,7 @@ def run_finetuned(param=None):
     config = load_json("approach/runners/config.json")["autoPruner"]
     balance__variations = get_balance_combinations(config)
     # codebert experiments
-    instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_tokens=True)
+    instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_tokens=True, model_name='codebert')
     all_runners = []
     # train on labeled data only
     for balance in balance__variations:
@@ -277,7 +277,7 @@ def run_finetuned(param=None):
 
     return
     # codet5 experiments
-    instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_tokens=True)
+    instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_tokens=True, model_name='codet5')
     all_runners = []
     # train on labeled data only
     for balance in balance__variations:

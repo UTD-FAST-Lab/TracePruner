@@ -176,9 +176,9 @@ class NeuralNetBaseline:
             if self.train_with_unknown:
                 metrics_path = f"{self.output_dir}/nn_{self.threshold}_trained_on_unknown.csv"
             elif self.make_balance:
-                metrics_path = f"{self.output_dir}/nn_{"random" if self.random_split else "programwise"}_{self.model_name}_{self.threshold}_trained_on_known_{self.make_balance[0]}_{self.make_balance[1]}.csv"
+                metrics_path = f"{self.output_dir}/nn_{'random' if self.random_split else 'programwise'}_{self.model_name}_{self.threshold}_trained_on_known_{self.make_balance[0]}_{self.make_balance[1]}.csv"
             else:
-                metrics_path = f"{self.output_dir}/nn_{"random" if self.random_split else "programwise"}_{self.model_name}_{self.threshold}_trained_on_known.csv"
+                metrics_path = f"{self.output_dir}/nn_{'random' if self.random_split else 'programwise'}_{self.model_name}_{self.threshold}_trained_on_known.csv"
         else:
             metrics_path = f"{self.output_dir}/nn_raw_{self.threshold}.csv"
 
