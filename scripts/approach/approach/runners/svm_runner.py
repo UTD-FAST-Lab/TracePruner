@@ -1,12 +1,14 @@
 import numpy as np
 from sklearn.svm import OneClassSVM
 from sklearn.preprocessing import StandardScaler
-from approach.utils import evaluate_fold, write_metrics_to_csv, split_folds_programs
+from approach.utils import evaluate_fold, write_metrics_to_csv, split_folds_programs, split_folds, write_instances_to_file
 from approach.data_representation.instance_loader import load_instances
+
+VECTOR_SIZE = {'codebert': 768, 'codet5': 1024}
 
 class SVMBaseline:
 
-    def __init__(self, instances, output_dir, kernel="rbf", nu=0.1, gamma="scale", just_three=False, use_semantic=False):
+    def __init__(self, instances, output_dir, kernel="rbf", nu=0.1, gamma="scale", just_three=False, use_semantic=False, model_name='codebert', random_split=False):
         self.instances = instances
         self.output_dir = output_dir
         self.kernel = kernel
@@ -14,6 +16,9 @@ class SVMBaseline:
         self.gamma = gamma
         self.just_three = just_three
         self.use_semantic = use_semantic
+        self.vector_size = VECTOR_SIZE.get(model_name, 768)  
+        self.model_name = model_name
+        self.random_split = random_split
         self.labeled = [i for i in instances if i.is_known()]
         self.unknown = [i for i in instances if not i.is_known()]
 
@@ -26,16 +31,18 @@ class SVMBaseline:
     def run(self):
 
         if self.use_semantic:
-            # put 768*[0] for semantic features that are None
             for inst in self.instances:
                 if inst.get_semantic_features() is None:
-                    inst.set_semantic_features(np.zeros(768, dtype=float))
+                    inst.set_semantic_features(np.zeros(self.vector_size, dtype=float))
 
-        if self.just_three:
-            n_sample = 4
+        if self.random_split:
+            folds = split_folds(self.labeled, self.unknown, train_with_unknown=False)
         else:
-            n_sample = 3
-        folds = split_folds_programs(self.instances, train_with_unknown=False, n_splits=n_sample)
+            if self.just_three:
+                n_sample = 4
+            else:
+                n_sample = 3
+            folds = split_folds_programs(self.instances, train_with_unknown=False, n_splits=n_sample)
         all_metrics = []
         all_eval = []
         unk_labeled_true = 0
@@ -114,7 +121,12 @@ class SVMBaseline:
         print(f"Precision: {overall['precision']:.3f}, Recall: {overall['recall']:.3f}, F1: {overall['f1']:.3f}")
         print(f"TP: {overall['TP']} | FP: {overall['FP']} | TN: {overall['TN']} | FN: {overall['FN']}")
 
-        metrics_path = f"{self.output_dir}/svm_{self.kernel}_nu{self.nu}.csv"
+        if not self.use_semantic:
+            metrics_path = f"{self.output_dir}/svm_{"random" if self.random_split else "programwise"}_{self.kernel}_nu{self.nu}.csv"
+        else:
+            metrics_path = f"{self.output_dir}/svm_{"random" if self.random_split else "programwise"}_{self.model_name}_{self.kernel}_nu{self.nu}.csv"
+
+        write_instances_to_file(self.instances, metrics_path.replace('.csv', '.pkl'))
         write_metrics_to_csv(all_metrics, metrics_path)
 
     def evaluate(self, test):

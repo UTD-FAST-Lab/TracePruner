@@ -17,9 +17,9 @@ class NNClassifier_Combine(nn.Module):
 
 
 class NNClassifier_Semantic(nn.Module):
-    def __init__(self, hidden_size = 16):
+    def __init__(self, vec_size , hidden_size = 16):
         super(NNClassifier_Semantic, self).__init__()
-        self.encoder1 = nn.Linear(768, hidden_size)
+        self.encoder1 = nn.Linear(vec_size, hidden_size)
         self.encoder2 = nn.Linear(11, hidden_size)
         self.decoder = nn.Linear(2 * hidden_size, 2)
         self.decoder2 = nn.Linear(hidden_size, 2)

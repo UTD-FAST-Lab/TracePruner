@@ -1,21 +1,24 @@
 from approach.data_representation.Instance import Instance
+from approach.constants import static_cg_dir, features_dir, manual_labels_dir
+
 import pandas as pd
+import numpy as np
 import os
 import json
 from collections import defaultdict
 
 
-LOAD_SEMANTIC_FINETUNED = False
-LOAD_SEMANTIC_RAW = True
+# LOAD_SEMANTIC_FINETUNED = False
+# LOAD_SEMANTIC_RAW = True
 
 
-static_cg_dir = '/20TB/mohammad/xcorpus-total-recall/dataset'
-features_dir = '/20TB/mohammad/xcorpus-total-recall/features'
-manual_labels_dir = '/20TB/mohammad/xcorpus-total-recall/manual_labeling'
+# static_cg_dir = '/20TB/mohammad/xcorpus-total-recall/dataset'
+# features_dir = '/20TB/mohammad/xcorpus-total-recall/features'
+# manual_labels_dir = '/20TB/mohammad/xcorpus-total-recall/manual_labeling'
 
 
 # config_data = (version, config_id)
-def load_instances(dataset="njr", tool=None, config_info=None, just_three=False):
+def load_instances(dataset="njr", tool=None, config_info=None, just_three=False, load_semantic_features=False, load_tokens=False, model_name=None):
     
     with open("approach/data_representation/config.json", 'r') as f:
         conf_data = json.load(f)
@@ -75,9 +78,13 @@ def load_instances(dataset="njr", tool=None, config_info=None, just_three=False)
             
             static_features_path = os.path.join(features_dir, 'struct', program, f'struct_{tool}_{version}_{config_id}.csv')
 
-            # if LOAD_SEMANTIC_RAW or LOAD_SEMANTIC_FINETUNED:
-            if LOAD_SEMANTIC_RAW:
-                semantic_features_path = os.path.join(features_dir, 'semantic', 'raw', program, f'semantic_{tool}_{version}_{config_id}.csv')
+            if model_name == 'codebert':
+                semantic_features_path = os.path.join(features_dir, 'semantic', 'codebert', 'raw', program, f'semantic_{tool}_{version}_{config_id}.csv')
+            else:
+                semantic_features_path = os.path.join(features_dir, 'semantic', 'codet5', 'raw', program, f'semantic_{tool}_{version}_{config_id}.csv')
+
+            tokens_path = os.path.join(features_dir, 'semantic', 'tokens', program, f'token_{tool}_{version}_{config_id}.npz')
+
 
             if not os.path.exists(true_path) or not os.path.exists(all_edges_path) or not os.path.exists(static_features_path):
                 print(f"Skipping {program} in {tool} ({version}, {config_id}) due to missing files.")
@@ -100,9 +107,13 @@ def load_instances(dataset="njr", tool=None, config_info=None, just_three=False)
             static_features_df = pd.read_csv(static_features_path).set_index(['method', 'offset', 'target'])
 
             # Load semantic features
-            if LOAD_SEMANTIC_RAW or LOAD_SEMANTIC_FINETUNED:
+            if load_semantic_features:
                 semantic_features_df = pd.read_csv(semantic_features_path).set_index(['method', 'offset', 'target'])
 
+            if load_tokens:
+                data = np.load(tokens_path, allow_pickle=True)
+                tokens_data = data['data']
+                tokens_df = pd.DataFrame(tokens_data).set_index(['method', 'offset', 'target'])
 
 
             def create_instance(row, label, is_unknown):
@@ -114,11 +125,20 @@ def load_instances(dataset="njr", tool=None, config_info=None, just_three=False)
                     inst.set_static_features(static)
                     
                     # Set semantic features if available
-                    if LOAD_SEMANTIC_RAW or LOAD_SEMANTIC_FINETUNED:
+                    if load_semantic_features:
                         if key in semantic_features_df.index:
                             semantic = semantic_features_df.loc[key]
                             semantic = semantic.squeeze().values.tolist()
                             inst.set_semantic_features(semantic)
+                    
+                    # Set tokens if available
+                    if load_tokens:
+                        if key in tokens_df.index:
+                            tokens_info = tokens_df.loc[key]
+                            tokens = tokens_info['tokens'].squeeze().tolist()
+                            masks = tokens_info['masks'].squeeze().tolist()
+                            inst.set_tokens(tokens)
+                            inst.set_masks(masks)
         
                     # Set GT if exists
                     gt_key = (row['method'], row['offset'], row['target'])

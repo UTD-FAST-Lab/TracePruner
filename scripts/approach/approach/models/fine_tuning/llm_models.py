@@ -3,7 +3,9 @@ from torch import nn
 import torch
 
 # Constants (should be configurable elsewhere in real use)
-STRUCT_FEAT_DIM = 11
+MODELS_BATCH_SIZE = {"codebert": 32, "codet5": 32, "codet5_plus": 12}
+NO_EPOCHS = 2
+LR = 0.00001
 
 class CodeBERTClassifier(nn.Module):
     def __init__(self):
@@ -14,23 +16,23 @@ class CodeBERTClassifier(nn.Module):
     def forward(self, ids, mask):
         _, emb = self.encoder(ids, attention_mask=mask, return_dict=False)
         out = self.out(emb)
-        return out, emb
+        return out
 
 
 class CodeT5Classifier(nn.Module):
-    def __init__(self, model_name='codet5', dropout_rate=0.25):
+    def __init__(self, dropout_rate=0.25):
         super().__init__()
-        self.encoder = self._get_encoder(model_name)
+        self.encoder = T5EncoderModel.from_pretrained('Salesforce/codet5p-770m')
         self.dropout = nn.Dropout(p=dropout_rate)
         self.out = nn.Linear(self.encoder.config.hidden_size, 2)
 
-    def _get_encoder(self, name):
-        if name == 'codet5':
-            return T5EncoderModel.from_pretrained('Salesforce/codet5-base')
-        elif name == 'codet5_plus':
-            return T5EncoderModel.from_pretrained('Salesforce/codet5p-770m')
-        else:
-            raise ValueError("Unsupported model name for CodeT5Classifier")
+    # def _get_encoder(self, name):
+    #     if name == 'codet5':
+    #         return T5EncoderModel.from_pretrained('Salesforce/codet5-base')
+    #     elif name == 'codet5_plus':
+    #         return T5EncoderModel.from_pretrained('Salesforce/codet5p-770m')
+    #     else:
+    #         raise ValueError("Unsupported model name for CodeT5Classifier")
 
     def forward(self, ids, mask):
         emb = self.encoder(ids, attention_mask=mask, return_dict=False)[0][:, -1]  # Last token

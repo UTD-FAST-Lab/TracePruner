@@ -2,11 +2,11 @@ import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import KFold
-from approach.utils import evaluate_fold, write_results_to_csv, write_metrics_to_csv, split_folds, balance_training_set, split_folds_programs
+from approach.utils import evaluate_fold, write_results_to_csv, write_metrics_to_csv, write_instances_to_file, split_folds, balance_training_set, split_folds_programs
 
 class RandomForestBaseline:
 
-    def __init__(self, instances, output_dir, train_with_unknown=True, make_balance=False, threshold=0.5, raw_baseline=False, use_trace=False, all_three= False):
+    def __init__(self, instances, output_dir, train_with_unknown=True, make_balance=False, threshold=0.5, raw_baseline=False, use_trace=False, all_three= False, random_split=False):
         self.instances = instances
         self.use_trace = use_trace
         self.raw_baseline = raw_baseline
@@ -15,6 +15,7 @@ class RandomForestBaseline:
         self.make_balance = make_balance
         self.train_with_unknown = train_with_unknown
         self.all_three = all_three
+        self.random_split = random_split
         self.labeled = [i for i in instances if i.is_known()]
         self.unknown = [i for i in instances if not i.is_known()]
 
@@ -24,12 +25,15 @@ class RandomForestBaseline:
 
     def run(self):
 
-        # folds = split_folds(self.labeled, self.unknown, self.train_with_unknown)
-        if not self.all_three:
-            n_splits = 3
+        if self.random_split:
+            folds = split_folds(self.labeled, self.unknown, self.train_with_unknown)
         else:
-            n_splits = 4
-        folds = split_folds_programs(self.instances, self.train_with_unknown, n_splits=n_splits)
+            if not self.all_three:
+                n_splits = 3
+            else:
+                n_splits = 4
+            folds = split_folds_programs(self.instances, self.train_with_unknown, n_splits=n_splits)
+
         all_metrics = []
         all_eval = []
         unk_labeled_true = 0
@@ -145,13 +149,14 @@ class RandomForestBaseline:
             if self.train_with_unknown:
                 metrics_path = f"{self.output_dir}/rf_{self.threshold}_trained_on_unknown.csv"
             elif self.make_balance:
-                metrics_path = f"{self.output_dir}/rf_{self.threshold}_trained_on_known_{self.make_balance[0]}_{self.make_balance[1]}.csv"
+                metrics_path = f"{self.output_dir}/rf_{"random" if self.random_split else "programwise"}_{self.threshold}_trained_on_known_{self.make_balance[0]}_{self.make_balance[1]}.csv"
             else:
-                metrics_path = f"{self.output_dir}/rf_{self.threshold}_trained_on_known.csv"
+                metrics_path = f"{self.output_dir}/rf_{"random" if self.random_split else "programwise"}_{self.threshold}_trained_on_known.csv"
         else:
             metrics_path = f"{self.output_dir}/rf_raw_{self.threshold}.csv"
 
         # write_results_to_csv(all_eval, res_path)
+        write_instances_to_file(self.instances, metrics_path.replace('.csv', '.pkl'))
         write_metrics_to_csv(all_metrics, metrics_path)
         
 

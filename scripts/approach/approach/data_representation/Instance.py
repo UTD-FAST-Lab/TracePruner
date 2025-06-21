@@ -19,6 +19,8 @@ class Instance():
         self.trace_features = None
         self.var_features = None
         self.semantic_features = None
+        self.tokens = None
+        self.masks = None
 
 
     def get_id(self):
@@ -99,3 +101,15 @@ class Instance():
 
     def get_trace_graph(self):
         return self.trace_graph
+    
+    def set_tokens(self, tokens):
+        self.tokens = tokens
+
+    def get_tokens(self):
+        return self.tokens
+    
+    def set_masks(self, masks):
+        self.masks = masks
+        
+    def get_masks(self):
+        return self.masks

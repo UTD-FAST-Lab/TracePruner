@@ -4,16 +4,18 @@ from torch import nn
 from torch.utils.data import DataLoader, TensorDataset
 from sklearn.preprocessing import StandardScaler
 from sklearn.model_selection import KFold
-from approach.utils import evaluate_fold, write_results_to_csv, write_metrics_to_csv, split_folds, balance_training_set, split_folds_programs, split_fixed_set, write_instances_to_file
-from approach.models.nn_models import NNClassifier_Combine, NNClassifier_Semantic, NNClassifier_Structure
+from approach.utils import evaluate_fold, write_results_to_csv, write_metrics_to_csv, write_instances_to_file ,split_folds, balance_training_set, split_folds_programs, split_fixed_set
+from approach.models.fine_tuning.llm_models import CodeBERTClassifier, CodeT5Classifier
 import torch.nn.functional as F
 from tqdm import tqdm
 
-VECTOR_SIZE = {'codebert': 768, 'codet5': 1024}
+MODELS_BATCH_SIZE = {"codebert": 32, "codet5": 12}
+NO_EPOCHS = 2
+LR = 0.00001
 
-class NeuralNetBaseline:
+class NeuralNetBaselineFineTuned:
     def __init__(self, instances, output_dir, train_with_unknown=True, make_balance=False, threshold=0.5, raw_baseline=False,
-                 use_trace=False, use_semantic=False, use_static=False, model_name='codebert', hidden_size=32, batch_size=100, lr=5e-6, epochs=5, just_three=False, random_split=False):
+                 use_trace=False, use_semantic=False, use_static=False, model_name='codebert' , hidden_size=32, batch_size=100, lr=5e-6, epochs=5, just_three=False, random_split=False):
         self.instances = instances
         self.raw_baseline = raw_baseline
         self.output_dir = output_dir
@@ -23,57 +25,30 @@ class NeuralNetBaseline:
         self.make_balance = make_balance
         self.train_with_unknown = train_with_unknown
         self.threshold = threshold
-        self.batch_size = batch_size
-        self.lr = lr
-        self.epochs = epochs
+        self.batch_size = MODELS_BATCH_SIZE.get(model_name, 32)
+        self.lr = LR
+        self.epochs = NO_EPOCHS
         self.hidden_size = hidden_size
+        self.just_three = just_three
         self.model_name = model_name
         self.random_split = random_split
-        self.vec_size = VECTOR_SIZE.get(model_name, 768)
-        self.just_three = just_three
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
         self.labeled = [i for i in instances if i.is_known()]
         self.unknown = [i for i in instances if not i.is_known()]
 
-        input_mode = (use_semantic, use_static)
-        if input_mode == (True, False):
-            self.model = NNClassifier_Semantic(self.vec_size,hidden_size)
-        elif input_mode == (False, True):
-            self.model = NNClassifier_Structure(hidden_size)
-        else:
-            self.model = NNClassifier_Combine(hidden_size)
+        self.model = CodeBERTClassifier()
         self.model.to(self.device)
 
-    def get_features(self, insts):
-        code_vecs = []
-        struct_vecs = []
+    def get_tokens(self, insts):
+        
+        token_ids_vec = [i.get_tokens() for i in insts]
+        masks_vec = [i.get_masks() for i in insts]
 
-        for inst in insts:
-            if self.use_semantic and not self.use_static:
-                code = inst.get_semantic_features()
-                struct = [0.0] * 11
-            elif self.use_static and not self.use_semantic:
-                code = [0.0] * self.vec_size
-                struct = inst.get_static_featuers()
-            else:
-                code = inst.get_semantic_features()
-                struct = inst.get_static_featuers()
-
-            # Validate vector lengths
-            if code is None or len(code) != self.vec_size:
-                code = [0.0] * self.vec_size
-            if struct is None or len(struct) != 11:
-                print(f"warning: instance structured data is not correct")
-                struct = [0.0] * 11
-
-            code_vecs.append(code)
-            struct_vecs.append(struct)
-
-        return np.array(code_vecs, dtype=np.float32), np.array(struct_vecs, dtype=np.float32)
+        return np.array(token_ids_vec, dtype=np.long), np.array(masks_vec, dtype=np.long)
 
     def run(self):
-        
+
         if self.random_split:
             folds = split_folds(self.labeled, self.unknown, self.train_with_unknown)
         else:
@@ -82,6 +57,7 @@ class NeuralNetBaseline:
             else:
                 n_split = 3
             folds = split_folds_programs(self.instances, self.train_with_unknown, n_splits=n_split)
+
         all_metrics = []
         unk_labeled_true = 0
         unk_labeled_false = 0
@@ -95,18 +71,20 @@ class NeuralNetBaseline:
                 else:
                     train = balance_training_set(train, self.make_balance[0], self.make_balance[1])
 
-            code_train, struct_train = self.get_features(train)
+            train_token_ids, train_masks = self.get_tokens(train)
             y_train = np.array([1 if i.get_label() else 0 for i in train])
 
-            code_test, struct_test = self.get_features(test)
+            test_token_ids, test_masks = self.get_tokens(test)
             y_test = np.array([1 if i.get_label() else 0 for i in test])
 
             # Create loaders
-            train_loader = self.create_loader(code_train, struct_train, y_train, train, shuffle=True)
-            test_loader = self.create_loader(code_test, struct_test, y_test, test, shuffle=False)
+            train_loader = self.create_loader(train_token_ids, train_masks, y_train, train, shuffle=True)
+            test_loader = self.create_loader(test_token_ids, test_masks, y_test, test, shuffle=False)
 
             # Reinit model and optimizer
-            self.model.apply(self.init_weights)
+            # Re-initialize the model for each fold
+            self.model = CodeBERTClassifier()
+            self.model.to(self.device)
             optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr)
             loss_fn = nn.CrossEntropyLoss()
 
@@ -132,6 +110,9 @@ class NeuralNetBaseline:
             print(f"NN Fold {fold} - F1: {metrics['f1']:.3f}, Precision: {metrics['precision']:.3f}, Recall: {metrics['recall']:.3f}")
             print(f"TP: {metrics['TP']} | FP: {metrics['FP']} | TN: {metrics['TN']} | FN: {metrics['FN']}")
         
+        # saving the instances
+        
+
         # Overall
         if not self.raw_baseline:
             y_all_true = [1 if inst.get_label() else 0 for inst in self.labeled]
@@ -154,17 +135,6 @@ class NeuralNetBaseline:
         for k, v in gt_metrics.items():
             overall[f"gt_{k}"] = v
 
-        # calculate the mean of all the gt metrics
-        # for metric in all_metrics:
-        #     for k, v in metric.items():
-        #         if k.startswith("gt_"):
-        #             if k not in overall:
-        #                 overall[k] = 0
-        #             overall[k] += v
-        # for k in overall.keys():
-        #     if k.startswith("gt_"):
-        #         overall[k] =  round(overall[k]/len(all_metrics),3)
-
         overall["fold"] = "overall"
         all_metrics.append(overall)
 
@@ -176,9 +146,9 @@ class NeuralNetBaseline:
             if self.train_with_unknown:
                 metrics_path = f"{self.output_dir}/nn_{self.threshold}_trained_on_unknown.csv"
             elif self.make_balance:
-                metrics_path = f"{self.output_dir}/nn_{"random" if self.random_split else "programwise"}_{self.model_name}_{self.threshold}_trained_on_known_{self.make_balance[0]}_{self.make_balance[1]}.csv"
+                metrics_path = f"{self.output_dir}/{self.model_name}_{"random" if self.random_split else "programwise"}_{self.threshold}_trained_on_known_{self.make_balance[0]}_{self.make_balance[1]}.csv"
             else:
-                metrics_path = f"{self.output_dir}/nn_{"random" if self.random_split else "programwise"}_{self.model_name}_{self.threshold}_trained_on_known.csv"
+                metrics_path = f"{self.output_dir}/{self.model_name}_{"random" if self.random_split else "programwise"}_{self.threshold}_trained_on_known.csv"
         else:
             metrics_path = f"{self.output_dir}/nn_raw_{self.threshold}.csv"
 
@@ -186,20 +156,20 @@ class NeuralNetBaseline:
         write_instances_to_file(self.instances, metrics_path.replace('.csv', '.pkl'))
         write_metrics_to_csv(all_metrics, metrics_path)
 
-    def create_loader(self, code, struct, y, instances, shuffle=True):
-        code_tensor = torch.tensor(code, dtype=torch.float32)
-        struct_tensor = torch.tensor(struct, dtype=torch.float32)
+    def create_loader(self, token_ids, masks, y, instances, shuffle=True):
+        token_ids_tensor = torch.tensor(token_ids, dtype=torch.long)
+        mask_tensor = torch.tensor(masks, dtype=torch.long)
         label_tensor = torch.tensor(y, dtype=torch.long)
-        dataset = TensorDataset(code_tensor, struct_tensor, label_tensor)
+        dataset = TensorDataset(token_ids_tensor, mask_tensor, label_tensor)
         return DataLoader(dataset, batch_size=self.batch_size, shuffle=shuffle)
 
     def train_loop(self, loader, optimizer, loss_fn):
         self.model.train()
         for epoch in range(self.epochs):
             loop = tqdm(loader, desc=f"Epoch {epoch + 1}", leave=False)
-            for code, struct, label in loop:
-                code, struct, label = code.to(self.device), struct.to(self.device), label.to(self.device)
-                output = self.model(code, struct)
+            for token_ids, mask, label in loop:
+                token_ids, mask, label = token_ids.to(self.device), mask.to(self.device), label.to(self.device)
+                output = self.model(token_ids, mask)
                 loss = loss_fn(output, label)
                 optimizer.zero_grad()
                 loss.backward()
@@ -210,9 +180,9 @@ class NeuralNetBaseline:
         all_preds = []
         all_confs = []
         with torch.no_grad():
-            for code, struct, _ in loader:
-                code, struct = code.to(self.device), struct.to(self.device)
-                output = self.model(code, struct)
+            for token_ids, mask, _ in loader:
+                token_ids, mask = token_ids.to(self.device), mask.to(self.device)
+                output = self.model(token_ids, mask)
                 probs = F.softmax(output, dim=1)[:, 1].detach().cpu().numpy()
                 preds = (probs >= self.threshold).astype(int)
                 all_preds.extend(preds.tolist())

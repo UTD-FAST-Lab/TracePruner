@@ -318,9 +318,16 @@ def write_results_to_csv(instances, path):
         })
     pd.DataFrame(records).to_csv(path, index=False)
 
+
 def write_metrics_to_csv(metrics, path):
     pd.DataFrame(metrics).to_csv(path, index=False)
 
+
+def write_instances_to_file(instances, path):
+    # write the instance to a file with pickle or something
+    import pickle
+    with open(path, 'wb') as f:
+        pickle.dump(instances, f)
 
 
 def evaluate(test):
