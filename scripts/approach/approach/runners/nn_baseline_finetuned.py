@@ -1,3 +1,4 @@
+import os
 import numpy as np
 import torch
 from torch import nn
@@ -48,6 +49,22 @@ class NeuralNetBaselineFineTuned:
         return np.array(token_ids_vec, dtype=np.long), np.array(masks_vec, dtype=np.long)
 
     def run(self):
+        
+        if not self.raw_baseline:
+            if self.train_with_unknown:
+                metrics_path = f"{self.output_dir}/nn_{self.threshold}_trained_on_unknown.csv"
+            elif self.make_balance:
+                metrics_path = f"{self.output_dir}/{self.model_name}_{'random' if self.random_split else 'programwise'}_{self.threshold}_trained_on_known_{self.make_balance[0]}_{self.make_balance[1]}.csv"
+            else:
+                metrics_path = f"{self.output_dir}/{self.model_name}_{'random' if self.random_split else 'programwise'}_{self.threshold}_trained_on_known.csv"
+        else:
+            metrics_path = f"{self.output_dir}/nn_raw_{self.threshold}.csv"
+
+        if os.path.exists(metrics_path):
+            print(f"Metrics file {metrics_path} already exists. Skipping training.")
+            return
+
+        
 
         if self.random_split:
             folds = split_folds(self.labeled, self.unknown, self.train_with_unknown)

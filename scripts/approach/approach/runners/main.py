@@ -250,6 +250,7 @@ def run_finetuned(param=None):
     for balance in balance__variations:
         # Convert the balance string into method and ratio if needed
         if "_" in balance:
+            continue
             balance_method, balance_ratio = balance.split("_")
             make_balance = (balance_method, float(balance_ratio))
         else:
