@@ -117,36 +117,70 @@ def load_instances(dataset="njr", tool=None, config_info=None, just_three=False,
                 tokens_df = pd.DataFrame(tokens_data).set_index(['method', 'offset', 'target'])
 
 
+            # def create_instance(row, label, is_unknown):
+            #     key = (row['method'], row['offset'], row['target'])
+            #     if key in static_features_df.index:
+            #         inst = Instance(program, *key, is_unknown, label=label)
+            #         static = static_features_df.loc[key]
+            #         static = static.squeeze().values.tolist()
+            #         inst.set_static_features(static)
+                    
+            #         # Set semantic features if available
+            #         if load_semantic_features:
+            #             if key in semantic_features_df.index:
+            #                 semantic = semantic_features_df.loc[key]
+            #                 semantic = semantic.squeeze().values.tolist()
+            #                 inst.set_semantic_features(semantic)
+                    
+            #         # Set tokens if available
+            #         if load_tokens:
+            #             if key in tokens_df.index:
+            #                 tokens_info = tokens_df.loc[key]
+            #                 tokens = tokens_info['tokens']
+            #                 masks = tokens_info['masks']
+            #                 inst.set_tokens(tokens)
+            #                 inst.set_masks(masks)
+        
+            #         # Set GT if exists
+            #         gt_key = (row['method'], row['offset'], row['target'])
+            #         if gt_key in manual_gt_map:
+            #             inst.set_ground_truth(manual_gt_map[gt_key])
+                    
+            #         return inst
+
             def create_instance(row, label, is_unknown):
                 key = (row['method'], row['offset'], row['target'])
-                if key in static_features_df.index:
-                    inst = Instance(program, *key, is_unknown, label=label)
-                    static = static_features_df.loc[key]
-                    static = static.squeeze().values.tolist()
-                    inst.set_static_features(static)
-                    
-                    # Set semantic features if available
-                    if load_semantic_features:
-                        if key in semantic_features_df.index:
-                            semantic = semantic_features_df.loc[key]
-                            semantic = semantic.squeeze().values.tolist()
-                            inst.set_semantic_features(semantic)
-                    
-                    # Set tokens if available
-                    if load_tokens:
-                        if key in tokens_df.index:
-                            tokens_info = tokens_df.loc[key]
-                            tokens = tokens_info['tokens']
-                            masks = tokens_info['masks']
-                            inst.set_tokens(tokens)
-                            inst.set_masks(masks)
-        
-                    # Set GT if exists
-                    gt_key = (row['method'], row['offset'], row['target'])
-                    if gt_key in manual_gt_map:
-                        inst.set_ground_truth(manual_gt_map[gt_key])
-                    
-                    return inst
+
+                # Check static features first
+                if key not in static_features_df.index:
+                    return None
+
+                # If token loading is enabled, ensure tokens exist for the key
+                if load_tokens and key not in tokens_df.index:
+                    return None
+
+                inst = Instance(program, *key, is_unknown, label=label)
+
+                # Set static features
+                static = static_features_df.loc[key]
+                static = static.squeeze().values.tolist()
+                inst.set_static_features(static)
+
+                # Set semantic features (optional)
+                if load_semantic_features and key in semantic_features_df.index:
+                    semantic = semantic_features_df.loc[key]
+                    semantic = semantic.squeeze().values.tolist()
+                    inst.set_semantic_features(semantic)
+
+                # Set tokens (already verified presence)
+                if load_tokens:
+                    tokens_info = tokens_df.loc[key]
+                    tokens = tokens_info['tokens']
+                    masks = tokens_info['masks']
+                    inst.set_tokens(tokens)
+                    inst.set_masks(masks)
+
+                return inst
 
             for _, row in true_df.iterrows():
                 inst = create_instance(row, label=True, is_unknown=False)

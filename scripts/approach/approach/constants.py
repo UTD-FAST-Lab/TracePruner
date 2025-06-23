@@ -1,5 +1,5 @@
 
-IN_COLAB = True
+IN_COLAB = False
 
 if IN_COLAB:
     base = '/content/drive/MyDrive/Research/Program-analysis/Projects/project1/data/xcorp/results'
