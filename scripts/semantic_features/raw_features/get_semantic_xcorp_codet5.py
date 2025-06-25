@@ -34,6 +34,9 @@ for program in program_list:
         wala_path = os.path.join(program_dir, scg_file)
         code_path = os.path.join(PROCESSED_DATA, program, "code.csv")
         output_csv = os.path.join(OUTPUT_DIR, program, scg_file.replace('struct', 'semantic'))
+        if os.path.exists(output_csv):
+            print(f"Skipping {output_csv} as it already exists.")
+            continue
         os.makedirs(os.path.dirname(output_csv), exist_ok=True)
 
         if not os.path.exists(wala_path) or not os.path.exists(code_path):

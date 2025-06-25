@@ -11,13 +11,13 @@ from utils.converter import convert
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 # === TOKENIZER ===
-# tokenizer = RobertaTokenizer.from_pretrained('Salesforce/codet5-small', use_fast=True)
-tokenizer = AutoTokenizer.from_pretrained("microsoft/codebert-base")
+tokenizer = RobertaTokenizer.from_pretrained('Salesforce/codet5-small', use_fast=True)
+# tokenizer = AutoTokenizer.from_pretrained("microsoft/codebert-base")
 
 # === CONFIG ===
 BENCHMARK_CALLGRAPHS = "/20TB/mohammad/xcorpus-total-recall/features/struct"
 PROCESSED_DATA = "/20TB/mohammad/xcorpus-total-recall/features/semantic/source_code"
-OUTPUT_DIR = "/20TB/mohammad/xcorpus-total-recall/features/semantic/tokens"
+OUTPUT_DIR = "/20TB/mohammad/xcorpus-total-recall/features/semantic/codet5/tokens"
 os.makedirs(OUTPUT_DIR, exist_ok=True)
 
 # === PROGRAMS ===

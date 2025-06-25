@@ -12,6 +12,7 @@ from approach.clustering.fallback import KNNFallback, CDistFallback, CDistFallba
 from approach.clustering.label_heuristics import MajorityLabelHeuristic, AnyTrueLabelHeuristic, RelativeMajorityHeuristic
 # from approach.data_representation.instance_loader import load_instances  #TODO: fix this mess
 from approach.data_representation.instance_loader_xcorp import load_instances
+from approach.constants import base
 
 from approach.utils import plot_points
 
@@ -19,91 +20,153 @@ import argparse
 parser = argparse.ArgumentParser(description="Run baseline models")
 parser.add_argument("--exp", type=str, default="1", help="Type of experiment to run (1,2,3)")
 
-# plot_points(instances, "results/plots/struct.png", feature_type='static', plot_only_known=False, method='tsne')
-# plot_points(instances, "results/plots/tsne/trace_sum_tfidf1.png", feature_type='trace', plot_only_known=False, method='tsne')
 
 
+# def main():
 
-# if os.path.exists("cached_instances_trace.pkl"):
-#     with open("cached_instances_trace.pkl", "rb") as f:
-#         instances = pickle.load(f)
-# else:
+#     # Load instances
 #     instances = load_instances("njr")
-#     with open("cached_instances_trace.pkl", "wb") as f:
-#         pickle.dump(instances, f)
+#     all_runners = []
 
-# clusterers = (
-#     HDBSCANClusterer(min_cluster_size=5),
-#     MPCKMeansClusterer(n_clusters=2)
-# )
+#     for i in range(2):
 
-# runner = ClusteringRunner(
-#     instances=instances,
-#     clusterer=clusterers[0],
-#     fallback=CDistFallback2(),
-#     labeler=AnyTrueLabelHeuristic(),
-#     output_dir="results/hdbscan/trace/any_normal",
-#     use_trace=True,
-#     use_semantic=False,
-#     use_static=False,
-#     use_fallback=True,
-#     train_with_unknown=True
-# )
+#         # struct
+#         runner = FlatClusteringRunner(
+#             instances=instances,
+#             clusterer=HDBSCANClusterer(min_cluster_size=5),
+#             only_true=bool(i),
+#             output_dir="approach/results/clustering",
+#             use_trace=False,
+#             use_semantic=False,
+#             use_static=True,
+#             run_from_main=True,
+#         )
+#         all_runners.append(runner)
+
+#         # semantic
+#         runner = FlatClusteringRunner(
+#             instances=instances,
+#             clusterer=HDBSCANClusterer(min_cluster_size=5),
+#             only_true=bool(i),
+#             output_dir="approach/results/clustering",
+#             use_trace=False,
+#             use_semantic=True,
+#             use_static=False,
+#             run_from_main=True,
+#         )
+#         all_runners.append(runner)
+
+#         # trace
+#         runner = FlatClusteringRunner(
+#             instances=instances,
+#             clusterer=HDBSCANClusterer(min_cluster_size=5),
+#             only_true=bool(i),
+#             output_dir="approach/results/clustering",
+#             use_trace=True,
+#             use_semantic=False,
+#             use_static=False,
+#             run_from_main=True,
+#         )
+#         all_runners.append(runner)
+
+
+#     for runner in all_runners:
+#         runner.run()
 
 
 
-
-def main():
-
-    # Load instances
-    instances = load_instances("njr")
+def run_cluster(param=None):
+    if param[0] is None:
+        output_dir = f"{base}/clustering/programwise"
+    elif param[1] is None:
+        output_dir = f'{base}/clustering/programwise/{param[0]}'
+    else:
+        output_dir = f'{base}/clustering/programwise/{param[0]}/{param[1][0]}_{param[1][1]}'
+    
     all_runners = []
-
     for i in range(2):
 
         # struct
-        runner = FlatClusteringRunner(
-            instances=instances,
-            clusterer=HDBSCANClusterer(min_cluster_size=5),
-            only_true=bool(i),
-            output_dir="approach/results/clustering",
-            use_trace=False,
-            use_semantic=False,
-            use_static=True,
-            run_from_main=True,
-        )
-        all_runners.append(runner)
+        instances = load_instances(tool=param[0], config_info=param[1], just_three=True)
+        program_instances = defaultdict(list)
+        for inst in instances:
+            program_instances[inst.program].append(inst)
+        
+        for program, insts in program_instances.items():
+            print(f"Running clustering for program: {program} with {len(insts)} instances")
+            if len(insts) < 5:
+                print(f"Skipping program {program} due to insufficient instances ({len(insts)})")
+                continue
+            output_dir_program = os.path.join(output_dir, program)
+            os.makedirs(output_dir, exist_ok=True)
 
-        # semantic
-        runner = FlatClusteringRunner(
-            instances=instances,
-            clusterer=HDBSCANClusterer(min_cluster_size=5),
-            only_true=bool(i),
-            output_dir="approach/results/clustering",
-            use_trace=False,
-            use_semantic=True,
-            use_static=False,
-            run_from_main=True,
-        )
-        all_runners.append(runner)
+            runner = FlatClusteringRunner(
+                instances=insts,
+                clusterer=HDBSCANClusterer(min_cluster_size=5, metric='hamming', alpha=0.5),
+                only_true=bool(i),
+                output_dir=output_dir_program,
+                use_trace=False,
+                use_semantic=False,
+                use_static=True,
+                run_from_main=True,
+            )
+            all_runners.append(runner)
 
-        # trace
-        runner = FlatClusteringRunner(
-            instances=instances,
-            clusterer=HDBSCANClusterer(min_cluster_size=5),
-            only_true=bool(i),
-            output_dir="approach/results/clustering",
-            use_trace=True,
-            use_semantic=False,
-            use_static=False,
-            run_from_main=True,
-        )
-        all_runners.append(runner)
+        # codebert
+        instances = load_instances(tool=param[0], config_info=param[1], just_three=True, load_semantic_features=True, model_name='codebert')
+        program_instances = defaultdict(list)
+        for inst in instances:
+            program_instances[inst.program].append(inst)
+        
+        for program, insts in program_instances.items():
+            print(f"Running clustering for program: {program} with {len(insts)} instances")
+            if len(insts) < 5:
+                print(f"Skipping program {program} due to insufficient instances ({len(insts)})")
+                continue
+            output_dir_program = os.path.join(output_dir, program)
+            os.makedirs(output_dir, exist_ok=True)
 
+            runner = FlatClusteringRunner(
+                instances=insts,
+                clusterer=HDBSCANClusterer(min_cluster_size=5, metric='hamming', alpha=0.5),
+                only_true=bool(i),
+                output_dir=output_dir_program,
+                use_trace=False,
+                use_semantic=True,
+                use_static=False,
+                run_from_main=True,
+                model_name='codebert',
+            )
+            all_runners.append(runner)
+
+        # codet5
+        # instances = load_instances(tool=param[0], config_info=param[1], just_three=True, load_semantic_features=True, model_name='codet5')
+        # program_instances = defaultdict(list)
+        # for inst in instances:
+        #     program_instances[inst.program].append(inst)
+        
+        # for program, insts in program_instances.items():
+        #     print(f"Running clustering for program: {program} with {len(insts)} instances")
+        #     if len(insts) < 5:
+        #         print(f"Skipping program {program} due to insufficient instances ({len(insts)})")
+        #         continue
+        #     output_dir_program = os.path.join(output_dir, program)
+        #     os.makedirs(output_dir, exist_ok=True)
+            # runner = FlatClusteringRunner(
+            #     instances=insts,
+            #     clusterer=HDBSCANClusterer(min_cluster_size=5, metric='hamming', alpha=0.5),
+            #     only_true=bool(i),
+            #     output_dir=output_dir_program,
+            #     use_trace=False,
+            #     use_semantic=True,
+            #     use_static=False,
+            #     run_from_main=True,
+            #     model_name='codet5',
+            # )
+            # all_runners.append(runner)
 
     for runner in all_runners:
         runner.run()
-        
    
 
 def main_xcorp(args):
@@ -122,102 +185,105 @@ def main_xcorp(args):
         ]
 
         for param in params:
-            instances = load_instances(tool=param[0], config_info=param[1], just_three=True)
-             # seperate instances by thrir program
-            program_instances = defaultdict(list)
-            for inst in instances:
-                program_instances[inst.program].append(inst)
+            run_cluster(param)
+            # instances = load_instances(tool=param[0], config_info=param[1], just_three=True)
+            #  # seperate instances by thrir program
+            # program_instances = defaultdict(list)
+            # for inst in instances:
+            #     program_instances[inst.program].append(inst)
             
-            # For each program, run the clustering
-            for program, insts in program_instances.items():
-                print(f"Running clustering for program: {program} with {len(insts)} instances")
-                if len(insts) < 5:
-                    print(f"Skipping program {program} due to insufficient instances ({len(insts)})")
-                    continue
-                output_dir = f"approach/results/clustering/programwise/{param[0]}/{param[1][0]}_{param[1][1]}/{program}"
-                os.makedirs(output_dir, exist_ok=True)
+            # # For each program, run the clustering
+            # for program, insts in program_instances.items():
+            #     print(f"Running clustering for program: {program} with {len(insts)} instances")
+            #     if len(insts) < 5:
+            #         print(f"Skipping program {program} due to insufficient instances ({len(insts)})")
+            #         continue
+            #     output_dir = f"approach/results/clustering/programwise/{param[0]}/{param[1][0]}_{param[1][1]}/{program}"
+            #     os.makedirs(output_dir, exist_ok=True)
 
-                # Create a runner for each program
-                runner = FlatClusteringRunner(
-                    instances=insts,
-                    clusterer=clusterer,
-                    output_dir=output_dir,
-                    run_from_main=True,
-                    only_true=False,
-                    use_trace=False,
-                    use_var=False,
-                    use_semantic=False,
-                    use_static=True,
-                )
+            #     # Create a runner for each program
+            #     runner = FlatClusteringRunner(
+            #         instances=insts,
+            #         clusterer=clusterer,
+            #         output_dir=output_dir,
+            #         run_from_main=True,
+            #         only_true=False,
+            #         use_trace=False,
+            #         use_var=False,
+            #         use_semantic=False,
+            #         use_static=True,
+            #     )
                 
-                # Run the clustering
-                runner.run()
+            #     # Run the clustering
+            #     runner.run()
 
 
     elif args.exp == "2":
         for tool in ['wala', 'doop']:
-            instances = load_instances(tool=tool, config_info=None, just_three=True)
-             # seperate instances by thrir program
-            program_instances = defaultdict(list)
-            for inst in instances:
-                program_instances[inst.program].append(inst)
+            run_cluster(param=(tool, None, True))
+            # instances = load_instances(tool=tool, config_info=None, just_three=True)
+            #  # seperate instances by thrir program
+            # program_instances = defaultdict(list)
+            # for inst in instances:
+            #     program_instances[inst.program].append(inst)
             
-            # For each program, run the clustering
-            for program, insts in program_instances.items():
-                print(f"Running clustering for program: {program} with {len(insts)} instances")
-                if len(insts) < 5:
-                    print(f"Skipping program {program} due to insufficient instances ({len(insts)})")
-                    continue
-                output_dir = f"approach/results/clustering/programwise/{tool}/{program}"
-                os.makedirs(output_dir, exist_ok=True)
+            # # For each program, run the clustering
+            # for program, insts in program_instances.items():
+            #     print(f"Running clustering for program: {program} with {len(insts)} instances")
+            #     if len(insts) < 5:
+            #         print(f"Skipping program {program} due to insufficient instances ({len(insts)})")
+            #         continue
+            #     output_dir = f"approach/results/clustering/programwise/{tool}/{program}"
+            #     os.makedirs(output_dir, exist_ok=True)
 
-                # Create a runner for each program
-                runner = FlatClusteringRunner(
-                    instances=insts,
-                    clusterer=clusterer,
-                    output_dir=output_dir,
-                    run_from_main=True,
-                    only_true=False,
-                    use_trace=False,
-                    use_var=False,
-                    use_semantic=False,
-                    use_static=True,
-                )
+            #     # Create a runner for each program
+            #     runner = FlatClusteringRunner(
+            #         instances=insts,
+            #         clusterer=clusterer,
+            #         output_dir=output_dir,
+            #         run_from_main=True,
+            #         only_true=False,
+            #         use_trace=False,
+            #         use_var=False,
+            #         use_semantic=False,
+            #         use_static=True,
+            #     )
                 
-                # Run the clustering
-                runner.run()
+            #     # Run the clustering
+            #     runner.run()
 
     elif args.exp == "3":
-        instances = load_instances(tool=None, config_info=None, just_three=True)
-        # seperate instances by thrir program
-        program_instances = defaultdict(list)
-        for inst in instances:
-            program_instances[inst.program].append(inst)
+        run_cluster(param=(None, None, True))
+        # instances = load_instances(tool=None, config_info=None, just_three=True)
+        # # seperate instances by thrir program
+        # program_instances = defaultdict(list)
+        # for inst in instances:
+        #     program_instances[inst.program].append(inst)
         
-        # For each program, run the clustering
-        for program, insts in program_instances.items():
-            print(f"Running clustering for program: {program} with {len(insts)} instances")
-            if len(insts) < 5:
-                print(f"Skipping program {program} due to insufficient instances ({len(insts)})")
-                continue
-            output_dir = f"approach/results/clustering/programwise/{program}"
-            os.makedirs(output_dir, exist_ok=True)
+        # # For each program, run the clustering
+        # for program, insts in program_instances.items():
+        #     print(f"Running clustering for program: {program} with {len(insts)} instances")
+        #     if len(insts) < 5:
+        #         print(f"Skipping program {program} due to insufficient instances ({len(insts)})")
+        #         continue
+        #     output_dir = f"approach/results/clustering/programwise/{program}"
+        #     os.makedirs(output_dir, exist_ok=True)
 
-            # Create a runner for each program
-            runner = FlatClusteringRunner(
-                instances=insts,
-                clusterer=clusterer,
-                output_dir=output_dir,
-                run_from_main=True,
-                only_true=False,
-                use_trace=False,
-                use_var=False,
-                use_semantic=False,
-                use_static=True,
-            )
+        #     # Create a runner for each program
+        #     runner = FlatClusteringRunner(
+        #         instances=insts,
+        #         clusterer=clusterer,
+        #         output_dir=output_dir,
+        #         run_from_main=True,
+        #         only_true=False,
+        #         use_trace=False,
+        #         use_var=False,
+        #         use_semantic=False,
+        #         use_static=True,
+        #     )
             
-            # Run the clustering
-            runner.run()
+        #     # Run the clustering
+        #     runner.run()
 
     else:
         raise ValueError("Invalid experiment type specified. Use 1, 2, or 3.")

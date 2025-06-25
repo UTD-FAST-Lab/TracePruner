@@ -8,12 +8,12 @@ from collections import defaultdict
 from scipy.spatial.distance import cdist
 from sklearn.decomposition import FastICA
 
-from approach.utils import evaluate_fold, write_metrics_to_csv, plot_clusters_by_label
+from approach.utils import evaluate_fold, write_metrics_to_csv, plot_clusters_by_label, write_instances_to_file
 
 
 
 class FlatClusteringRunner:
-    def __init__(self, instances, clusterer, output_dir, run_from_main, only_true=True, use_trace=False, use_semantic=False, use_static=True, use_var=False, option=None):
+    def __init__(self, instances, clusterer, output_dir, run_from_main, only_true=True, use_trace=False, use_semantic=False, use_static=True, use_var=False, option=None, model_name=None):
         self.instances = instances
         self.clusterer = clusterer
         self.only_true = only_true
@@ -24,6 +24,7 @@ class FlatClusteringRunner:
         self.use_static = use_static
         self.use_var = use_var
         self.option = option
+        self.model_name = model_name
 
 
         self.labeled = [i for i in instances if i.is_known()]
@@ -41,26 +42,32 @@ class FlatClusteringRunner:
         for inst in insts:
             # Semantic Features
             if self.use_semantic:
-                code = inst.get_semantic_features()
-                if code is None or len(code) != 768:
-                    code = [0.0] * 768
-                semantic_vecs.append(code)
+                if self.model_name == 'codebert':
+                    code = inst.get_semantic_features()
+                    if code is None or len(code) != 768:
+                        code = [0.0] * 768
+                    semantic_vecs.append(code)
+                elif self.model_name == 'codet5':
+                    code = inst.get_semantic_features()
+                    if code is None or len(code) != 1024:
+                        code = [0.0] * 1024
+                    semantic_vecs.append(code)
 
-            # Trace Features
-            if self.use_trace:
-                trace = inst.get_trace_features()
-                # if trace is None or len(trace) != 64:
-                #     trace = [0.0] * 64
-                if trace is None or len(trace) != 128:
-                    trace = [0.0] * 128
-                trace_vecs.append(trace)
+            # # Trace Features
+            # if self.use_trace:
+            #     trace = inst.get_trace_features()
+            #     # if trace is None or len(trace) != 64:
+            #     #     trace = [0.0] * 64
+            #     if trace is None or len(trace) != 128:
+            #         trace = [0.0] * 128
+            #     trace_vecs.append(trace)
 
-            # Variable Features
-            if self.use_var:  
-                var = inst.get_var_features()
-                if var is None or len(var) != 20:
-                    var = [0.0] * 20
-                var_vecs.append(var)
+            # # Variable Features
+            # if self.use_var:  
+            #     var = inst.get_var_features()
+            #     if var is None or len(var) != 20:
+            #         var = [0.0] * 20
+            #     var_vecs.append(var)
 
             # Structural Features
             if self.use_static:
@@ -70,12 +77,12 @@ class FlatClusteringRunner:
                 struct_vecs.append(struct)
 
         # Transform and scale features
-        if len(var_vecs) > 0:
-            var_vecs = StandardScaler().fit_transform(var_vecs)
+        # if len(var_vecs) > 0:
+        #     var_vecs = StandardScaler().fit_transform(var_vecs)
         if len(struct_vecs) > 0:
             struct_vecs = StandardScaler().fit_transform(struct_vecs)
-        if len(trace_vecs) > 0:
-            trace_vecs = FastICA(n_components=min(50, len(trace_vecs[0]))).fit_transform(trace_vecs)
+        # if len(trace_vecs) > 0:
+        #     trace_vecs = FastICA(n_components=min(50, len(trace_vecs[0]))).fit_transform(trace_vecs)
         if len(semantic_vecs) > 0:
             semantic_vecs = FastICA(n_components=min(50, len(semantic_vecs[0]))).fit_transform(semantic_vecs)
 
@@ -85,10 +92,10 @@ class FlatClusteringRunner:
 
             if self.use_semantic:
                 combined.extend(semantic_vecs[i])
-            if self.use_trace:
-                combined.extend(trace_vecs[i])
-            if self.use_var:  
-                combined.extend(var_vecs[i])
+            # if self.use_trace:
+            #     combined.extend(trace_vecs[i])
+            # if self.use_var:  
+            #     combined.extend(var_vecs[i])
             if self.use_static:
                 combined.extend(struct_vecs[i])
 
@@ -180,13 +187,15 @@ class FlatClusteringRunner:
                 output_file = f'{self.output_dir}/{labeler}/trace_tuning/trace_{self.option}.csv'
                 # write_metrics_to_csv([metrics], f'{self.output_dir}/{labeler}/trace_tuning/trace_{self.option}.csv' )
             elif self.use_semantic:
-                output_file = f'{self.output_dir}/{labeler}/semantic.csv'
+                output_file = f'{self.output_dir}/{labeler}/semantic_{self.model_name}.csv'
                 # write_metrics_to_csv([metrics], f'{self.output_dir}/{labeler}/semantic.csv' )
             elif self.use_static:
                 output_file = f'{self.output_dir}/{labeler}/struct.csv'
                 # write_metrics_to_csv([metrics], f'{self.output_dir}/{labeler}/struct.csv' )
             
             os.makedirs(os.path.dirname(output_file), exist_ok=True)
+
+            write_instances_to_file(instances, output_file.replace('.csv', '.pkl'))
             write_metrics_to_csv([metrics], output_file)
 
 
