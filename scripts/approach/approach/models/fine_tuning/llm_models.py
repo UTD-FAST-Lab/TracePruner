@@ -38,7 +38,7 @@ class CodeT5Classifier(nn.Module):
         emb = self.encoder(ids, attention_mask=mask, return_dict=False)[0][:, -1]  # Last token
         emb = self.dropout(emb)
         out = self.out(emb)
-        return out, emb
+        return out
 
 
 # class CodeAndStructClassifier(nn.Module):

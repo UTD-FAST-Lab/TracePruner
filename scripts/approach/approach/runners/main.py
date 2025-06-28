@@ -131,8 +131,8 @@ def run_autopruner(param=None):
     balance__variations = get_balance_combinations(config)
 
     # codebert experiments
-    instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_semantic_features=True, model_name='codebert')
-    all_runners = []
+    # instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_semantic_features=True, model_name='codebert')
+    # all_runners = []
     # 1. with raw baseline
     # runner = NeuralNetBaselineFixedSet(
     # runner = NeuralNetBaseline(
@@ -166,6 +166,42 @@ def run_autopruner(param=None):
     # all_runners.append(runner)
 
     # train on labeled data only
+    # for balance in balance__variations:
+    #     # Convert the balance string into method and ratio if needed
+    #     if "_" in balance:
+    #         balance_method, balance_ratio = balance.split("_")
+    #         make_balance = (balance_method, float(balance_ratio))
+    #     else:
+    #         make_balance = False
+
+    #     # runner = NeuralNetBaselineFixedSet(
+    #     for i in range(2):
+    #         runner = NeuralNetBaseline(
+    #             instances=instances,
+    #             raw_baseline=False,
+    #             train_with_unknown=False,
+    #             make_balance=make_balance,
+    #             # output_dir="{base}/baseline/autopruner_programwise/finetune_fix/",
+    #             output_dir=output_dir,
+    #             use_trace=False,
+    #             use_semantic=True, 
+    #             use_static=False,
+    #             just_three=param[2],
+    #             model_name='codebert',
+    #             random_split=bool(i)
+    #         )
+    #         all_runners.append(runner)
+
+    # # run all the runners
+    # for runner in all_runners:
+    #     runner.run()
+
+
+    
+    # codet5 experiments
+    instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_semantic_features=True, model_name='codet5')
+    all_runners = []
+
     for balance in balance__variations:
         # Convert the balance string into method and ratio if needed
         if "_" in balance:
@@ -181,50 +217,15 @@ def run_autopruner(param=None):
                 raw_baseline=False,
                 train_with_unknown=False,
                 make_balance=make_balance,
-                # output_dir="{base}/baseline/autopruner_programwise/finetune_fix/",
                 output_dir=output_dir,
                 use_trace=False,
                 use_semantic=True, 
                 use_static=False,
                 just_three=param[2],
-                model_name='codebert',
+                model_name='codet5',
                 random_split=bool(i)
             )
             all_runners.append(runner)
-
-    # run all the runners
-    for runner in all_runners:
-        runner.run()
-
-
-    return
-    # codet5 experiments
-    instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_semantic_features=True, model_name='codet5')
-    all_runners = []
-
-    for balance in balance__variations:
-        # Convert the balance string into method and ratio if needed
-        if "_" in balance:
-            balance_method, balance_ratio = balance.split("_")
-            make_balance = (balance_method, float(balance_ratio))
-        else:
-            make_balance = False
-
-        # runner = NeuralNetBaselineFixedSet(
-        runner = NeuralNetBaseline(
-            instances=instances,
-            raw_baseline=False,
-            train_with_unknown=False,
-            make_balance=make_balance,
-            output_dir=output_dir,
-            use_trace=False,
-            use_semantic=True, 
-            use_static=False,
-            just_three=param[2],
-            model_name='codet5',
-            random_split=False
-        )
-        all_runners.append(runner)
 
     # run all the runners
     for runner in all_runners:
@@ -243,8 +244,41 @@ def run_finetuned(param=None):
 
     config = load_json("approach/runners/config.json")["autoPruner"]
     balance__variations = get_balance_combinations(config)
-    # codebert experiments
-    instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_tokens=True, model_name='codebert')
+    # # codebert experiments
+    # instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_tokens=True, model_name='codebert')
+    # all_runners = []
+    # # train on labeled data only
+    # for balance in balance__variations:
+    #     # Convert the balance string into method and ratio if needed
+    #     if "_" in balance:
+    #         continue
+    #         balance_method, balance_ratio = balance.split("_")
+    #         make_balance = (balance_method, float(balance_ratio))
+    #     else:
+    #         make_balance = False
+
+    #     for i in range(2):
+    #         runner = NeuralNetBaselineFineTuned(
+    #             instances=instances,
+    #             raw_baseline=False,
+    #             train_with_unknown=False,
+    #             make_balance=make_balance,
+    #             output_dir=output_dir,
+    #             use_trace=False,
+    #             use_semantic=True, 
+    #             use_static=False,
+    #             just_three=param[2],
+    #             model_name='codebert',
+    #             random_split=bool(i)
+    #         )
+    #         all_runners.append(runner)
+
+    # # run all the runners
+    # for runner in all_runners:
+    #     runner.run()
+
+    # codet5 experiments
+    instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_tokens=True, model_name='codet5')
     all_runners = []
     # train on labeled data only
     for balance in balance__variations:
@@ -267,42 +301,10 @@ def run_finetuned(param=None):
                 use_semantic=True, 
                 use_static=False,
                 just_three=param[2],
-                model_name='codebert',
+                model_name='codet5',
                 random_split=bool(i)
             )
             all_runners.append(runner)
-
-    # run all the runners
-    for runner in all_runners:
-        runner.run()
-
-    return
-    # codet5 experiments
-    instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_tokens=True, model_name='codet5')
-    all_runners = []
-    # train on labeled data only
-    for balance in balance__variations:
-        # Convert the balance string into method and ratio if needed
-        if "_" in balance:
-            balance_method, balance_ratio = balance.split("_")
-            make_balance = (balance_method, float(balance_ratio))
-        else:
-            make_balance = False
-
-        runner = NeuralNetBaselineFineTuned(
-            instances=instances,
-            raw_baseline=False,
-            train_with_unknown=False,
-            make_balance=make_balance,
-            output_dir=output_dir,
-            use_trace=False,
-            use_semantic=True, 
-            use_static=False,
-            just_three=param[2],
-            model_name='codet5',
-            random_split=False
-        )
-        all_runners.append(runner)
 
     # run all the runners
     for runner in all_runners:
@@ -323,24 +325,24 @@ def run_svm(param=None):
     all_runners = []
     for i in range(2):
         
-        # structured
-        instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2])
-        svm_runner = SVMBaseline(instances, output_dir, kernel="rbf", nu=0.1, gamma='scale', just_three=param[2], use_semantic=False, random_split=bool(i))
-        # svm_runner.run()
-        all_runners.append(svm_runner)
+        # # structured
+        # instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2])
+        # svm_runner = SVMBaseline(instances, output_dir, kernel="rbf", nu=0.1, gamma='scale', just_three=param[2], use_semantic=False, random_split=bool(i))
+        # # svm_runner.run()
+        # all_runners.append(svm_runner)
 
-        # semantic codebert
-        instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_semantic_features=True, model_name='codebert')
-        svm_runner = SVMBaseline(instances, output_dir, kernel="rbf", nu=0.1, gamma='scale', just_three=param[2], use_semantic=True, model_name='codebert', random_split=bool(i))
-        # svm_runner.run()
-        all_runners.append(svm_runner)
+        # # semantic codebert
+        # instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_semantic_features=True, model_name='codebert')
+        # svm_runner = SVMBaseline(instances, output_dir, kernel="rbf", nu=0.1, gamma='scale', just_three=param[2], use_semantic=True, model_name='codebert', random_split=bool(i))
+        # # svm_runner.run()
+        # all_runners.append(svm_runner)
 
         
-        # # semantic codet5
-        # instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_semantic_features=True, model_name='codet5')
-        # svm_runner = SVMBaseline(instances, output_dir, kernel="rbf", nu=0.1, gamma='scale', just_three=param[2], use_semantic=True, model_name='codet5', random_split=bool(i))
-        # svm_runner.run()
-        # all_runners.append(svm_runner)
+        # semantic codet5
+        instances = load_instances(tool=param[0], config_info=param[1], just_three=param[2], load_semantic_features=True, model_name='codet5')
+        svm_runner = SVMBaseline(instances, output_dir, kernel="rbf", nu=0.1, gamma='scale', just_three=param[2], use_semantic=True, model_name='codet5', random_split=bool(i))
+        svm_runner.run()
+        all_runners.append(svm_runner)
 
     # run all the runners
     for runner in all_runners:

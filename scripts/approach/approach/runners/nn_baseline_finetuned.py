@@ -38,7 +38,7 @@ class NeuralNetBaselineFineTuned:
         self.labeled = [i for i in instances if i.is_known()]
         self.unknown = [i for i in instances if not i.is_known()]
 
-        self.model = CodeBERTClassifier()
+        self.model = CodeBERTClassifier() if model_name == 'codebert' else CodeT5Classifier()
         self.model.to(self.device)
 
     def get_tokens(self, insts):
