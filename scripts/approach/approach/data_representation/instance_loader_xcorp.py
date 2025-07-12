@@ -161,6 +161,11 @@ def load_instances(dataset="njr", tool=None, config_info=None, just_three=False,
 
                 inst = Instance(program, *key, is_unknown, label=label)
 
+                # set tool, version, and config_id
+                inst.tool = tool
+                inst.version = version
+                inst.config_id = config_id
+
                 # Set static features
                 static = static_features_df.loc[key]
                 static = static.squeeze().values.tolist()

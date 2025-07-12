@@ -86,61 +86,8 @@ def run_cluster(param=None):
     all_runners = []
     for i in range(2):
 
-        # struct
-        instances = load_instances(tool=param[0], config_info=param[1], just_three=True)
-        program_instances = defaultdict(list)
-        for inst in instances:
-            program_instances[inst.program].append(inst)
-        
-        for program, insts in program_instances.items():
-            print(f"Running clustering for program: {program} with {len(insts)} instances")
-            if len(insts) < 5:
-                print(f"Skipping program {program} due to insufficient instances ({len(insts)})")
-                continue
-            output_dir_program = os.path.join(output_dir, program)
-            os.makedirs(output_dir, exist_ok=True)
-
-            runner = FlatClusteringRunner(
-                instances=insts,
-                clusterer=HDBSCANClusterer(min_cluster_size=5, metric='hamming', alpha=0.5),
-                only_true=bool(i),
-                output_dir=output_dir_program,
-                use_trace=False,
-                use_semantic=False,
-                use_static=True,
-                run_from_main=True,
-            )
-            all_runners.append(runner)
-
-        # codebert
-        instances = load_instances(tool=param[0], config_info=param[1], just_three=True, load_semantic_features=True, model_name='codebert')
-        program_instances = defaultdict(list)
-        for inst in instances:
-            program_instances[inst.program].append(inst)
-        
-        for program, insts in program_instances.items():
-            print(f"Running clustering for program: {program} with {len(insts)} instances")
-            if len(insts) < 5:
-                print(f"Skipping program {program} due to insufficient instances ({len(insts)})")
-                continue
-            output_dir_program = os.path.join(output_dir, program)
-            os.makedirs(output_dir, exist_ok=True)
-
-            runner = FlatClusteringRunner(
-                instances=insts,
-                clusterer=HDBSCANClusterer(min_cluster_size=5, metric='hamming', alpha=0.5),
-                only_true=bool(i),
-                output_dir=output_dir_program,
-                use_trace=False,
-                use_semantic=True,
-                use_static=False,
-                run_from_main=True,
-                model_name='codebert',
-            )
-            all_runners.append(runner)
-
-        # codet5
-        # instances = load_instances(tool=param[0], config_info=param[1], just_three=True, load_semantic_features=True, model_name='codet5')
+        # # struct
+        # instances = load_instances(tool=param[0], config_info=param[1], just_three=True)
         # program_instances = defaultdict(list)
         # for inst in instances:
         #     program_instances[inst.program].append(inst)
@@ -152,18 +99,71 @@ def run_cluster(param=None):
         #         continue
         #     output_dir_program = os.path.join(output_dir, program)
         #     os.makedirs(output_dir, exist_ok=True)
-            # runner = FlatClusteringRunner(
-            #     instances=insts,
-            #     clusterer=HDBSCANClusterer(min_cluster_size=5, metric='hamming', alpha=0.5),
-            #     only_true=bool(i),
-            #     output_dir=output_dir_program,
-            #     use_trace=False,
-            #     use_semantic=True,
-            #     use_static=False,
-            #     run_from_main=True,
-            #     model_name='codet5',
-            # )
-            # all_runners.append(runner)
+
+        #     runner = FlatClusteringRunner(
+        #         instances=insts,
+        #         clusterer=HDBSCANClusterer(min_cluster_size=5, metric='hamming', alpha=0.5),
+        #         only_true=bool(i),
+        #         output_dir=output_dir_program,
+        #         use_trace=False,
+        #         use_semantic=False,
+        #         use_static=True,
+        #         run_from_main=True,
+        #     )
+        #     all_runners.append(runner)
+
+        # # codebert
+        # instances = load_instances(tool=param[0], config_info=param[1], just_three=True, load_semantic_features=True, model_name='codebert')
+        # program_instances = defaultdict(list)
+        # for inst in instances:
+        #     program_instances[inst.program].append(inst)
+        
+        # for program, insts in program_instances.items():
+        #     print(f"Running clustering for program: {program} with {len(insts)} instances")
+        #     if len(insts) < 5:
+        #         print(f"Skipping program {program} due to insufficient instances ({len(insts)})")
+        #         continue
+        #     output_dir_program = os.path.join(output_dir, program)
+        #     os.makedirs(output_dir, exist_ok=True)
+
+        #     runner = FlatClusteringRunner(
+        #         instances=insts,
+        #         clusterer=HDBSCANClusterer(min_cluster_size=5, metric='hamming', alpha=0.5),
+        #         only_true=bool(i),
+        #         output_dir=output_dir_program,
+        #         use_trace=False,
+        #         use_semantic=True,
+        #         use_static=False,
+        #         run_from_main=True,
+        #         model_name='codebert',
+        #     )
+        #     all_runners.append(runner)
+
+        # codet5
+        instances = load_instances(tool=param[0], config_info=param[1], just_three=True, load_semantic_features=True, model_name='codet5')
+        program_instances = defaultdict(list)
+        for inst in instances:
+            program_instances[inst.program].append(inst)
+        
+        for program, insts in program_instances.items():
+            print(f"Running clustering for program: {program} with {len(insts)} instances")
+            if len(insts) < 5:
+                print(f"Skipping program {program} due to insufficient instances ({len(insts)})")
+                continue
+            output_dir_program = os.path.join(output_dir, program)
+            os.makedirs(output_dir, exist_ok=True)
+            runner = FlatClusteringRunner(
+                instances=insts,
+                clusterer=HDBSCANClusterer(min_cluster_size=5, metric='hamming', alpha=0.5),
+                only_true=bool(i),
+                output_dir=output_dir_program,
+                use_trace=False,
+                use_semantic=True,
+                use_static=False,
+                run_from_main=True,
+                model_name='codet5',
+            )
+            all_runners.append(runner)
 
     for runner in all_runners:
         runner.run()

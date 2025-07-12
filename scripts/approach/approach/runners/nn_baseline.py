@@ -97,6 +97,8 @@ class NeuralNetBaseline:
 
             code_train, struct_train = self.get_features(train)
             y_train = np.array([1 if i.get_label() else 0 for i in train])
+            num_positives = np.sum(y_train == 1)
+            num_negatives = np.sum(y_train == 0)
 
             code_test, struct_test = self.get_features(test)
             y_test = np.array([1 if i.get_label() else 0 for i in test])
@@ -108,7 +110,20 @@ class NeuralNetBaseline:
             # Reinit model and optimizer
             self.model.apply(self.init_weights)
             optimizer = torch.optim.Adam(self.model.parameters(), lr=self.lr)
-            loss_fn = nn.CrossEntropyLoss()
+
+            if num_negatives == 0 or num_positives == 0:
+                # If a fold contains only one class, no weighting is needed.
+                print("Warning: Training fold contains only one class. Using unweighted loss for this fold.")
+                loss_fn = nn.CrossEntropyLoss()
+            else:
+                # If both classes are present, calculate weights normally.
+                # This assumes class 1 is the majority.
+                weights = torch.tensor([
+                    num_positives / num_negatives, # Higher weight for minority class (0)
+                    1.0                            # Lower weight for majority class (1)
+                ], dtype=torch.float32).to(self.device)
+                loss_fn = nn.CrossEntropyLoss(weight=weights)
+            # loss_fn = nn.CrossEntropyLoss()
 
             self.train_loop(train_loader, optimizer, loss_fn)
             self.eval_loop(test_loader, test)
@@ -176,9 +191,9 @@ class NeuralNetBaseline:
             if self.train_with_unknown:
                 metrics_path = f"{self.output_dir}/nn_{self.threshold}_trained_on_unknown.csv"
             elif self.make_balance:
-                metrics_path = f"{self.output_dir}/nn_{'random' if self.random_split else 'programwise'}_{self.model_name}_{self.threshold}_trained_on_known_{self.make_balance[0]}_{self.make_balance[1]}.csv"
+                metrics_path = f"{self.output_dir}/nn_wl_{'random' if self.random_split else 'programwise'}_{self.model_name}_{self.threshold}_trained_on_known_{self.make_balance[0]}_{self.make_balance[1]}.csv"
             else:
-                metrics_path = f"{self.output_dir}/nn_{'random' if self.random_split else 'programwise'}_{self.model_name}_{self.threshold}_trained_on_known.csv"
+                metrics_path = f"{self.output_dir}/nn_wl_{'random' if self.random_split else 'programwise'}_{self.model_name}_{self.threshold}_trained_on_known.csv"
         else:
             metrics_path = f"{self.output_dir}/nn_raw_{self.threshold}.csv"
 

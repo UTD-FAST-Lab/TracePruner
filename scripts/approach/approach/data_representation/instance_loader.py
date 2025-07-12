@@ -15,7 +15,7 @@ LOAD_SEMANTIC_RAW = False
 IGNORE_LIBS = True
 
 
-def load_instances(dataset="njr"):
+def load_instances_njr(dataset="njr"):
     assert dataset == "njr", "Only njr dataset is currently supported."
     
     programs_path = '/home/mohammad/projects/CallGraphPruner/data/programs/all_programs.txt' 

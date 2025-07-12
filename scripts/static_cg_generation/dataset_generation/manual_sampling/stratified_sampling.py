@@ -3,19 +3,19 @@ import os
 from functools import reduce
 
 dataset_dir = "/20TB/mohammad/xcorpus-total-recall/dataset"
-output_dir = '/20TB/mohammad/xcorpus-total-recall/manual_labeling2'
+output_dir = '/20TB/mohammad/xcorpus-total-recall/manual_labeling_kunal'
 
 programs = [
-    'axion',
-    'batik',
-    'xerces',
+    # 'axion',
+    # 'batik',
+    # 'xerces',
     'jasml'
 ]
 
 tools = [
     'wala',
     'doop',
-    'opal'
+    # 'opal'
 ]
 
 def perform_stratified_sampling(union_df, intersection_df, program, total_budget=100):
@@ -53,7 +53,7 @@ def perform_stratified_sampling(union_df, intersection_df, program, total_budget
     intersection_df.to_csv(os.path.join(program_output_dir, f"intersection.csv"), index=False)
     union_df.to_csv(os.path.join(program_output_dir, f"union.csv"), index=False)
     disagreement_df.to_csv(os.path.join(program_output_dir, f"disagreement.csv"), index=False)
-    return
+
     # 2. Allocate the Budget
     # We'll split the budget 50/50 between the two strata
     intersection_budget = total_budget // 2
@@ -109,7 +109,7 @@ def calculate_selected_unknowns(total_unknowns_dict, program):
         # ('doop', 'v1_3'),  # 1obj,off (excluding xerces)
         ('doop', 'v2_0'),  # 1obj,off (excluding xerces)
 
-        ('opal', 'v1_0'),   #cha
+        # ('opal', 'v1_0'),   #cha
         # ('opal', 'v1_8'),   #0-1cfa
         # ('opal', 'v1_9'),   #11cfa (excluding axion and maybe jasml )
     ]

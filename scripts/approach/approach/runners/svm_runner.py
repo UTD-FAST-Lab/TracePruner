@@ -2,7 +2,7 @@ import numpy as np
 from sklearn.svm import OneClassSVM
 from sklearn.preprocessing import StandardScaler
 from approach.utils import evaluate_fold, write_metrics_to_csv, split_folds_programs, split_folds, write_instances_to_file
-from approach.data_representation.instance_loader import load_instances
+# from approach.data_representation.instance_loader import load_instances
 
 VECTOR_SIZE = {'codebert': 768, 'codet5': 1024}
 

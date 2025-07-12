@@ -2,6 +2,9 @@ class Instance():
 
     def __init__(self, program, src, offset, target, is_unknown, edge_id=None, label=None):
         self.program = program
+        self.tool = None
+        self.version = None
+        self.config_id = None
         self.edge_id = edge_id
         self.src = src
         self.target = target

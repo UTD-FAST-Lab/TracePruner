@@ -7,7 +7,7 @@ if IN_COLAB:
     features_dir = '/content/drive/MyDrive/Research/Program-analysis/Projects/project1/data/xcorp/features'
     manual_labels_dir = '/content/drive/MyDrive/Research/Program-analysis/Projects/project1/data/xcorp/manual_labeling'
 else:
-    base = '/20TB/mohammad/xcorpus-total-recall/results'
+    base = '/20TB/mohammad/xcorpus-total-recall/results2'
     static_cg_dir = '/20TB/mohammad/xcorpus-total-recall/dataset'
     features_dir = '/20TB/mohammad/xcorpus-total-recall/features'
     manual_labels_dir = '/20TB/mohammad/xcorpus-total-recall/manual_labeling'
