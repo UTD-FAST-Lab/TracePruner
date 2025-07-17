@@ -47,7 +47,7 @@ def clustering_final_evaluation():
         output_file = os.path.join(outdir, 'overall_evaluation.csv')
         overall_df.to_csv(output_file, index=False)
 
-    BASE_DIR = '/20TB/mohammad/xcorpus-total-recall/evaluation/clustering'
+    BASE_DIR = '/20TB/mohammad/xcorpus-total-recall/evaluation/clustering_updated'
     TARGET_NAMES = {"codebert", "codet5", "struct"}
     for root, dirs, files in os.walk(BASE_DIR):
         for dirname in dirs:
@@ -412,13 +412,15 @@ def process_file(file_path, manual_gt_map):
         instances = pd.read_pickle(file_path)
 
         # Construct the output path
-        output_directory = os.path.join(OUTPUT_DIR, 'baseline', os.path.relpath(os.path.dirname(file_path), INSTANCES_DIR))
+        # output_directory = os.path.join(OUTPUT_DIR, 'baseline', os.path.relpath(os.path.dirname(file_path), INSTANCES_DIR))
+        output_directory = os.path.join(OUTPUT_DIR_2, 'clustering', os.path.relpath(os.path.dirname(file_path), INSTANCES_DIR))
         os.makedirs(output_directory, exist_ok=True)
         
         output_file = os.path.join(output_directory, os.path.basename(file_path).replace('.pkl', '_evaluation.csv'))
 
         # Call the evaluation function
-        evaluate_runner(instances, manual_gt_map, output_file)
+        # evaluate_runner(instances, manual_gt_map, output_file)
+        evaluate_cluster(instances, manual_gt_map, output_file)
     except Exception as e:
         print(f"Error processing {file_path}: {e}")
 
@@ -434,11 +436,13 @@ def main():
     # 2. Collect all file paths first
     files_to_process = []
     for root, _, files in os.walk(INSTANCES_DIR):
-        if 'baseline' in root:
+        # if 'baseline' in root:
+        if 'clustering' in root:
             for file in files:
                 # if file already exists in the output directory, skip it
                 if file.endswith('.pkl'):
-                    output_directory = os.path.join(OUTPUT_DIR, 'baseline', os.path.relpath(root, INSTANCES_DIR))
+                    # output_directory = os.path.join(OUTPUT_DIR, 'baseline', os.path.relpath(root, INSTANCES_DIR))
+                    output_directory = os.path.join(OUTPUT_DIR_2, 'clustering', os.path.relpath(root, INSTANCES_DIR))
                     os.makedirs(output_directory, exist_ok=True)
                     output_file = os.path.join(output_directory, file.replace('.pkl', '_evaluation.csv'))
                     if not os.path.exists(output_file):
@@ -460,5 +464,5 @@ def main():
 
 if __name__ == "__main__":
 
-    main()
-    # clustering_final_evaluation()
+    # main()
+    clustering_final_evaluation()

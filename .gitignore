@@ -17,7 +17,28 @@
 /agents
 
 scripts/venv
-/scripts/approach/*.pkl
+scripts/approach/*.pkl
+scripts/clustering
+scripts/data-representation
+scripts/dataset-generation
+scripts/edge-extraction
+scripts/embedding
+scripts/evaluation
+scripts/feature-extraction
+scripts/label-extraction
+scripts/trace_filtering
+scripts/trace-generation
+scripts/analyze-diff.py
+scripts/check_trace_edges.py
+scripts/compare_trace_info.py
+scripts/decode-trace-info.py
+scripts/encode-decode.py
+scripts/extract_edge_traces.py
+scripts/similarity-optimized.py
+scripts/stats_check.py
+scripts/test_graph_embeddings.py
+scripts/WALA_hash_map.json
+
 
 **/*.pyc
 __pycache__/
