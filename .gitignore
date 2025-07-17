@@ -19,6 +19,7 @@
 scripts/venv
 scripts/approach/*.pkl
 scripts/clustering
+scripts/classification
 scripts/data-representation
 scripts/dataset-generation
 scripts/edge-extraction
