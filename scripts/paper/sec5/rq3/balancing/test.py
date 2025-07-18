@@ -4,11 +4,11 @@ import numpy as np
 
 # --- Data ---
 ratios = ['0.1', '0.25', '0.5', '0.75', '1.0']
-models = ['RandomForest', 'CodeBERT_NN', 'CodeT5_NN']
+models = ['RF', 'BERT_NN', 'T5_NN']
 techniques = ['Down-sampling', 'Over-sampling', 'None']
 
 # data = {
-#     'CodeBERT_NN': {
+#     'BERT_NN': {
 #         'None': [(0.70, 0.66)],
 #         'Over-sampling': [
 #             (0.67, 0.67),
@@ -25,7 +25,7 @@ techniques = ['Down-sampling', 'Over-sampling', 'None']
 #             (0.64, 0.59)
 #         ]
 #     },
-#     'CodeT5_NN': {
+#     'T5_NN': {
 #         'None': [(0.64, 0.61)],
 #         'Over-sampling': [
 #             (0.63, 0.56),
@@ -42,7 +42,7 @@ techniques = ['Down-sampling', 'Over-sampling', 'None']
 #             (0.61, 0.56)
 #         ]
 #     },
-#     'RandomForest': {
+#     'RF': {
 #         'None': [(0.88, 0.75)],
 #         'Over-sampling': [
 #             (0.88, 0.75),
@@ -62,7 +62,7 @@ techniques = ['Down-sampling', 'Over-sampling', 'None']
 # }
 
 data = {
-    'CodeBERT_NN': {
+    'BERT_NN': {
         'None': [(0.70, 0.69)],
         'Over-sampling': [
             (0.67, 0.71),
@@ -79,7 +79,7 @@ data = {
             (0.64, 0.59)
         ]
     },
-    'CodeT5_NN': {
+    'T5_NN': {
         'None': [(0.64, 0.65)],
         'Over-sampling': [
             (0.63, 0.61),
@@ -96,7 +96,7 @@ data = {
             (0.61, 0.59)
         ]
     },
-    'RandomForest': {
+    'RF': {
         'None': [(0.88, 0.83)],
         'Over-sampling': [
             (0.88, 0.83),
@@ -117,12 +117,10 @@ data = {
 
 
 ## --- Plotting Setup ---
-colors = {'RandomForest': '#1f77b4', 'CodeBERT_NN': '#ff7f0e', 'CodeT5_NN': '#2ca02c'}
-model_patches = [mpatches.Patch(color=color, label=model.replace('_', ' ')) for model, color in colors.items()]
-val_patch = mpatches.Patch(facecolor='grey', alpha=1.0, label='Validation F1')
-holdout_patch = mpatches.Patch(facecolor='grey', alpha=0.6, label='Holdout F1')
+colors = {'RF': '#1f77b4', 'BERT_NN': '#ff7f0e', 'T5_NN': '#2ca02c'}
 
-fig, axs = plt.subplots(1, 3, figsize=(20, 7), sharey=True, gridspec_kw={'width_ratios': [5, 5, 1]})
+
+fig, axs = plt.subplots(1, 3, figsize=(20, 8), sharey=True, gridspec_kw={'width_ratios': [5, 5, 1]})
 
 sampling_types = ['Down-sampling', 'Over-sampling']
 x_ratios = np.arange(len(ratios))
@@ -144,7 +142,7 @@ for i, technique in enumerate(sampling_types):
         ax.bar(x_ratios + offset + bar_width / 2, holdout_scores, bar_width, color=colors[model], alpha=0.6)
 
     ax.set_title(f"{technique}", fontsize=20)
-    ax.set_xlabel("Labeling Ratio", fontsize=15)
+    ax.set_xlabel("Labeling Ratio", fontsize=20)
     ax.set_xticks(x_ratios)
     ax.set_xticklabels(ratios)
     ax.grid(axis='y', linestyle='--', alpha=0.6)
@@ -178,7 +176,7 @@ ax.set_xticklabels(["None"])
 ax.grid(axis='y', linestyle='--', alpha=0.6)
 
 # --- Common Y label ---
-axs[0].set_ylabel("F1 Score", fontsize=15)
+axs[0].set_ylabel("Average F1 Score", fontsize=20)
 
 y_ticks = np.arange(0, 0.9, 0.1) 
 axs[0].set_yticks(y_ticks)
@@ -192,8 +190,25 @@ for ax in axs:
 # legend1 = plt.legend(handles=model_patches, title='Models', loc='upper left', bbox_to_anchor=(1.05, 1))
 # plt.gca().add_artist(legend1)
 # plt.legend(handles=[val_patch, holdout_patch], title='Score Type', loc='upper left', bbox_to_anchor=(1.05, 0.75))
-all_handles = model_patches + [val_patch, holdout_patch]
-fig.legend(handles=all_handles, loc='upper center', bbox_to_anchor=(0.5, 1.0), ncol=len(all_handles), fontsize='large')
+
+
+# model_patches = [mpatches.Patch(color=color, label=model.replace('_', ' ')) for model, color in colors.items()]
+# val_patch = mpatches.Patch(facecolor='grey', alpha=1.0, label='Validation F1')
+# holdout_patch = mpatches.Patch(facecolor='grey', alpha=0.6, label='Holdout F1')
+# all_handles = model_patches + [val_patch, holdout_patch]
+# fig.legend(handles=all_handles, loc='upper center', bbox_to_anchor=(0.5, 1.0), ncol=len(all_handles), fontsize='large')
+
+all_handles = []
+for model, color in colors.items():
+    # Create the solid patch for the Validation score
+    val_patch = mpatches.Patch(color=color, alpha=1.0, label=f"{model.replace('_', ' ')} Validation")
+    # Create the semi-transparent patch for the Holdout score
+    holdout_patch = mpatches.Patch(color=color, alpha=0.6, label=f"{model.replace('_', ' ')} Holdout")
+    # Add both patches to the list
+    all_handles.extend([val_patch, holdout_patch])
+
+# Create the figure legend with the new handles
+fig.legend(handles=all_handles, loc='upper center', bbox_to_anchor=(0.5, 1), ncol=len(models), fontsize=17)
 
 
 # Adjust layout to prevent the legend from overlapping with titles
@@ -201,6 +216,7 @@ fig.legend(handles=all_handles, loc='upper center', bbox_to_anchor=(0.5, 1.0), n
 # plt.tight_layout(rect=[0, 0, 1, 0.92]) 
 
 # plt.suptitle("F1 Scores with Different Sampling Techniques", fontsize=18)
-plt.tight_layout(rect=[0, 0, 0.89, 0.95]) 
-plt.savefig("f1_scores_separated_nonev2.png", dpi=300)
+plt.tight_layout(rect=[0, 0, 1, 0.90]) 
+# plt.tight_layout(rect=[0, 0, 1, 0.92]) 
+plt.savefig("balancing.png", dpi=300)
 plt.show()

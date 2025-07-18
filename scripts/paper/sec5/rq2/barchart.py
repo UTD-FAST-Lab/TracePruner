@@ -82,7 +82,7 @@ df_grouped = df_grouped.reindex(columns=type_order)
 
 # --- Plotting Setup ---
 # MODIFICATION 2: Make the figure shorter
-fig, ax = plt.subplots(figsize=(30, 8))
+fig, ax = plt.subplots(figsize=(22, 6))
 x_labels = df_grouped.index
 x_pos = np.arange(len(x_labels))
 n_types = len(type_order)
@@ -90,7 +90,7 @@ n_types = len(type_order)
 custom_colors = ['#004c6d', '#73a3c6', '#f28e2b']
 
 # MODIFICATION 1: Make the total group of bars narrower to increase space between groups
-group_width = 0.5
+group_width = 0.7
 bar_width = group_width / n_types
 
 # --- Manual Plotting Loop ---
@@ -107,22 +107,24 @@ for i, type_name in enumerate(type_order):
     ax.bar(positions[~values.isna()], values.dropna(), width=bar_width, color=custom_colors[i], label=type_name)
 
 # --- Chart Finalization ---
-ax.set_xlabel('Configuration/Model')
-ax.set_ylabel('Average Score of CG Metrics')
+ax.set_xlabel('Configuration/Model', fontsize=17)
+ax.set_ylabel('Average Score of CG Metrics', fontsize=17)
 ax.set_xticks(x_pos)
-ax.set_xticklabels(x_labels, rotation=90)
+ax.set_xticklabels(x_labels,  rotation=45, ha='right')
 
-ax.tick_params(axis='x', labelsize=13)
+ax.tick_params(axis='x', labelsize=17)
 
 # MODIFICATION 2: Set specific Y-axis ticks starting from 0.5
 y_ticks = np.arange(0.5, 0.9, 0.1)
 ax.set_yticks(y_ticks)
 ax.set_ylim(0.6)
+# font size for y-axis ticks
+ax.tick_params(axis='y', labelsize=15)
 
 # Tidy up legend to avoid duplicates from the loop
 handles, labels = ax.get_legend_handles_labels()
 unique_labels = dict(zip(labels, handles))
-ax.legend(unique_labels.values(), unique_labels.keys())
+ax.legend(unique_labels.values(), unique_labels.keys(), fontsize=16, loc='upper left')
 
 plt.tight_layout()
 plt.savefig('bar_chart_modified.png')
